@@ -1,14 +1,123 @@
 package com.github.sewerina.meter_readings;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private RecyclerView mRecyclerView;
+    private FloatingActionButton mAddReadingFaB;
+    private ReadingAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mAdapter = new ReadingAdapter();
+        mRecyclerView = findViewById(R.id.recyclerReadings);
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+//        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false));
+        mRecyclerView.setAdapter(mAdapter);
+
+        mAddReadingFaB = findViewById(R.id.fab_addReading);
+        mAddReadingFaB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                NewReadingDialog.showDialog(getSupportFragmentManager());
+                mAdapter.addReading(new ReadingEntity("20.06.2019", 123, 321, 444, 105, 0));
+            }
+        });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_chart) {
+            startActivity(new Intent(this, ChartActivity.class));
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private class ReadingHolder extends RecyclerView.ViewHolder {
+        private TextView mDateTv;
+        private TextView mColdWaterTv;
+        private TextView mHotWaterTv;
+        private TextView mDrainWaterTv;
+        private TextView mElectricityTv;
+        private TextView mGasTv;
+
+        public ReadingHolder(@NonNull View itemView) {
+            super(itemView);
+            mDateTv = itemView.findViewById(R.id.tv_date);
+            mColdWaterTv = itemView.findViewById(R.id.tv_coldWater);
+            mHotWaterTv = itemView.findViewById(R.id.tv_hotWater);
+            mDrainWaterTv = itemView.findViewById(R.id.tv_drainWater);
+            mElectricityTv = itemView.findViewById(R.id.tv_electricity);
+            mGasTv = itemView.findViewById(R.id.tv_gas);
+        }
+
+        void bind(ReadingEntity entity) {
+            mDateTv.setText(entity.mDate);
+            mColdWaterTv.setText(String.valueOf(entity.mColdWater));
+            mHotWaterTv.setText(String.valueOf(entity.mHotWater));
+            mDrainWaterTv.setText(String.valueOf(entity.mDrainWater));
+            mElectricityTv.setText(String.valueOf(entity.mElectricity));
+            mGasTv.setText(String.valueOf(entity.mGas));
+        }
+    }
+
+    private class ReadingAdapter extends RecyclerView.Adapter<ReadingHolder> {
+        private final List<ReadingEntity> mReadings = new ArrayList<>();
+
+        @NonNull
+        @Override
+        public ReadingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.reading_list_item, parent, false);
+            return new ReadingHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ReadingHolder holder, int position) {
+            holder.bind(mReadings.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mReadings.size();
+        }
+
+        void addReading(ReadingEntity entity) {
+            mReadings.add(entity);
+            notifyItemInserted(mReadings.size() - 1);
+        }
+    }
+
+
 }

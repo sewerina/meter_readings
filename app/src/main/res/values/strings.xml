@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">meter_readings</string>
+    <string name="action_chart">Диаграмма</string>
 </resources>

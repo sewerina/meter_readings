@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Введите Ваши показания"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/et_coldWater"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:hint="Холодная вода"
+        android:inputType="number"
+        android:textSize="12sp"
+        android:textStyle="italic" />
+
+    <EditText
+        android:id="@+id/et_hotWater"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:hint="Горячая вода"
+        android:inputType="number"
+        android:textSize="12sp"
+        android:textStyle="italic" />
+
+    <EditText
+        android:id="@+id/et_drainWater"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:hint="Стоки"
+        android:inputType="number"
+        android:textSize="12sp"
+        android:textStyle="italic" />
+
+    <EditText
+        android:id="@+id/et_electricity"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:hint="Электричество"
+        android:inputType="number"
+        android:textSize="12sp"
+        android:textStyle="italic" />
+
+    <EditText
+        android:id="@+id/et_gas"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:hint="Газ"
+        android:inputType="number"
+        android:textSize="12sp"
+        android:textStyle="italic" />
+
+</LinearLayout>
