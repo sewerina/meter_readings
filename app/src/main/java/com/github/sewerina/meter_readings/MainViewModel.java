@@ -11,8 +11,10 @@ import java.util.List;
 
 public class MainViewModel extends ViewModel {
     private final MutableLiveData<List<ReadingEntity>> mReadingEntities = new MutableLiveData<>();
+    private ReadingDao mReadingDao;
 
     public MainViewModel() {
+        mReadingDao = ReadingApp.mReadingDao;
         Log.d("MainViewModel", "MainViewModel was created");
     }
 
@@ -28,6 +30,11 @@ public class MainViewModel extends ViewModel {
         }
         entities.add(entity);
         mReadingEntities.postValue(entities);
+        mReadingDao.insert(entity);
+    }
+
+    public void load() {
+        mReadingEntities.postValue(mReadingDao.getAll());
     }
 
 

@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">meter_readings</string>
+    <string name="app_name">Показания счетчиков</string>
     <string name="action_chart">Диаграмма</string>
 </resources>

@@ -50,21 +50,21 @@ public class NewReadingDialog extends DialogFragment {
 //                        int gas;
                         ReadingEntity entity = new ReadingEntity();
                         if (!coldWaterEt.getText().toString().isEmpty()) {
-                            entity.mColdWater = Integer.parseInt(coldWaterEt.getText().toString());
+                            entity.coldWater = Integer.parseInt(coldWaterEt.getText().toString());
                         }
                         if (!hotWaterEt.getText().toString().isEmpty()) {
-                            entity.mHotWater = Integer.parseInt(hotWaterEt.getText().toString());
+                            entity.hotWater = Integer.parseInt(hotWaterEt.getText().toString());
                         }
                         if (!drainWaterEt.getText().toString().isEmpty()) {
-                            entity.mDrainWater = Integer.parseInt(drainWaterEt.getText().toString());
+                            entity.drainWater = Integer.parseInt(drainWaterEt.getText().toString());
                         }
                         if (!electricityEt.getText().toString().isEmpty()) {
-                            entity.mElectricity = Integer.parseInt(electricityEt.getText().toString());
+                            entity.electricity = Integer.parseInt(electricityEt.getText().toString());
                         }
                         if (!gasEt.getText().toString().isEmpty()) {
-                            entity.mGas = Integer.parseInt(gasEt.getText().toString());
+                            entity.gas = Integer.parseInt(gasEt.getText().toString());
                         }
-//                        ReadingEntity entity = new ReadingEntity(new Date().toString(), coldWater, hotWater, drainWater, electricity, gas);
+
                         mViewModel.addReading(entity);
                     }
                 });

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -53,11 +52,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 NewReadingDialog.showDialog(getSupportFragmentManager());
-//                mAdapter.addReading(new ReadingEntity("20.06.2019", 123, 321, 444, 105, 0));
             }
         });
 
-        mViewModel.addReading(new ReadingEntity());
+        mViewModel.load();
     }
 
     @Override
@@ -97,12 +95,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         void bind(ReadingEntity entity) {
-            mDateTv.setText(entity.mDate);
-            mColdWaterTv.setText(String.valueOf(entity.mColdWater));
-            mHotWaterTv.setText(String.valueOf(entity.mHotWater));
-            mDrainWaterTv.setText(String.valueOf(entity.mDrainWater));
-            mElectricityTv.setText(String.valueOf(entity.mElectricity));
-            mGasTv.setText(String.valueOf(entity.mGas));
+            mDateTv.setText(entity.date);
+            mColdWaterTv.setText(String.valueOf(entity.coldWater));
+            mHotWaterTv.setText(String.valueOf(entity.hotWater));
+            mDrainWaterTv.setText(String.valueOf(entity.drainWater));
+            mElectricityTv.setText(String.valueOf(entity.electricity));
+            mGasTv.setText(String.valueOf(entity.gas));
         }
     }
 
