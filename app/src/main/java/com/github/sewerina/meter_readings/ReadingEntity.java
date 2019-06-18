@@ -9,6 +9,9 @@ class ReadingEntity {
     int mElectricity;
     int mGas;
 
+    public ReadingEntity() {
+
+    }
 
     public ReadingEntity(String date, int coldWater, int hotWater, int drainWater, int electricity, int gas) {
         mDate = date;

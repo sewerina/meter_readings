@@ -2,6 +2,8 @@ package com.github.sewerina.meter_readings;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,11 +26,20 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private FloatingActionButton mAddReadingFaB;
     private ReadingAdapter mAdapter;
+    private MainViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mViewModel.getReadings().observe(this, new Observer<List<ReadingEntity>>() {
+            @Override
+            public void onChanged(List<ReadingEntity> readingEntities) {
+                mAdapter.update(readingEntities);
+            }
+        });
 
         mAdapter = new ReadingAdapter();
         mRecyclerView = findViewById(R.id.recyclerReadings);
@@ -41,10 +52,12 @@ public class MainActivity extends AppCompatActivity {
         mAddReadingFaB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                NewReadingDialog.showDialog(getSupportFragmentManager());
-                mAdapter.addReading(new ReadingEntity("20.06.2019", 123, 321, 444, 105, 0));
+                NewReadingDialog.showDialog(getSupportFragmentManager());
+//                mAdapter.addReading(new ReadingEntity("20.06.2019", 123, 321, 444, 105, 0));
             }
         });
+
+        mViewModel.addReading(new ReadingEntity());
     }
 
     @Override
@@ -113,7 +126,13 @@ public class MainActivity extends AppCompatActivity {
             return mReadings.size();
         }
 
-        void addReading(ReadingEntity entity) {
+        void update(List<ReadingEntity> entities) {
+            mReadings.clear();
+            mReadings.addAll(entities);
+            notifyDataSetChanged();
+        }
+
+        void add(ReadingEntity entity) {
             mReadings.add(entity);
             notifyItemInserted(mReadings.size() - 1);
         }
