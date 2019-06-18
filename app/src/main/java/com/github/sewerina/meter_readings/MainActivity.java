@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         void bind(ReadingEntity entity) {
-            mDateTv.setText(entity.date);
+            mDateTv.setText(entity.date.toString());
             mColdWaterTv.setText(String.valueOf(entity.coldWater));
             mHotWaterTv.setText(String.valueOf(entity.hotWater));
             mDrainWaterTv.setText(String.valueOf(entity.drainWater));

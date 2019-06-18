@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface ReadingDao {
 
-    @Query("select * from reading")
+    @Query("select * from reading order by date desc")
     List<ReadingEntity> getAll();
 
     @Insert

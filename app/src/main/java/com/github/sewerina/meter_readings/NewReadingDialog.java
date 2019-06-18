@@ -14,6 +14,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
+import java.util.Date;
+
 
 public class NewReadingDialog extends DialogFragment {
     private static final String TAG = "NewReadingDialog";
@@ -49,6 +51,7 @@ public class NewReadingDialog extends DialogFragment {
 //                        int electricity;
 //                        int gas;
                         ReadingEntity entity = new ReadingEntity();
+                        entity.date = new Date();
                         if (!coldWaterEt.getText().toString().isEmpty()) {
                             entity.coldWater = Integer.parseInt(coldWaterEt.getText().toString());
                         }

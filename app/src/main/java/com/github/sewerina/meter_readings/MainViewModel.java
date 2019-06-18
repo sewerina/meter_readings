@@ -23,14 +23,15 @@ public class MainViewModel extends ViewModel {
     }
 
     public void addReading(ReadingEntity entity) {
-        List<ReadingEntity> entities = mReadingEntities.getValue();
-
-        if (entities == null) {
-            entities = new ArrayList<>();
-        }
-        entities.add(entity);
-        mReadingEntities.postValue(entities);
+//        List<ReadingEntity> entities = mReadingEntities.getValue();
+//
+//        if (entities == null) {
+//            entities = new ArrayList<>();
+//        }
+//        entities.add(entity);
+//        mReadingEntities.postValue(entities);
         mReadingDao.insert(entity);
+        load();
     }
 
     public void load() {
