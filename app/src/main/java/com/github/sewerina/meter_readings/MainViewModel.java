@@ -39,4 +39,14 @@ public class MainViewModel extends ViewModel {
     }
 
 
+    public void deleteReading(ReadingEntity entity) {
+        // NEED ReadingEntity
+        mReadingDao.delete(entity);
+        load();
+    }
+
+    public void updateReading(ReadingEntity entity) {
+        mReadingDao.update(entity);
+        load();
+    }
 }

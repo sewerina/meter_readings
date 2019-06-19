@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         private TextView mDrainWaterTv;
         private TextView mElectricityTv;
         private TextView mGasTv;
+        private ReadingEntity mReadingEntity;
 
         public ReadingHolder(@NonNull View itemView) {
             super(itemView);
@@ -98,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         void bind(ReadingEntity entity) {
+            mReadingEntity = entity;
+
             mDateTv.setText(entity.date.toString());
             mColdWaterTv.setText(String.valueOf(entity.coldWater));
             mHotWaterTv.setText(String.valueOf(entity.hotWater));
@@ -109,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Log.d(TAG, "onClick: ");
-            EditDeleteReadingDialog.showDialog(getSupportFragmentManager());
+            EditDeleteReadingDialog.showDialog(getSupportFragmentManager(), mReadingEntity);
         }
     }
 

@@ -5,10 +5,11 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity(tableName = "reading")
-class ReadingEntity {
+class ReadingEntity implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name="id")
