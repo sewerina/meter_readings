@@ -23,7 +23,7 @@ public class NewReadingDialog extends DialogFragment {
 
     public static void showDialog(FragmentManager manager) {
         NewReadingDialog dialog = new NewReadingDialog();
-        dialog.show(manager, "NoticeDialogFragment");
+        dialog.show(manager, TAG);
     }
 
     @NonNull

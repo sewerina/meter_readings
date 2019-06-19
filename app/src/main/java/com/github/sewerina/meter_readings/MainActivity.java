@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton mAddReadingFaB;
     private ReadingAdapter mAdapter;
     private MainViewModel mViewModel;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class ReadingHolder extends RecyclerView.ViewHolder {
+    private class ReadingHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mDateTv;
         private TextView mColdWaterTv;
         private TextView mHotWaterTv;
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         public ReadingHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             mDateTv = itemView.findViewById(R.id.tv_date);
             mColdWaterTv = itemView.findViewById(R.id.tv_coldWater);
             mHotWaterTv = itemView.findViewById(R.id.tv_hotWater);
@@ -101,6 +104,12 @@ public class MainActivity extends AppCompatActivity {
             mDrainWaterTv.setText(String.valueOf(entity.drainWater));
             mElectricityTv.setText(String.valueOf(entity.electricity));
             mGasTv.setText(String.valueOf(entity.gas));
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.d(TAG, "onClick: ");
+            EditDeleteReadingDialog.showDialog(getSupportFragmentManager());
         }
     }
 
