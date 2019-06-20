@@ -14,6 +14,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.Date;
 
 
@@ -34,6 +36,7 @@ public class NewReadingDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_new_reading, null);
+
         final EditText coldWaterEt = view.findViewById(R.id.et_coldWater);
         final EditText hotWaterEt = view.findViewById(R.id.et_hotWater);
         final EditText drainWaterEt = view.findViewById(R.id.et_drainWater);

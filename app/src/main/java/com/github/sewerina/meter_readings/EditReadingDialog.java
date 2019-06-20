@@ -14,8 +14,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
-import java.util.Date;
-
 public class EditReadingDialog extends DialogFragment {
     private static final String TAG = "EditReadingDialog";
     private MainViewModel mViewModel;
@@ -62,8 +60,6 @@ public class EditReadingDialog extends DialogFragment {
                 .setPositiveButton("", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        ReadingEntity entity = new ReadingEntity();
-//                        entity.date = new Date();
 
                         if (!coldWaterEt.getText().toString().isEmpty()) {
                             mReadingEntity.coldWater = Integer.parseInt(coldWaterEt.getText().toString());
@@ -82,7 +78,6 @@ public class EditReadingDialog extends DialogFragment {
                         }
 
                         mViewModel.updateReading(mReadingEntity);
-//                        mViewModel.addReading(entity);
                     }
                 });
 
