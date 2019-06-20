@@ -35,10 +35,10 @@
 
             <TextView
                 android:id="@+id/tv_coldWater"
-                android:layout_width="72dp"
+                android:layout_width="64dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="16dp"
                 android:text="123456" />
 
         </LinearLayout>
@@ -55,10 +55,10 @@
 
             <TextView
                 android:id="@+id/tv_hotWater"
-                android:layout_width="72dp"
+                android:layout_width="64dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="16dp"
                 android:text="123456" />
 
         </LinearLayout>
@@ -75,10 +75,10 @@
 
             <TextView
                 android:id="@+id/tv_drainWater"
-                android:layout_width="72dp"
+                android:layout_width="64dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="16dp"
                 android:text="123456" />
 
         </LinearLayout>
@@ -95,10 +95,10 @@
 
             <TextView
                 android:id="@+id/tv_electricity"
-                android:layout_width="72dp"
+                android:layout_width="64dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="16dp"
                 android:text="123456" />
 
         </LinearLayout>
@@ -115,10 +115,10 @@
 
             <TextView
                 android:id="@+id/tv_gas"
-                android:layout_width="72dp"
+                android:layout_width="64dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="16dp"
                 android:text="123456" />
 
         </LinearLayout>

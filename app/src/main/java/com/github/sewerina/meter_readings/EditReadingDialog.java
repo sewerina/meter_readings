@@ -61,6 +61,8 @@ public class EditReadingDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
+                        // ADD Update of date
+
                         if (!coldWaterEt.getText().toString().isEmpty()) {
                             mReadingEntity.coldWater = Integer.parseInt(coldWaterEt.getText().toString());
                         }
