@@ -1,11 +1,20 @@
 package com.github.sewerina.meter_readings;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,10 +23,36 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.material.textfield.TextInputEditText;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class EditReadingDialog extends DialogFragment {
     private static final String TAG = "EditReadingDialog";
     private MainViewModel mViewModel;
     private ReadingEntity mReadingEntity;
+
+    private Calendar mCalendar = Calendar.getInstance();
+
+    private DatePickerDialog.OnDateSetListener mDatePickerListener = new DatePickerDialog.OnDateSetListener() {
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            mCalendar.set(Calendar.YEAR, year);
+            mCalendar.set(Calendar.MONTH, monthOfYear);
+            mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            setInitialDate();
+        }
+    };
+    private TextInputEditText mDateEt;
+
+    private void setInitialDate() {
+//        String pattern = "MM/dd/yy";
+        String pattern = "dd.MM.yyyy";
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        mDateEt.setText(dateFormat.format(mCalendar.getTime()));
+    }
 
     public static void showDialog(FragmentManager manager, ReadingEntity entity) {
         EditReadingDialog dialog = new EditReadingDialog();
@@ -37,17 +72,27 @@ public class EditReadingDialog extends DialogFragment {
         mViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_edit_reading, null);
-        EditText dateEt = view.findViewById(R.id.et_date);
-        final EditText coldWaterEt = view.findViewById(R.id.et_coldWater);
-        final EditText hotWaterEt = view.findViewById(R.id.et_hotWater);
-        final EditText drainWaterEt = view.findViewById(R.id.et_drainWater);
-        final EditText electricityEt = view.findViewById(R.id.et_electricity);
-        final EditText gasEt = view.findViewById(R.id.et_gas);
+
+        mDateEt = view.findViewById(R.id.et_date);
+        final TextInputEditText coldWaterEt = view.findViewById(R.id.et_coldWater);
+        final TextInputEditText hotWaterEt = view.findViewById(R.id.et_hotWater);
+        final TextInputEditText drainWaterEt = view.findViewById(R.id.et_drainWater);
+        final TextInputEditText electricityEt = view.findViewById(R.id.et_electricity);
+        final TextInputEditText gasEt = view.findViewById(R.id.et_gas);
+
+        mDateEt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePicker(view.getContext());
+            }
+        });
+
 
         if (mReadingEntity != null) {
-            dateEt.setText(mReadingEntity.date.toString());
+            mDateEt.setText(mReadingEntity.date.toString());
             coldWaterEt.setText(String.valueOf(mReadingEntity.coldWater));
             hotWaterEt.setText(String.valueOf(mReadingEntity.hotWater));
             drainWaterEt.setText(String.valueOf(mReadingEntity.drainWater));
@@ -60,22 +105,23 @@ public class EditReadingDialog extends DialogFragment {
                 .setPositiveButton("", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        if (mDateEt.getText() != null && !mDateEt.getText().toString().isEmpty()) {
+                            mReadingEntity.date = mCalendar.getTime();
+                        }
 
-                        // ADD Update of date
-
-                        if (!coldWaterEt.getText().toString().isEmpty()) {
+                        if (coldWaterEt.getText() != null && !coldWaterEt.getText().toString().isEmpty()) {
                             mReadingEntity.coldWater = Integer.parseInt(coldWaterEt.getText().toString());
                         }
-                        if (!hotWaterEt.getText().toString().isEmpty()) {
+                        if (hotWaterEt.getText() != null && !hotWaterEt.getText().toString().isEmpty()) {
                             mReadingEntity.hotWater = Integer.parseInt(hotWaterEt.getText().toString());
                         }
-                        if (!drainWaterEt.getText().toString().isEmpty()) {
+                        if (drainWaterEt.getText() != null && !drainWaterEt.getText().toString().isEmpty()) {
                             mReadingEntity.drainWater = Integer.parseInt(drainWaterEt.getText().toString());
                         }
-                        if (!electricityEt.getText().toString().isEmpty()) {
+                        if (electricityEt.getText() != null && !electricityEt.getText().toString().isEmpty()) {
                             mReadingEntity.electricity = Integer.parseInt(electricityEt.getText().toString());
                         }
-                        if (!gasEt.getText().toString().isEmpty()) {
+                        if (gasEt.getText() != null && !gasEt.getText().toString().isEmpty()) {
                             mReadingEntity.gas = Integer.parseInt(gasEt.getText().toString());
                         }
 
@@ -86,4 +132,25 @@ public class EditReadingDialog extends DialogFragment {
 
         return builder.create();
     }
+
+    private void showDatePicker(Context context) {
+        new DatePickerDialog(context, mDatePickerListener,
+                mCalendar.get(Calendar.YEAR),
+                mCalendar.get(Calendar.MONTH),
+                mCalendar.get(Calendar.DAY_OF_MONTH))
+                .show();
+    }
+
+    private void hideKeyboardFrom(final View view) {
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        });
+    }
+
 }

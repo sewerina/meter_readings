@@ -15,13 +15,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 
 
-public class EditDeleteReadingDialog extends BottomSheetDialogFragment {
-    private static final String TAG = "EditDeleteReadingDialog";
+public class BottomSheetReadingDialog extends BottomSheetDialogFragment {
+    private static final String TAG = "BottomSheetReadingDialog";
     private MainViewModel mViewModel;
     private ReadingEntity mReadingEntity;
 
     public static void showDialog(FragmentManager manager, ReadingEntity entity) {
-        EditDeleteReadingDialog dialog = new EditDeleteReadingDialog();
+        BottomSheetReadingDialog dialog = new BottomSheetReadingDialog();
         Bundle args = new Bundle();
         args.putSerializable("reading", entity);
         dialog.setArguments(args);

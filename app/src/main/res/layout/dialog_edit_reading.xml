@@ -36,7 +36,8 @@
                 android:id="@+id/et_date"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:focusable="false"
+                android:inputType="date"
                 android:textSize="12sp" />
 
         </com.google.android.material.textfield.TextInputLayout>

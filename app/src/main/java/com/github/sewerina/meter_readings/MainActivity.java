@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Log.d(TAG, "onClick: ");
-            EditDeleteReadingDialog.showDialog(getSupportFragmentManager(), mReadingEntity);
+            BottomSheetReadingDialog.showDialog(getSupportFragmentManager(), mReadingEntity);
         }
     }
 
