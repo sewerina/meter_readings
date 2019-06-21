@@ -4,6 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.github.sewerina.meter_readings.MainActivity">
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/action_chart"
         android:title="@string/action_chart"
