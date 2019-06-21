@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         void bind(ReadingEntity entity) {
             mReadingEntity = entity;
 
-            mDateTv.setText(entity.date.toString());
+            mDateTv.setText(new FormattedDate(entity.date).text());
             mColdWaterTv.setText(String.valueOf(entity.coldWater));
             mHotWaterTv.setText(String.valueOf(entity.hotWater));
             mDrainWaterTv.setText(String.valueOf(entity.drainWater));

@@ -1,7 +1,6 @@
 package com.github.sewerina.meter_readings;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -9,12 +8,8 @@ import android.content.DialogInterface;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,8 +22,6 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class EditReadingDialog extends DialogFragment {
     private static final String TAG = "EditReadingDialog";
@@ -42,17 +35,10 @@ public class EditReadingDialog extends DialogFragment {
             mCalendar.set(Calendar.YEAR, year);
             mCalendar.set(Calendar.MONTH, monthOfYear);
             mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            setInitialDate();
+            setUpdateDate();
         }
     };
     private TextInputEditText mDateEt;
-
-    private void setInitialDate() {
-//        String pattern = "MM/dd/yy";
-        String pattern = "dd.MM.yyyy";
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-        mDateEt.setText(dateFormat.format(mCalendar.getTime()));
-    }
 
     public static void showDialog(FragmentManager manager, ReadingEntity entity) {
         EditReadingDialog dialog = new EditReadingDialog();
@@ -75,7 +61,6 @@ public class EditReadingDialog extends DialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_edit_reading, null);
-
         mDateEt = view.findViewById(R.id.et_date);
         final TextInputEditText coldWaterEt = view.findViewById(R.id.et_coldWater);
         final TextInputEditText hotWaterEt = view.findViewById(R.id.et_hotWater);
@@ -90,9 +75,8 @@ public class EditReadingDialog extends DialogFragment {
             }
         });
 
-
         if (mReadingEntity != null) {
-            mDateEt.setText(mReadingEntity.date.toString());
+            mDateEt.setText(new FormattedDate(mReadingEntity.date).text());
             coldWaterEt.setText(String.valueOf(mReadingEntity.coldWater));
             hotWaterEt.setText(String.valueOf(mReadingEntity.hotWater));
             drainWaterEt.setText(String.valueOf(mReadingEntity.drainWater));
@@ -141,16 +125,20 @@ public class EditReadingDialog extends DialogFragment {
                 .show();
     }
 
-    private void hideKeyboardFrom(final View view) {
-        view.post(new Runnable() {
-            @Override
-            public void run() {
-                InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                }
-            }
-        });
+    private void setUpdateDate() {
+        mDateEt.setText(new FormattedDate(mCalendar.getTime()).text());
     }
+
+//    private void hideKeyboardFrom(final View view) {
+//        view.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+//                if (imm != null) {
+//                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//                }
+//            }
+//        });
+//    }
 
 }
