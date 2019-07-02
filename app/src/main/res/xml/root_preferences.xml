@@ -14,7 +14,9 @@
   ~ limitations under the License.
   -->
 
-<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.preference.PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--<PreferenceCategory app:title="@string/messages_header">-->
 
@@ -51,30 +53,35 @@
     <PreferenceCategory app:title="@string/settings_reading">
 
         <SwitchPreferenceCompat
+            android:defaultValue="true"
             app:key="coldWater"
             app:title="@string/coldWater"
             app:summaryOff="@string/coldWater_off"
             app:summaryOn="@string/coldWater_on"/>
 
         <SwitchPreferenceCompat
+            android:defaultValue="true"
             app:key="hotWater"
             app:summaryOff="@string/hotWater_off"
             app:summaryOn="@string/hotWater_on"
             app:title="@string/hotWater" />
 
         <SwitchPreferenceCompat
+            android:defaultValue="true"
             app:key="drainWater"
             app:summaryOff="@string/drainWater_off"
             app:summaryOn="@string/drainWater_on"
             app:title="@string/drainWater" />
 
         <SwitchPreferenceCompat
+            android:defaultValue="true"
             app:key="electricity"
             app:summaryOff="@string/electricity_off"
             app:summaryOn="@string/electricity_on"
             app:title="@string/electricity" />
 
         <SwitchPreferenceCompat
+            android:defaultValue="true"
             app:key="gas"
             app:summaryOff="@string/gas_off"
             app:summaryOn="@string/gas_on"

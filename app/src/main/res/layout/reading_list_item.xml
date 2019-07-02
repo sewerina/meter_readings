@@ -24,11 +24,13 @@
             android:text="25.05.2019" />
 
         <LinearLayout
+            android:id="@+id/ll_coldWater"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/iv_coldWater"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/icon_blue_water" />
@@ -44,11 +46,13 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_hotWater"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/iv_hotWater"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/icon_red_water" />
@@ -64,11 +68,13 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_drainWater"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/iv_drainWater"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/icon_brown_water" />
@@ -84,11 +90,13 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_electricity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/iv_electricity"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/icon_electricity" />
@@ -104,11 +112,13 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_gas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/iv_gas"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/icon_gas" />
