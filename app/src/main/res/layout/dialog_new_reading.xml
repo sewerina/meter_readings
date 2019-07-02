@@ -15,6 +15,7 @@
         android:textStyle="bold" />
 
     <LinearLayout
+        android:id="@+id/ll_coldWater"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -44,6 +45,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_hotWater"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -73,6 +75,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_drainWater"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -102,6 +105,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_electricity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -131,6 +135,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_gas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

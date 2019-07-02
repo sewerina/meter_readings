@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,7 +13,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Date;
 
@@ -34,14 +33,17 @@ public class NewReadingDialog extends DialogFragment {
         mViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_new_reading, null);
 
-        final EditText coldWaterEt = view.findViewById(R.id.et_coldWater);
-        final EditText hotWaterEt = view.findViewById(R.id.et_hotWater);
-        final EditText drainWaterEt = view.findViewById(R.id.et_drainWater);
-        final EditText electricityEt = view.findViewById(R.id.et_electricity);
-        final EditText gasEt = view.findViewById(R.id.et_gas);
+        new ReadingPreferences(view.getContext()).setLayoutVisibility(view);
+
+        final TextInputEditText coldWaterEt = view.findViewById(R.id.et_coldWater);
+        final TextInputEditText hotWaterEt = view.findViewById(R.id.et_hotWater);
+        final TextInputEditText drainWaterEt = view.findViewById(R.id.et_drainWater);
+        final TextInputEditText electricityEt = view.findViewById(R.id.et_electricity);
+        final TextInputEditText gasEt = view.findViewById(R.id.et_gas);
 
         builder.setView(view)
                 .setPositiveButtonIcon(getActivity().getDrawable(R.drawable.ic_positive_btn))

@@ -60,6 +60,9 @@ public class EditReadingDialog extends DialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_edit_reading, null);
+
+        new ReadingPreferences(view.getContext()).setLayoutVisibility(view);
+
         mDateEt = view.findViewById(R.id.et_date);
         final TextInputEditText coldWaterEt = view.findViewById(R.id.et_coldWater);
         final TextInputEditText hotWaterEt = view.findViewById(R.id.et_hotWater);
