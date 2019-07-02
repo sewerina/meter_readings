@@ -1,6 +1,5 @@
 package com.github.sewerina.meter_readings;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -20,7 +19,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class EditReadingDialog extends DialogFragment {
@@ -39,6 +37,7 @@ public class EditReadingDialog extends DialogFragment {
         }
     };
     private TextInputEditText mDateEt;
+    private boolean mIsDateChanged = false;
 
     public static void showDialog(FragmentManager manager, ReadingEntity entity) {
         EditReadingDialog dialog = new EditReadingDialog();
@@ -89,8 +88,9 @@ public class EditReadingDialog extends DialogFragment {
                 .setPositiveButton("", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (mDateEt.getText() != null && !mDateEt.getText().toString().isEmpty()) {
+                        if (mDateEt.getText() != null && !mDateEt.getText().toString().isEmpty() && mIsDateChanged) {
                             mReadingEntity.date = mCalendar.getTime();
+                            mIsDateChanged = false;
                         }
 
                         if (coldWaterEt.getText() != null && !coldWaterEt.getText().toString().isEmpty()) {
@@ -118,14 +118,18 @@ public class EditReadingDialog extends DialogFragment {
     }
 
     private void showDatePicker(Context context) {
-        new DatePickerDialog(context, mDatePickerListener,
+        DatePickerDialog datePicker = new DatePickerDialog(
+                context,
+                mDatePickerListener,
                 mCalendar.get(Calendar.YEAR),
                 mCalendar.get(Calendar.MONTH),
-                mCalendar.get(Calendar.DAY_OF_MONTH))
-                .show();
+                mCalendar.get(Calendar.DAY_OF_MONTH));
+
+        datePicker.show();
     }
 
     private void setUpdateDate() {
+        mIsDateChanged = true;
         mDateEt.setText(new FormattedDate(mCalendar.getTime()).text());
     }
 
