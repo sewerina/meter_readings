@@ -8,11 +8,11 @@ import android.widget.LinearLayout;
 import androidx.preference.PreferenceManager;
 
 public class ReadingPreferences {
-    private static final String KEY_PREF_COLD_WATER = "coldWater";
-    private static final String KEY_PREF_HOT_WATER = "hotWater";
-    private static final String KEY_PREF_DRAIN_WATER = "drainWater";
-    private static final String KEY_PREF_ELECTRICITY = "electricity";
-    private static final String KEY_PREF_GAS = "gas";
+    public static final String KEY_PREF_COLD_WATER = "coldWater";
+    public static final String KEY_PREF_HOT_WATER = "hotWater";
+    public static final String KEY_PREF_DRAIN_WATER = "drainWater";
+    public static final String KEY_PREF_ELECTRICITY = "electricity";
+    public static final String KEY_PREF_GAS = "gas";
 
     private SharedPreferences mSharedPreferences;
 
