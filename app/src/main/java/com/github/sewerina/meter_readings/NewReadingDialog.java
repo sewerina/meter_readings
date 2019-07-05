@@ -1,9 +1,14 @@
 package com.github.sewerina.meter_readings;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -22,11 +27,15 @@ public class NewReadingDialog extends DialogFragment {
     private static final String TAG = "NewReadingDialog";
     private MainViewModel mViewModel;
 
+    private int mColdWaterValue = 0;
+    private int mHotWaterValue = 0;
+
     public static void showDialog(FragmentManager manager) {
         NewReadingDialog dialog = new NewReadingDialog();
         dialog.show(manager, TAG);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -44,6 +53,60 @@ public class NewReadingDialog extends DialogFragment {
         final TextInputEditText drainWaterEt = view.findViewById(R.id.et_drainWater);
         final TextInputEditText electricityEt = view.findViewById(R.id.et_electricity);
         final TextInputEditText gasEt = view.findViewById(R.id.et_gas);
+
+        coldWaterEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                if (s != null && !s.toString().isEmpty()) {
+//                    mColdWaterValue = Integer.parseInt(s.toString());
+//                    Log.d(TAG, "beforeTextChanged: coldWaterEt");
+//                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s != null && !s.toString().isEmpty()) {
+                    mColdWaterValue = Integer.parseInt(s.toString());
+                    Log.d(TAG, "onTextChanged: coldWaterEt");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable str) {
+            }
+        });
+
+        hotWaterEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                if (s != null && !s.toString().isEmpty()) {
+//                    mHotWaterValue = Integer.parseInt(s.toString());
+//                    Log.d(TAG, "beforeTextChanged: hotWaterEt");
+//                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s != null && !s.toString().isEmpty()) {
+                    mHotWaterValue = Integer.parseInt(s.toString());
+                    Log.d(TAG, "onTextChanged: hotWaterEt");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable str) {
+            }
+        });
+
+        drainWaterEt.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int drainWaterValue = mColdWaterValue + mHotWaterValue;
+                drainWaterEt.setText(String.valueOf(drainWaterValue));
+                return true;
+            }
+        });
+
 
         builder.setView(view)
                 .setPositiveButtonIcon(getActivity().getDrawable(R.drawable.ic_positive_btn))
