@@ -2,7 +2,10 @@
     <string name="app_name">Показания счетчиков</string>
     <string name="action_chart">Диаграмма</string>
     <string name="action_settings">Настройки</string>
+    <string name="action_homes">Ваши дома (квартиры)</string>
     <string name="title_activity_settings">Settings</string>
+
+    <string name="title_spinner">"Ваш дом (выберите адрес): "</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>

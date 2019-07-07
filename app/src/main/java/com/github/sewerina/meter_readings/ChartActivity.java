@@ -44,7 +44,7 @@ public class ChartActivity extends AppCompatActivity {
                 }
             }
         });
-        mViewModel.load();
+        mViewModel.firstLoad();
 
     }
 

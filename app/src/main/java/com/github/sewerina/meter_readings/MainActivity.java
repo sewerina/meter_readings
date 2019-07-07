@@ -8,6 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,9 +28,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
+    private Spinner mSpinner;
     private RecyclerView mRecyclerView;
     private FloatingActionButton mAddReadingFaB;
-    private ReadingAdapter mAdapter;
+
+    private ArrayAdapter<String> mSpinnerAdapter;
+    private ReadingAdapter mReadingAdapter;
 
     private MainViewModel mViewModel;
 
@@ -40,16 +46,53 @@ public class MainActivity extends AppCompatActivity {
         mViewModel.getReadings().observe(this, new Observer<List<ReadingEntity>>() {
             @Override
             public void onChanged(List<ReadingEntity> readingEntities) {
-                mAdapter.update(readingEntities);
+                mReadingAdapter.update(readingEntities);
             }
         });
 
-        mAdapter = new ReadingAdapter();
+        mViewModel.getCurrentHome().observe(this, new Observer<HomeEntity>() {
+            @Override
+            public void onChanged(HomeEntity entity) {
+//                ((TextView) MainActivity.this.findViewById(R.id.tv_home)).setText(entity.address);
+            }
+        });
+
+        mViewModel.getHomes().observe(this, new Observer<List<HomeEntity>>() {
+            @Override
+            public void onChanged(List<HomeEntity> homeEntities) {
+                List<String> homeAddresses = new ArrayList<>();
+                for (HomeEntity homeEntity : homeEntities) {
+                    homeAddresses.add(homeEntity.address);
+                }
+                mSpinnerAdapter = new ArrayAdapter<>(MainActivity.this,
+                        android.R.layout.simple_spinner_item, homeAddresses);
+
+                mSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mSpinner.setAdapter(mSpinnerAdapter);
+            }
+        });
+
+        mViewModel.loadHomes();
+
+        mSpinner = findViewById(R.id.spinner_home);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mViewModel.changeCurrentHome(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mReadingAdapter = new ReadingAdapter();
         mRecyclerView = findViewById(R.id.recyclerReadings);
 //        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 //        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false));
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mReadingAdapter);
 
         mAddReadingFaB = findViewById(R.id.fab_addReading);
         mAddReadingFaB.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mViewModel.load();
+        mViewModel.firstLoad();
     }
 
     @Override
@@ -71,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        if (id == R.id.action_homes) {
+            startActivity(new Intent(this, HomesActivity.class));
+            return true;
+        }
 
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));

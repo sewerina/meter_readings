@@ -3,7 +3,7 @@ package com.github.sewerina.meter_readings;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {ReadingEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {ReadingEntity.class, HomeEntity.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract ReadingDao readingDao();

@@ -14,6 +14,12 @@ public interface ReadingDao {
     @Query("select * from reading order by date desc")
     List<ReadingEntity> getAll();
 
+    @Query("select * from reading where homeId =:homeId order by date desc")
+    List<ReadingEntity> getReadingsForHome(int homeId);
+
+    @Query("select * from home")
+    List<HomeEntity> getHomes();
+
     @Insert
     void insert(ReadingEntity entity);
 
@@ -22,5 +28,8 @@ public interface ReadingDao {
 
     @Delete
     void delete(ReadingEntity entity);
+
+    @Insert
+    void createHome(HomeEntity entity);
 
 }

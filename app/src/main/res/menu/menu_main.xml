@@ -6,6 +6,11 @@
     tools:context="com.github.sewerina.meter_readings.MainActivity">
 
     <item
+        android:id="@+id/action_homes"
+        android:title="@string/action_homes"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         app:showAsAction="never" />
