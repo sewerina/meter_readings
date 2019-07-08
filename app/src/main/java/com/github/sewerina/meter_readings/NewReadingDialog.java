@@ -22,7 +22,6 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Date;
 
-
 public class NewReadingDialog extends DialogFragment {
     private static final String TAG = "NewReadingDialog";
     private MainViewModel mViewModel;
@@ -106,7 +105,6 @@ public class NewReadingDialog extends DialogFragment {
                 return true;
             }
         });
-
 
         builder.setView(view)
                 .setPositiveButtonIcon(getActivity().getDrawable(R.drawable.ic_positive_btn))

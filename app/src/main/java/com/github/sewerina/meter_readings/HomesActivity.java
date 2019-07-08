@@ -54,9 +54,7 @@ public class HomesActivity extends AppCompatActivity {
         mAddHomeFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HomeEntity homeEntity = new HomeEntity();
-                homeEntity.address = "Moscow district, Lubercy";
-                mViewModel.addHome(homeEntity);
+                NewHomeDialog.showDialog(getSupportFragmentManager());
             }
         });
 
@@ -96,12 +94,7 @@ public class HomesActivity extends AppCompatActivity {
                                     mViewModel.deleteHome(mHomeEntity);
                                 }
                             })
-                            .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            })
+                            .setNegativeButton("Отмена", null)
                             .show();
                 }
             });
