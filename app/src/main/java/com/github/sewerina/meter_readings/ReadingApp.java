@@ -9,7 +9,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 public class ReadingApp extends Application {
 
-    public static ReadingDao mReadingDao;
+    public static AppDao mReadingDao;
 
     @Override
     public void onCreate() {

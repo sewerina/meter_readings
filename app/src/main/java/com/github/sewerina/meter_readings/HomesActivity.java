@@ -2,6 +2,9 @@ package com.github.sewerina.meter_readings;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -9,63 +12,88 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomesActivity extends AppCompatActivity {
     private static final String TAG = "HomesActivity";
+
     private RecyclerView mRecyclerView;
+    private FloatingActionButton mAddHomeFab;
+
+    private MainViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homes);
 
-        mRecyclerView = findViewById(R.id.recyclerHomes);
+        final HomeAdapter homeAdapter = new HomeAdapter();
 
+        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mViewModel.getHomes().observe(this, new Observer<List<HomeEntity>>() {
+            @Override
+            public void onChanged(List<HomeEntity> homeEntities) {
+                homeAdapter.update(homeEntities);
+            }
+        });
+
+        mRecyclerView = findViewById(R.id.recyclerHomes);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(homeAdapter);
+
+        mAddHomeFab = findViewById(R.id.fab_addHome);
+        mAddHomeFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HomeEntity homeEntity = new HomeEntity();
+                homeEntity.address = "Moscow district, Lubercy";
+                mViewModel.addHome(homeEntity);
+            }
+        });
+
+        mViewModel.loadHomes();
     }
 
-    private class HomeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-//        private TextView mDateTv;
-//        private TextView mColdWaterTv;
-//        private TextView mHotWaterTv;
-//        private TextView mDrainWaterTv;
-//        private TextView mElectricityTv;
-//        private TextView mGasTv;
+    private class HomeHolder extends RecyclerView.ViewHolder {
+        private TextView mAddressTv;
+        private ImageButton mEditHomeIBtn;
+        private ImageButton mDeleteHomeIBtn;
 
         private HomeEntity mHomeEntity;
 
         public HomeHolder(@NonNull View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
 
-//            new ReadingPreferences(itemView.getContext()).setLayoutVisibility(itemView);
-//
-//            mDateTv = itemView.findViewById(R.id.tv_date);
-//            mColdWaterTv = itemView.findViewById(R.id.tv_coldWater);
-//            mHotWaterTv = itemView.findViewById(R.id.tv_hotWater);
-//            mDrainWaterTv = itemView.findViewById(R.id.tv_drainWater);
-//            mElectricityTv = itemView.findViewById(R.id.tv_electricity);
-//            mGasTv = itemView.findViewById(R.id.tv_gas);
+            mAddressTv = itemView.findViewById(R.id.tv_address);
+
+            mEditHomeIBtn = itemView.findViewById(R.id.iBtn_editHome);
+            mEditHomeIBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            mDeleteHomeIBtn = itemView.findViewById(R.id.iBtn_deleteHome);
+            mDeleteHomeIBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Snackbar.make(v, "Действительно хотите удалить данный дом?", Snackbar.LENGTH_LONG).show();
+                }
+            });
         }
 
         void bind(HomeEntity entity) {
             mHomeEntity = entity;
-
-//            mDateTv.setText(new FormattedDate(entity.date).text());
-//            mColdWaterTv.setText(String.valueOf(entity.coldWater));
-//            mHotWaterTv.setText(String.valueOf(entity.hotWater));
-//            mDrainWaterTv.setText(String.valueOf(entity.drainWater));
-//            mElectricityTv.setText(String.valueOf(entity.electricity));
-//            mGasTv.setText(String.valueOf(entity.gas));
-        }
-
-        @Override
-        public void onClick(View v) {
-            Log.d(TAG, "onClick: ");
-//            BottomSheetReadingDialog.showDialog(getSupportFragmentManager(), mReadingEntity);
+            mAddressTv.setText(entity.address);
         }
     }
 

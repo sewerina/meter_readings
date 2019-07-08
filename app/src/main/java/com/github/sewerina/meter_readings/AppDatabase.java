@@ -6,6 +6,6 @@ import androidx.room.RoomDatabase;
 @Database(entities = {ReadingEntity.class, HomeEntity.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
-    public abstract ReadingDao readingDao();
+    public abstract AppDao readingDao();
 
 }

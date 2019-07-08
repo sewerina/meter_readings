@@ -12,6 +12,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".HomesActivity"
+            android:label="@string/title_activity_homes"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".SettingsActivity"
@@ -23,6 +24,7 @@
         </activity>
         <activity
             android:name=".ChartActivity"
+            android:label="@string/title_activity_chart"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

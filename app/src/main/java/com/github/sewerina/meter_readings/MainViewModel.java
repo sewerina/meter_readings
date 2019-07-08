@@ -11,11 +11,11 @@ import java.util.List;
 public class MainViewModel extends ViewModel {
     private final MutableLiveData<List<ReadingEntity>> mReadingEntities = new MutableLiveData<>();
     private final MutableLiveData<List<HomeEntity>> mHomeEntities = new MutableLiveData<>();
-    private ReadingDao mReadingDao;
+    private AppDao mDao;
     private final MutableLiveData<HomeEntity> mCurrentHome = new MutableLiveData<>();
 
     public MainViewModel() {
-        mReadingDao = ReadingApp.mReadingDao;
+        mDao = ReadingApp.mReadingDao;
         Log.d("MainViewModel", "MainViewModel was created");
     }
 
@@ -42,32 +42,32 @@ public class MainViewModel extends ViewModel {
 
         if (mCurrentHome.getValue() != null) {
             entity.homeId = mCurrentHome.getValue().id;
-            mReadingDao.insert(entity);
+            mDao.insertReading(entity);
             loadReadings(mCurrentHome.getValue());
         }
     }
 
     public void firstLoad() {
-        HomeEntity homeEntity = mReadingDao.getHomes().get(0);
+        HomeEntity homeEntity = mDao.getHomes().get(0);
         mCurrentHome.postValue(homeEntity);
         loadReadings(homeEntity);
     }
 
     private void loadReadings(HomeEntity homeEntity) {
-        mReadingEntities.postValue(mReadingDao.getReadingsForHome(homeEntity.id));
+        mReadingEntities.postValue(mDao.getReadingsForHome(homeEntity.id));
     }
 
 
     public void deleteReading(ReadingEntity entity) {
         // NEED ReadingEntity
-        mReadingDao.delete(entity);
+        mDao.deleteReading(entity);
         if (mCurrentHome.getValue() != null) {
             loadReadings(mCurrentHome.getValue());
         }
     }
 
     public void updateReading(ReadingEntity entity) {
-        mReadingDao.update(entity);
+        mDao.updateReading(entity);
         if (mCurrentHome.getValue() != null) {
             loadReadings(mCurrentHome.getValue());
         }
@@ -83,7 +83,11 @@ public class MainViewModel extends ViewModel {
     }
 
     public void loadHomes() {
-        mHomeEntities.postValue(mReadingDao.getHomes());
+        mHomeEntities.postValue(mDao.getHomes());
     }
 
+    public void addHome(HomeEntity homeEntity) {
+        mDao.insertHome(homeEntity);
+        loadHomes();
+    }
 }

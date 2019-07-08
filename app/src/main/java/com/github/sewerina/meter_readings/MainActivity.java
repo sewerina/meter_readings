@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Spinner mSpinner;
     private RecyclerView mRecyclerView;
-    private FloatingActionButton mAddReadingFaB;
+    private FloatingActionButton mAddReadingFab;
 
     private ArrayAdapter<String> mSpinnerAdapter;
     private ReadingAdapter mReadingAdapter;
@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
 //        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false));
         mRecyclerView.setAdapter(mReadingAdapter);
 
-        mAddReadingFaB = findViewById(R.id.fab_addReading);
-        mAddReadingFaB.setOnClickListener(new View.OnClickListener() {
+        mAddReadingFab = findViewById(R.id.fab_addReading);
+        mAddReadingFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NewReadingDialog.showDialog(getSupportFragmentManager());

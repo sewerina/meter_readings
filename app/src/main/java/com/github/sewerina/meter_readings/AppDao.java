@@ -9,7 +9,7 @@ import androidx.room.Update;
 import java.util.List;
 
 @Dao
-public interface ReadingDao {
+public interface AppDao {
 
     @Query("select * from reading order by date desc")
     List<ReadingEntity> getAll();
@@ -21,15 +21,18 @@ public interface ReadingDao {
     List<HomeEntity> getHomes();
 
     @Insert
-    void insert(ReadingEntity entity);
+    void insertReading(ReadingEntity entity);
 
     @Update
-    void update(ReadingEntity entity);
+    void updateReading(ReadingEntity entity);
 
     @Delete
-    void delete(ReadingEntity entity);
+    void deleteReading(ReadingEntity entity);
 
     @Insert
-    void createHome(HomeEntity entity);
+    void insertHome(HomeEntity entity);
+
+    @Delete
+    void deleteHome(HomeEntity entity);
 
 }

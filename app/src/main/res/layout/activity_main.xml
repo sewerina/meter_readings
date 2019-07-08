@@ -39,6 +39,6 @@
         app:elevation="8dp"
         app:fabSize="auto"
         app:rippleColor="#F0E47A"
-        app:srcCompat="@drawable/ic_add_reading" />
+        app:srcCompat="@drawable/ic_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
