@@ -1,12 +1,6 @@
 package com.github.sewerina.meter_readings;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -85,8 +87,22 @@ public class HomesActivity extends AppCompatActivity {
             mDeleteHomeIBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    new MaterialAlertDialogBuilder(v.getContext())
+                            .setTitle("Удаление информации о доме")
+                            .setMessage("Удаление информации о доме также приведет к удалению всех показаний для данного дома. Хотите удалить информацию о данном доме и всего его показания?")
+                            .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mViewModel.deleteHome(mHomeEntity);
+                                }
+                            })
+                            .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                    Snackbar.make(v, "Действительно хотите удалить данный дом?", Snackbar.LENGTH_LONG).show();
+                                }
+                            })
+                            .show();
                 }
             });
         }
