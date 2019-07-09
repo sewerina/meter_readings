@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,29 +33,33 @@ public class NewHomeDialog extends DialogFragment {
         mViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
-        //        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_new_home, null);
 
-        final TextInputEditText editText = new TextInputEditText(getActivity());
-        editText.setInputType(InputType.TYPE_CLASS_TEXT);
-        editText.setHint("Укажите адрес Вашего дома");
-        editText.setTextSize(14);
-        editText.setPadding(20, 20, 20, 20);
+        final TextInputEditText addressEt = view.findViewById(R.id.et_homeAddress);
 
-        builder.setTitle("Новый дом")
-        .setView(editText)
-        .setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (editText.getText() != null && !editText.getText().toString().isEmpty()) {
-                    HomeEntity homeEntity = new HomeEntity();
-                    homeEntity.address = editText.getText().toString();
-                    mViewModel.addHome(homeEntity);
-                } else {
-                    Toast.makeText(editText.getContext(), "Для создания необходимо указать адрес", Toast.LENGTH_SHORT).show();
-                }
-            }
-        })
-        .setNegativeButton("Отмена", null);
+//        final TextInputEditText editText = new TextInputEditText(getActivity());
+//        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+//        editText.setHint("Укажите адрес Вашего дома");
+//        editText.setTextSize(14);
+//        editText.setPadding(20, 20, 20, 20);
+
+        builder
+                .setTitle("Создание информации о новом доме")
+                .setView(view)
+                .setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (addressEt.getText() != null && !addressEt.getText().toString().isEmpty()) {
+                            HomeEntity homeEntity = new HomeEntity();
+                            homeEntity.address = addressEt.getText().toString();
+                            mViewModel.addHome(homeEntity);
+                        } else {
+                            Toast.makeText(addressEt.getContext(), "Для создания необходимо указать адрес", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton("Отмена", null);
 
         return builder.create();
     }
