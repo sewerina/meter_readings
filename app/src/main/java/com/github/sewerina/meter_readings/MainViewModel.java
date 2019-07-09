@@ -95,4 +95,9 @@ public class MainViewModel extends ViewModel {
         mDao.deleteHome(entity);
         loadHomes();
     }
+
+    public void updateHome(HomeEntity entity) {
+        mDao.updateHome(entity);
+        loadHomes();
+    }
 }

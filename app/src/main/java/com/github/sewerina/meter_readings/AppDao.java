@@ -32,6 +32,9 @@ public interface AppDao {
     @Insert
     void insertHome(HomeEntity entity);
 
+    @Update
+    void updateHome(HomeEntity entity);
+
     @Delete
     void deleteHome(HomeEntity entity);
 
