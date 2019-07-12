@@ -46,4 +46,7 @@
     <string name="gas_off">Газ не будет включен</string>
     <string name="gas_on">Газ будет включен</string>
 
+    <string name="channel_name">reading notification channel</string>
+    <string name="channel_description">reading notification channel</string>
+
 </resources>

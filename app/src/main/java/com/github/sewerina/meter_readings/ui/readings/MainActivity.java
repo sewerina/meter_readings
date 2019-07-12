@@ -24,6 +24,7 @@ import com.github.sewerina.meter_readings.FormattedDate;
 import com.github.sewerina.meter_readings.R;
 import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
+import com.github.sewerina.meter_readings.ui.RemindNotification;
 import com.github.sewerina.meter_readings.ui.chart.ChartActivity;
 import com.github.sewerina.meter_readings.ui.homes.HomesActivity;
 import com.github.sewerina.meter_readings.ui.settings.SettingsActivity;
@@ -124,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mViewModel.load();
+        new RemindNotification(this).appearNotification();
     }
 
     @Override

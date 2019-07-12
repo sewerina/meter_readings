@@ -54,6 +54,8 @@ public class ChartActivity extends AppCompatActivity {
             mCurrentHomeEntity = (HomeEntity) getIntent().getSerializableExtra(EXTRA_CURRENT_HOME_ENTITY);
         }
 
+        setTitle(mCurrentHomeEntity.address);
+
         mViewModel = ViewModelProviders.of(this).get(ChartViewModel.class);
         mViewModel.getReadings().observe(this, new Observer<List<ReadingEntity>>() {
             @Override
