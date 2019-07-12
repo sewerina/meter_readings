@@ -7,6 +7,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.github.sewerina.meter_readings.database.AppDao;
+import com.github.sewerina.meter_readings.database.AppDatabase;
+
 public class ReadingApp extends Application {
 
     public static AppDao mReadingDao;

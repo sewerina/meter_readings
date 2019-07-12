@@ -1,4 +1,4 @@
-package com.github.sewerina.meter_readings;
+package com.github.sewerina.meter_readings.database;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

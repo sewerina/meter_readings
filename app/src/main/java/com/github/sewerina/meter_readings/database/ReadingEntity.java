@@ -1,8 +1,9 @@
-package com.github.sewerina.meter_readings;
+package com.github.sewerina.meter_readings.database;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -12,8 +13,8 @@ import java.util.Date;
 @Entity(tableName = "reading",
         foreignKeys = @ForeignKey(entity = HomeEntity.class,
                 parentColumns = "id",
-                childColumns = "homeId"))
-class ReadingEntity implements Serializable {
+                childColumns = "homeId"), indices = {@Index("homeId")})
+public class ReadingEntity implements Serializable {
     @ColumnInfo(name = "homeId")
     public int homeId;
 

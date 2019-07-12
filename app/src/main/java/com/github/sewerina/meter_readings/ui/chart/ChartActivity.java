@@ -1,10 +1,13 @@
-package com.github.sewerina.meter_readings;
+package com.github.sewerina.meter_readings.ui.chart;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -20,13 +23,25 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.sewerina.meter_readings.R;
+import com.github.sewerina.meter_readings.database.HomeEntity;
+import com.github.sewerina.meter_readings.database.ReadingEntity;
+import com.github.sewerina.meter_readings.ui.readings.ReadingPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChartActivity extends AppCompatActivity {
-    private MainViewModel mViewModel;
+    private static final String EXTRA_CURRENT_HOME_ENTITY = "currentHomeEntity";
+    private ChartViewModel mViewModel;
+    private HomeEntity mCurrentHomeEntity;
     private BarChart mChart;
+
+    public static Intent newIntent(Context context, HomeEntity homeEntity) {
+        Intent intent = new Intent(context, ChartActivity.class);
+        intent.putExtra(EXTRA_CURRENT_HOME_ENTITY, homeEntity);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +50,11 @@ public class ChartActivity extends AppCompatActivity {
 
         mChart = findViewById(R.id.chart);
 
-        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        if (getIntent() != null) {
+            mCurrentHomeEntity = (HomeEntity) getIntent().getSerializableExtra(EXTRA_CURRENT_HOME_ENTITY);
+        }
+
+        mViewModel = ViewModelProviders.of(this).get(ChartViewModel.class);
         mViewModel.getReadings().observe(this, new Observer<List<ReadingEntity>>() {
             @Override
             public void onChanged(List<ReadingEntity> readingEntities) {
@@ -44,8 +63,19 @@ public class ChartActivity extends AppCompatActivity {
                 }
             }
         });
-        mViewModel.firstLoad();
+        mViewModel.loadInChart(mCurrentHomeEntity);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void showChart(List<ReadingEntity> readings) {
@@ -82,6 +112,7 @@ public class ChartActivity extends AppCompatActivity {
         Description description = new Description();
         description.setText("Данные по месяцам");
         description.setTextAlign(Paint.Align.RIGHT);
+        description.setTextSize(12f);
         mChart.setDescription(description);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -223,7 +254,7 @@ public class ChartActivity extends AppCompatActivity {
 //        }
 
         BarData data = new BarData(dataSets);
-        data.setBarWidth(barWidth);
+//        data.setBarWidth(barWidth);
         mChart.setData(data);
         if (n > 1) {
             groupSpace = 0.1f;

@@ -1,4 +1,4 @@
-package com.github.sewerina.meter_readings;
+package com.github.sewerina.meter_readings.ui.readings;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -17,6 +17,9 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.github.sewerina.meter_readings.FormattedDate;
+import com.github.sewerina.meter_readings.R;
+import com.github.sewerina.meter_readings.database.ReadingEntity;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;

@@ -1,4 +1,4 @@
-package com.github.sewerina.meter_readings;
+package com.github.sewerina.meter_readings.database;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;

@@ -3,7 +3,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.github.sewerina.meter_readings.MainActivity">
+    tools:context="com.github.sewerina.meter_readings.ui.readings.MainActivity">
 
     <item
         android:id="@+id/action_homes"

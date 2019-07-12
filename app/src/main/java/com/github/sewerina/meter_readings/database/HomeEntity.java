@@ -1,4 +1,4 @@
-package com.github.sewerina.meter_readings;
+package com.github.sewerina.meter_readings.database;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

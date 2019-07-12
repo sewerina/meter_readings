@@ -1,4 +1,4 @@
-package com.github.sewerina.meter_readings;
+package com.github.sewerina.meter_readings.ui.readings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.preference.PreferenceManager;
+
+import com.github.sewerina.meter_readings.R;
 
 public class ReadingPreferences {
     public static final String KEY_PREF_COLD_WATER = "coldWater";

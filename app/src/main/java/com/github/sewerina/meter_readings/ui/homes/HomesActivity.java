@@ -1,8 +1,9 @@
-package com.github.sewerina.meter_readings;
+package com.github.sewerina.meter_readings.ui.homes;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -15,6 +16,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.sewerina.meter_readings.R;
+import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,7 +30,7 @@ public class HomesActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private FloatingActionButton mAddHomeFab;
 
-    private MainViewModel mViewModel;
+    private HomesViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class HomesActivity extends AppCompatActivity {
 
         final HomeAdapter homeAdapter = new HomeAdapter();
 
-        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(HomesViewModel.class);
         mViewModel.getHomes().observe(this, new Observer<List<HomeEntity>>() {
             @Override
             public void onChanged(List<HomeEntity> homeEntities) {
@@ -57,6 +60,17 @@ public class HomesActivity extends AppCompatActivity {
         });
 
         mViewModel.loadHomes();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private class HomeHolder extends RecyclerView.ViewHolder {

@@ -1,4 +1,4 @@
-package com.github.sewerina.meter_readings;
+package com.github.sewerina.meter_readings.ui.homes;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -13,31 +13,25 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.github.sewerina.meter_readings.R;
+import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
-public class EditHomeDialog extends DialogFragment {
-    private static final String TAG = "EditHomeDialog";
+public class NewHomeDialog extends DialogFragment {
+    private static final String TAG = "NewHomeDialog";
 
-    private HomeEntity mHomeEntity;
-    private MainViewModel mViewModel;
+    private HomesViewModel mViewModel;
 
-    public static void showDialog(FragmentManager manager, HomeEntity entity) {
-        EditHomeDialog dialog = new EditHomeDialog();
-        Bundle args = new Bundle();
-        args.putSerializable("home", entity);
-        dialog.setArguments(args);
+    public static void showDialog(FragmentManager manager) {
+        NewHomeDialog dialog = new NewHomeDialog();
         dialog.show(manager, TAG);
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        if (getArguments() != null) {
-            mHomeEntity = (HomeEntity) getArguments().getSerializable("home");
-        }
-
-        mViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+        mViewModel = ViewModelProviders.of(getActivity()).get(HomesViewModel.class);
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
 
@@ -45,20 +39,17 @@ public class EditHomeDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_home, null);
         final TextInputEditText addressEt = view.findViewById(R.id.et_homeAddress);
 
-        if (mHomeEntity != null) {
-            addressEt.setText(mHomeEntity.address);
-        }
-
-        builder.setTitle("Изменение информации о доме")
+        builder.setTitle("Создание информации о новом доме")
                 .setView(view)
                 .setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (addressEt.getText() != null && !addressEt.getText().toString().isEmpty()) {
-                            mHomeEntity.address = addressEt.getText().toString();
-                            mViewModel.updateHome(mHomeEntity);
+                            HomeEntity homeEntity = new HomeEntity();
+                            homeEntity.address = addressEt.getText().toString();
+                            mViewModel.addHome(homeEntity);
                         } else {
-                            Toast.makeText(addressEt.getContext(), "Для обновления необходимо указать адрес", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(addressEt.getContext(), "Для создания необходимо указать адрес", Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
