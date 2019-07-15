@@ -103,7 +103,11 @@ public class MainViewModel extends ViewModel {
 
         public void init() {
             currentHomePosition = 0;
-            currentHomeEntity = homeEntityList.get(0);
+
+            if (!homeEntityList.isEmpty()) {
+                currentHomeEntity = homeEntityList.get(0);
+            }
+
         }
 
         public void restore(HomeEntity previousHomeEntity) {

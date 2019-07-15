@@ -1,4 +1,4 @@
-package com.github.sewerina.meter_readings.ui;
+package com.github.sewerina.meter_readings.notification;
 
 import android.app.Notification;
 import android.app.NotificationChannel;

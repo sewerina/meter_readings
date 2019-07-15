@@ -1,54 +1,6 @@
-<!--
-  ~ Copyright 2018 The app Open Source Project
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~      http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
-
 <androidx.preference.PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!--<PreferenceCategory app:title="@string/messages_header">-->
-
-        <!--<EditTextPreference-->
-            <!--app:key="signature"-->
-            <!--app:title="@string/signature_title"-->
-            <!--app:useSimpleSummaryProvider="true" />-->
-
-        <!--<ListPreference-->
-            <!--app:defaultValue="reply"-->
-            <!--app:entries="@array/reply_entries"-->
-            <!--app:entryValues="@array/reply_values"-->
-            <!--app:key="reply"-->
-            <!--app:title="@string/reply_title"-->
-            <!--app:useSimpleSummaryProvider="true" />-->
-
-    <!--</PreferenceCategory>-->
-
-    <!--<PreferenceCategory app:title="@string/sync_header">-->
-
-        <!--<SwitchPreferenceCompat-->
-            <!--app:key="sync"-->
-            <!--app:title="@string/sync_title" />-->
-
-        <!--<SwitchPreferenceCompat-->
-            <!--app:dependency="sync"-->
-            <!--app:key="attachment"-->
-            <!--app:summaryOff="@string/attachment_summary_off"-->
-            <!--app:summaryOn="@string/attachment_summary_on"-->
-            <!--app:title="@string/attachment_title" />-->
-
-    <!--</PreferenceCategory>-->
 
     <PreferenceCategory app:title="@string/settings_reading">
 
@@ -86,6 +38,41 @@
             app:summaryOff="@string/gas_off"
             app:summaryOn="@string/gas_on"
             app:title="@string/gas" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Напоминания о вводе показаний">
+
+        <SwitchPreferenceCompat
+            android:defaultValue="true"
+            app:key="notification"
+            app:title="Уведомления о напоминании ввода показаний"
+            app:summaryOff="Уведомления выключены"
+            app:summaryOn="Уведомления включены" />
+
+        <EditTextPreference
+            app:dependency="notification"
+            app:key="day"
+            android:title="День напоминания"
+            android:dialogLayout="@layout/preference_day_edit_text"
+            android:defaultValue="15"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:dependency="notification"
+            app:key="start time"
+            android:title="Время начала оповещения"
+            android:dialogLayout="@layout/preference_time_edit_text"
+            android:defaultValue="18:00"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:dependency="notification"
+            app:key="end time"
+            android:title="Время окончания оповещения"
+            android:dialogLayout="@layout/preference_time_edit_text"
+            android:defaultValue="20:00"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 

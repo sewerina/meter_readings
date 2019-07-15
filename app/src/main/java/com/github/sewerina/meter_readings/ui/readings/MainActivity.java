@@ -19,12 +19,15 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.github.sewerina.meter_readings.FormattedDate;
 import com.github.sewerina.meter_readings.R;
 import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
-import com.github.sewerina.meter_readings.ui.RemindNotification;
+import com.github.sewerina.meter_readings.notification.NotificationWorker;
+import com.github.sewerina.meter_readings.notification.RemindNotification;
 import com.github.sewerina.meter_readings.ui.chart.ChartActivity;
 import com.github.sewerina.meter_readings.ui.homes.HomesActivity;
 import com.github.sewerina.meter_readings.ui.settings.SettingsActivity;
@@ -32,6 +35,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -125,7 +129,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mViewModel.load();
-        new RemindNotification(this).appearNotification();
+//        new RemindNotification(this).appearNotification();
+        PeriodicWorkRequest notificationWorkRequest = new PeriodicWorkRequest
+                .Builder(NotificationWorker.class, 1, TimeUnit.HOURS)
+                .build();
+        WorkManager.getInstance(this).enqueue(notificationWorkRequest);
     }
 
     @Override
