@@ -1,6 +1,7 @@
 package com.github.sewerina.meter_readings.ui.readings;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,8 +18,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -129,11 +132,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mViewModel.load();
-//        new RemindNotification(this).appearNotification();
-        PeriodicWorkRequest notificationWorkRequest = new PeriodicWorkRequest
-                .Builder(NotificationWorker.class, 1, TimeUnit.HOURS)
-                .build();
-        WorkManager.getInstance(this).enqueue(notificationWorkRequest);
+
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        boolean hasNotification = preferences.getBoolean("notification", true);
+
+        //        new RemindNotification(this).appearNotification();
+
+
+//        if (hasNotification) {
+//            PeriodicWorkRequest notificationWorkRequest = new PeriodicWorkRequest
+//                    .Builder(NotificationWorker.class, 1, TimeUnit.HOURS)
+//                    .addTag("notification")
+//                    .build();
+//            WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+//                    "notification",
+//                    ExistingPeriodicWorkPolicy.REPLACE,
+//                    notificationWorkRequest);
+//            Log.d(TAG, "onResume: " );
+//        } else {
+//            WorkManager.getInstance(this).cancelAllWorkByTag("notification");
+//        }
+
     }
 
     @Override
