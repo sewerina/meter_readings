@@ -15,7 +15,6 @@ import java.util.List;
 
 public class MainViewModel extends ViewModel {
     private final MutableLiveData<List<ReadingEntity>> mReadingEntities = new MutableLiveData<>();
-    private final MutableLiveData<HomeEntity> mCurrentHome = new MutableLiveData<>();
 
     private final MutableLiveData<State> mState = new MutableLiveData<>();
     private HomeEntity mPreviousCurrentHome;
@@ -45,27 +44,28 @@ public class MainViewModel extends ViewModel {
             state.init();
         }
         mState.postValue(state);
+        loadReadings(state.currentHomeEntity);
     }
 
     public void addReading(ReadingEntity entity) {
-        if (mCurrentHome.getValue() != null) {
-            entity.homeId = mCurrentHome.getValue().id;
+        if (mState.getValue() != null) {
+            entity.homeId = mState.getValue().currentHomeEntity.id;
             mDao.insertReading(entity);
-            loadReadings(mCurrentHome.getValue());
+            loadReadings(mState.getValue().currentHomeEntity);
         }
     }
 
     public void deleteReading(ReadingEntity entity) {
         mDao.deleteReading(entity);
-        if (mCurrentHome.getValue() != null) {
-            loadReadings(mCurrentHome.getValue());
+        if (mState.getValue() != null) {
+            loadReadings(mState.getValue().currentHomeEntity);
         }
     }
 
     public void updateReading(ReadingEntity entity) {
         mDao.updateReading(entity);
-        if (mCurrentHome.getValue() != null) {
-            loadReadings(mCurrentHome.getValue());
+        if (mState.getValue() != null) {
+            loadReadings(mState.getValue().currentHomeEntity);
         }
     }
 
@@ -74,17 +74,11 @@ public class MainViewModel extends ViewModel {
     }
 
     public void changeCurrentHome(int homePosition) {
-        List<HomeEntity> homes = mDao.getHomes();
-        if (homes != null) {
-            HomeEntity entity = homes.get(homePosition);
-            mCurrentHome.postValue(entity);
-            loadReadings(entity);
-        }
-
         if (mState.getValue() != null) {
-            HomeEntity entity = mState.getValue().homeEntityList.get(homePosition);
+            HomeEntity homeEntity = mState.getValue().homeEntityList.get(homePosition);
             mState.getValue().currentHomePosition = homePosition;
-            mState.getValue().currentHomeEntity = entity;
+            mState.getValue().currentHomeEntity = homeEntity;
+            loadReadings(homeEntity);
         }
     }
 

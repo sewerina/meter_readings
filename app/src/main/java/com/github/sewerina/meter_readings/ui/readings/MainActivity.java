@@ -185,8 +185,6 @@ public class MainActivity extends AppCompatActivity {
             super(itemView);
             itemView.setOnClickListener(this);
 
-            new ReadingPreferences(itemView.getContext()).setLayoutVisibility(itemView);
-
             mDateTv = itemView.findViewById(R.id.tv_date);
             mColdWaterTv = itemView.findViewById(R.id.tv_coldWater);
             mHotWaterTv = itemView.findViewById(R.id.tv_hotWater);
@@ -197,6 +195,8 @@ public class MainActivity extends AppCompatActivity {
 
         void bind(ReadingEntity entity) {
             mReadingEntity = entity;
+
+            new ReadingPreferences(itemView.getContext()).setLayoutVisibility(itemView);
 
             mDateTv.setText(new FormattedDate(entity.date).text());
             mColdWaterTv.setText(String.valueOf(entity.coldWater));
