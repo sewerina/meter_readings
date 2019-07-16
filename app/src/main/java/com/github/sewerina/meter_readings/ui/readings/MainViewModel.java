@@ -12,6 +12,8 @@ import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class MainViewModel extends ViewModel {
     private final MutableLiveData<List<ReadingEntity>> mReadingEntities = new MutableLiveData<>();
@@ -19,9 +21,11 @@ public class MainViewModel extends ViewModel {
     private final MutableLiveData<State> mState = new MutableLiveData<>();
     private HomeEntity mPreviousCurrentHome;
     private AppDao mDao;
+    private final Executor mExecutor;
 
     public MainViewModel() {
         mDao = ReadingApp.mReadingDao;
+        mExecutor = Executors.newSingleThreadExecutor();
         Log.d("MainViewModel", "MainViewModel was created");
     }
 
@@ -34,51 +38,76 @@ public class MainViewModel extends ViewModel {
     }
 
     public void load() {
-        List<HomeEntity> homes = mDao.getHomes();
-        State state = new State(homes);
-        if (mState.getValue() != null) {
-            state.restore(mState.getValue().currentHomeEntity);
-        } else if (mPreviousCurrentHome != null) {
-            state.restore(mPreviousCurrentHome);
-        } else {
-            state.init();
-        }
-        mState.postValue(state);
-        loadReadings(state.currentHomeEntity);
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<HomeEntity> homes = mDao.getHomes();
+                State state = new State(homes);
+                if (mState.getValue() != null) {
+                    state.restore(mState.getValue().currentHomeEntity);
+                } else if (mPreviousCurrentHome != null) {
+                    state.restore(mPreviousCurrentHome);
+                } else {
+                    state.init();
+                }
+                mState.postValue(state);
+                loadReadings(state.currentHomeEntity);
+            }
+        });
     }
 
-    public void addReading(ReadingEntity entity) {
+    public void addReading(final ReadingEntity entity) {
         if (mState.getValue() != null) {
             entity.homeId = mState.getValue().currentHomeEntity.id;
-            mDao.insertReading(entity);
-            loadReadings(mState.getValue().currentHomeEntity);
+            mExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    mDao.insertReading(entity);
+                    loadReadings(mState.getValue().currentHomeEntity);
+                }
+            });
         }
     }
 
-    public void deleteReading(ReadingEntity entity) {
-        mDao.deleteReading(entity);
-        if (mState.getValue() != null) {
-            loadReadings(mState.getValue().currentHomeEntity);
-        }
+    public void deleteReading(final ReadingEntity entity) {
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDao.deleteReading(entity);
+                if (mState.getValue() != null) {
+                    loadReadings(mState.getValue().currentHomeEntity);
+                }
+            }
+        });
     }
 
-    public void updateReading(ReadingEntity entity) {
-        mDao.updateReading(entity);
-        if (mState.getValue() != null) {
-            loadReadings(mState.getValue().currentHomeEntity);
-        }
+    public void updateReading(final ReadingEntity entity) {
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDao.updateReading(entity);
+                if (mState.getValue() != null) {
+                    loadReadings(mState.getValue().currentHomeEntity);
+                }
+            }
+        });
     }
 
-    private void loadReadings(HomeEntity homeEntity) {
+    private void loadReadings(final HomeEntity homeEntity) {
         mReadingEntities.postValue(mDao.getReadingsForHome(homeEntity.id));
     }
 
     public void changeCurrentHome(int homePosition) {
         if (mState.getValue() != null) {
-            HomeEntity homeEntity = mState.getValue().homeEntityList.get(homePosition);
+            final HomeEntity homeEntity = mState.getValue().homeEntityList.get(homePosition);
             mState.getValue().currentHomePosition = homePosition;
             mState.getValue().currentHomeEntity = homeEntity;
-            loadReadings(homeEntity);
+            mExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    loadReadings(homeEntity);
+                }
+            });
         }
     }
 
@@ -97,11 +126,9 @@ public class MainViewModel extends ViewModel {
 
         public void init() {
             currentHomePosition = 0;
-
             if (!homeEntityList.isEmpty()) {
                 currentHomeEntity = homeEntityList.get(0);
             }
-
         }
 
         public void restore(HomeEntity previousHomeEntity) {

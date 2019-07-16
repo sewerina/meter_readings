@@ -78,7 +78,7 @@ public class ReadingApp extends Application {
                 this,
                 AppDatabase.class,
                 "reading.db")
-                .allowMainThreadQueries()
+//                .allowMainThreadQueries()
                 .addCallback(new RoomDatabase.Callback() {
                     @Override
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {

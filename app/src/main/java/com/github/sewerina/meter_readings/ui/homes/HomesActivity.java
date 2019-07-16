@@ -59,7 +59,7 @@ public class HomesActivity extends AppCompatActivity {
             }
         });
 
-        mViewModel.loadHomes();
+        mViewModel.loadHomesAsync();
     }
 
     @Override

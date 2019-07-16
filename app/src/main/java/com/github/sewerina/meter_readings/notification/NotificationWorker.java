@@ -17,12 +17,9 @@ import java.util.Locale;
 
 public class NotificationWorker extends Worker {
     private static final String TAG = NotificationWorker.class.getSimpleName();
-//    @NonNull
-//    private final Context mContext;
 
     public NotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-//        mContext = context;
     }
 
     @NonNull
