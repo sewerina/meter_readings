@@ -15,13 +15,18 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 public class MainViewModel extends ViewModel {
     private final MutableLiveData<List<ReadingEntity>> mReadingEntities = new MutableLiveData<>();
 
     private final MutableLiveData<State> mState = new MutableLiveData<>();
+    private final Executor mExecutor;
     private HomeEntity mPreviousCurrentHome;
     private AppDao mDao;
-    private final Executor mExecutor;
 
     public MainViewModel() {
         mDao = ReadingApp.mReadingDao;
@@ -58,43 +63,52 @@ public class MainViewModel extends ViewModel {
 
     public void addReading(final ReadingEntity entity) {
         if (mState.getValue() != null) {
-            entity.homeId = mState.getValue().currentHomeEntity.id;
-            mExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    mDao.insertReading(entity);
-                    loadReadings(mState.getValue().currentHomeEntity);
-                }
-            });
+            HomeEntity currentHomeEntity = mState.getValue().currentHomeEntity;
+            entity.homeId = currentHomeEntity.id;
+            mDao.insertReadingRx(entity)
+                    .subscribeOn(Schedulers.io())
+                    .andThen(loadReadingsRx(currentHomeEntity))
+                    .subscribe();
         }
     }
 
+
     public void deleteReading(final ReadingEntity entity) {
-        mExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mDao.deleteReading(entity);
-                if (mState.getValue() != null) {
-                    loadReadings(mState.getValue().currentHomeEntity);
-                }
-            }
-        });
+        if (mState.getValue() != null) {
+            HomeEntity currentHomeEntity = mState.getValue().currentHomeEntity;
+            mDao.deleteReadingRx(entity)
+                    .subscribeOn(Schedulers.io())
+                    .andThen(loadReadingsRx(currentHomeEntity))
+                    .subscribe();
+        }
     }
 
     public void updateReading(final ReadingEntity entity) {
-        mExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mDao.updateReading(entity);
-                if (mState.getValue() != null) {
-                    loadReadings(mState.getValue().currentHomeEntity);
-                }
-            }
-        });
+        if (mState.getValue() != null) {
+            HomeEntity currentHomeEntity = mState.getValue().currentHomeEntity;
+            mDao.updateReadingRx(entity)
+                    .subscribeOn(Schedulers.io())
+                    .andThen(loadReadingsRx(currentHomeEntity))
+                    .subscribe();
+        }
+
     }
 
     private void loadReadings(final HomeEntity homeEntity) {
         mReadingEntities.postValue(mDao.getReadingsForHome(homeEntity.id));
+    }
+
+    private Single<List<ReadingEntity>> loadReadingsRx(final HomeEntity homeEntity) {
+        Single<List<ReadingEntity>> readingsForHomeRx = mDao.getReadingsForHomeRx(homeEntity.id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(new Consumer<List<ReadingEntity>>() {
+                    @Override
+                    public void accept(List<ReadingEntity> readingEntities) throws Exception {
+                        mReadingEntities.postValue(readingEntities);
+                    }
+                });
+        return readingsForHomeRx;
     }
 
     public void changeCurrentHome(int homePosition) {

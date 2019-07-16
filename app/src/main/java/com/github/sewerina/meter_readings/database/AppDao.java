@@ -9,11 +9,17 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Single;
+
 @Dao
 public interface AppDao {
 
     @Query("select * from reading where homeId =:homeId order by date desc")
     List<ReadingEntity> getReadingsForHome(int homeId);
+
+    @Query("select * from reading where homeId =:homeId order by date desc")
+    Single<List<ReadingEntity>> getReadingsForHomeRx(int homeId);
 
     @Query("select * from home")
     List<HomeEntity> getHomes();
@@ -22,21 +28,21 @@ public interface AppDao {
     LiveData<List<HomeEntity>> getHomesLiveData();
 
     @Insert
-    void insertReading(ReadingEntity entity);
+    Completable insertReadingRx(ReadingEntity entity);
 
     @Update
-    void updateReading(ReadingEntity entity);
+    Completable updateReadingRx(ReadingEntity entity);
 
     @Delete
-    void deleteReading(ReadingEntity entity);
+    Completable deleteReadingRx(ReadingEntity entity);
 
     @Insert
-    void insertHome(HomeEntity entity);
+    Completable insertHomeRx(HomeEntity entity);
 
     @Update
-    void updateHome(HomeEntity entity);
+    Completable updateHomeRx(HomeEntity entity);
 
     @Delete
-    void deleteHome(HomeEntity entity);
+    Completable deleteHomeRx(HomeEntity entity);
 
 }

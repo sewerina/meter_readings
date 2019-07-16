@@ -8,17 +8,15 @@ import com.github.sewerina.meter_readings.database.AppDao;
 import com.github.sewerina.meter_readings.database.HomeEntity;
 
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+
+import io.reactivex.schedulers.Schedulers;
 
 public class HomesViewModel extends ViewModel {
-    private final Executor mExecutor;
     private AppDao mDao;
 
 
     public HomesViewModel() {
         mDao = ReadingApp.mReadingDao;
-        mExecutor = Executors.newSingleThreadExecutor();
     }
 
     public LiveData<List<HomeEntity>> getHomes() {
@@ -26,30 +24,15 @@ public class HomesViewModel extends ViewModel {
     }
 
     public void addHome(final HomeEntity homeEntity) {
-        mExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mDao.insertHome(homeEntity);
-            }
-        });
+        mDao.insertHomeRx(homeEntity).subscribeOn(Schedulers.io()).subscribe();
     }
 
     public void deleteHome(final HomeEntity entity) {
-        mExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mDao.deleteHome(entity);
-            }
-        });
+        mDao.deleteHomeRx(entity).subscribeOn(Schedulers.io()).subscribe();
     }
 
     public void updateHome(final HomeEntity entity) {
-        mExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mDao.updateHome(entity);
-            }
-        });
+        mDao.updateHomeRx(entity).subscribeOn(Schedulers.io()).subscribe();
     }
 
 }
