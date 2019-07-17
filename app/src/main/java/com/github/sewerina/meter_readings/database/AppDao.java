@@ -16,13 +16,10 @@ import io.reactivex.Single;
 public interface AppDao {
 
     @Query("select * from reading where homeId =:homeId order by date desc")
-    List<ReadingEntity> getReadingsForHome(int homeId);
-
-    @Query("select * from reading where homeId =:homeId order by date desc")
     Single<List<ReadingEntity>> getReadingsForHomeRx(int homeId);
 
     @Query("select * from home")
-    List<HomeEntity> getHomes();
+    Single<List<HomeEntity>> getHomesRx();
 
     @Query("select * from home")
     LiveData<List<HomeEntity>> getHomesLiveData();

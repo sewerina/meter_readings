@@ -10,17 +10,26 @@ import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
 
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class ChartViewModel extends ViewModel {
     private final MutableLiveData<List<ReadingEntity>> mReadingEntities = new MutableLiveData<>();
     private AppDao mDao;
-    private final Executor mExecutor;
+    private final CompositeDisposable mDisposables = new CompositeDisposable();
 
     public ChartViewModel() {
         mDao = ReadingApp.mReadingDao;
-        mExecutor = Executors.newSingleThreadExecutor();
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        mDisposables.dispose();
     }
 
     public LiveData<List<ReadingEntity>> getReadings() {
@@ -28,12 +37,15 @@ public class ChartViewModel extends ViewModel {
     }
 
     public void loadInChart(final HomeEntity currentHomeEntity) {
-        mExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                List<ReadingEntity> readingsForHome = mDao.getReadingsForHome(currentHomeEntity.id);
-                mReadingEntities.postValue(readingsForHome);
-            }
-        });
+        Disposable subscribe = mDao.getReadingsForHomeRx(currentHomeEntity.id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<ReadingEntity>>() {
+                    @Override
+                    public void accept(List<ReadingEntity> readingEntities) throws Exception {
+                        mReadingEntities.postValue(readingEntities);
+                    }
+                });
+        mDisposables.add(subscribe);
     }
 }

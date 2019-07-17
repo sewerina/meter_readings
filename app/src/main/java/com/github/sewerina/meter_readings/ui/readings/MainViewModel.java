@@ -12,26 +12,31 @@ import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
 
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainViewModel extends ViewModel {
     private final MutableLiveData<List<ReadingEntity>> mReadingEntities = new MutableLiveData<>();
-
     private final MutableLiveData<State> mState = new MutableLiveData<>();
-    private final Executor mExecutor;
+    private final CompositeDisposable mDisposables = new CompositeDisposable();
     private HomeEntity mPreviousCurrentHome;
     private AppDao mDao;
 
     public MainViewModel() {
         mDao = ReadingApp.mReadingDao;
-        mExecutor = Executors.newSingleThreadExecutor();
         Log.d("MainViewModel", "MainViewModel was created");
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        mDisposables.dispose();
     }
 
     public LiveData<List<ReadingEntity>> getReadings() {
@@ -43,63 +48,64 @@ public class MainViewModel extends ViewModel {
     }
 
     public void load() {
-        mExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                List<HomeEntity> homes = mDao.getHomes();
-                State state = new State(homes);
-                if (mState.getValue() != null) {
-                    state.restore(mState.getValue().currentHomeEntity);
-                } else if (mPreviousCurrentHome != null) {
-                    state.restore(mPreviousCurrentHome);
-                } else {
-                    state.init();
-                }
-                mState.postValue(state);
-                loadReadings(state.currentHomeEntity);
-            }
-        });
+        Disposable subscribe = mDao.getHomesRx()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(new Function<List<HomeEntity>, Single<List<ReadingEntity>>>() {
+                    @Override
+                    public Single<List<ReadingEntity>> apply(List<HomeEntity> homeEntities) throws Exception {
+                        State state = new State(homeEntities);
+                        if (mState.getValue() != null) {
+                            state.restore(mState.getValue().currentHomeEntity);
+                        } else if (mPreviousCurrentHome != null) {
+                            state.restore(mPreviousCurrentHome);
+                        } else {
+                            state.init();
+                        }
+                        mState.postValue(state);
+                        return loadReadingsRx(state.currentHomeEntity);
+                    }
+                })
+                .subscribe();
+        mDisposables.add(subscribe);
     }
 
     public void addReading(final ReadingEntity entity) {
         if (mState.getValue() != null) {
             HomeEntity currentHomeEntity = mState.getValue().currentHomeEntity;
             entity.homeId = currentHomeEntity.id;
-            mDao.insertReadingRx(entity)
+            Disposable subscribe = mDao.insertReadingRx(entity)
                     .subscribeOn(Schedulers.io())
                     .andThen(loadReadingsRx(currentHomeEntity))
                     .subscribe();
+            mDisposables.add(subscribe);
         }
     }
-
 
     public void deleteReading(final ReadingEntity entity) {
         if (mState.getValue() != null) {
             HomeEntity currentHomeEntity = mState.getValue().currentHomeEntity;
-            mDao.deleteReadingRx(entity)
+            Disposable subscribe = mDao.deleteReadingRx(entity)
                     .subscribeOn(Schedulers.io())
                     .andThen(loadReadingsRx(currentHomeEntity))
                     .subscribe();
+            mDisposables.add(subscribe);
         }
     }
 
     public void updateReading(final ReadingEntity entity) {
         if (mState.getValue() != null) {
             HomeEntity currentHomeEntity = mState.getValue().currentHomeEntity;
-            mDao.updateReadingRx(entity)
+            Disposable subscribe = mDao.updateReadingRx(entity)
                     .subscribeOn(Schedulers.io())
                     .andThen(loadReadingsRx(currentHomeEntity))
                     .subscribe();
+            mDisposables.add(subscribe);
         }
-
-    }
-
-    private void loadReadings(final HomeEntity homeEntity) {
-        mReadingEntities.postValue(mDao.getReadingsForHome(homeEntity.id));
     }
 
     private Single<List<ReadingEntity>> loadReadingsRx(final HomeEntity homeEntity) {
-        Single<List<ReadingEntity>> readingsForHomeRx = mDao.getReadingsForHomeRx(homeEntity.id)
+        return mDao.getReadingsForHomeRx(homeEntity.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(new Consumer<List<ReadingEntity>>() {
@@ -108,7 +114,6 @@ public class MainViewModel extends ViewModel {
                         mReadingEntities.postValue(readingEntities);
                     }
                 });
-        return readingsForHomeRx;
     }
 
     public void changeCurrentHome(int homePosition) {
@@ -116,12 +121,8 @@ public class MainViewModel extends ViewModel {
             final HomeEntity homeEntity = mState.getValue().homeEntityList.get(homePosition);
             mState.getValue().currentHomePosition = homePosition;
             mState.getValue().currentHomeEntity = homeEntity;
-            mExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    loadReadings(homeEntity);
-                }
-            });
+            Disposable subscribe = loadReadingsRx(homeEntity).subscribe();
+            mDisposables.add(subscribe);
         }
     }
 

@@ -9,14 +9,22 @@ import com.github.sewerina.meter_readings.database.HomeEntity;
 
 import java.util.List;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class HomesViewModel extends ViewModel {
     private AppDao mDao;
-
+    private final CompositeDisposable mDisposables = new CompositeDisposable();
 
     public HomesViewModel() {
         mDao = ReadingApp.mReadingDao;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        mDisposables.dispose();
     }
 
     public LiveData<List<HomeEntity>> getHomes() {
@@ -24,15 +32,18 @@ public class HomesViewModel extends ViewModel {
     }
 
     public void addHome(final HomeEntity homeEntity) {
-        mDao.insertHomeRx(homeEntity).subscribeOn(Schedulers.io()).subscribe();
+        Disposable subscribe = mDao.insertHomeRx(homeEntity).subscribeOn(Schedulers.io()).subscribe();
+        mDisposables.add(subscribe);
     }
 
     public void deleteHome(final HomeEntity entity) {
-        mDao.deleteHomeRx(entity).subscribeOn(Schedulers.io()).subscribe();
+        Disposable subscribe = mDao.deleteHomeRx(entity).subscribeOn(Schedulers.io()).subscribe();
+        mDisposables.add(subscribe);
     }
 
     public void updateHome(final HomeEntity entity) {
-        mDao.updateHomeRx(entity).subscribeOn(Schedulers.io()).subscribe();
+        Disposable subscribe = mDao.updateHomeRx(entity).subscribeOn(Schedulers.io()).subscribe();
+        mDisposables.add(subscribe);
     }
 
 }
