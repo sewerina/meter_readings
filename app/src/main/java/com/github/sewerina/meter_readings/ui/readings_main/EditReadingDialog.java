@@ -1,4 +1,4 @@
-package com.github.sewerina.meter_readings.ui.readings;
+package com.github.sewerina.meter_readings.ui.readings_main;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

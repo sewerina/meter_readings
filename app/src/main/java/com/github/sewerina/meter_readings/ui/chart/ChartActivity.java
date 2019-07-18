@@ -26,7 +26,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.sewerina.meter_readings.R;
 import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
-import com.github.sewerina.meter_readings.ui.readings.ReadingPreferences;
+import com.github.sewerina.meter_readings.ui.readings_main.ReadingPreferences;
 
 import java.util.ArrayList;
 import java.util.List;

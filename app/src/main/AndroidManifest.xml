@@ -10,29 +10,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name=".ui.backup_copying.BackupCopyingActivity"
+            android:label="@string/title_activity_backupCopying"
+            android:parentActivityName=".ui.readings_main.MainActivity" />
+
         <activity
             android:name=".ui.homes.HomesActivity"
             android:label="@string/title_activity_homes"
-            android:parentActivityName=".ui.readings.MainActivity" />
+            android:parentActivityName=".ui.readings_main.MainActivity" />
+
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".ui.readings.MainActivity">
+            android:parentActivityName=".ui.readings_main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.github.sewerina.meter_readings.ui.readings.MainActivity" />
+                android:value="com.github.sewerina.meter_readings.ui.readings_main.MainActivity" />
         </activity>
+
         <activity
             android:name=".ui.chart.ChartActivity"
             android:label="@string/title_activity_chart"
-            android:parentActivityName=".ui.readings.MainActivity" />
-        <activity android:name=".ui.readings.MainActivity">
+            android:parentActivityName=".ui.readings_main.MainActivity" />
+
+        <activity android:name=".ui.readings_main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

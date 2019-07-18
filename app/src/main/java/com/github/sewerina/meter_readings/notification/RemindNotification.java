@@ -12,7 +12,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.github.sewerina.meter_readings.R;
-import com.github.sewerina.meter_readings.ui.readings.MainActivity;
+import com.github.sewerina.meter_readings.ui.readings_main.MainActivity;
 
 public class RemindNotification {
 

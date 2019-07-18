@@ -1,4 +1,4 @@
-package com.github.sewerina.meter_readings.ui.readings;
+package com.github.sewerina.meter_readings.ui.readings_main;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;

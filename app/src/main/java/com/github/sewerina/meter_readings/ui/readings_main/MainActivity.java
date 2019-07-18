@@ -1,7 +1,6 @@
-package com.github.sewerina.meter_readings.ui.readings;
+package com.github.sewerina.meter_readings.ui.readings_main;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,19 +17,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 
 import com.github.sewerina.meter_readings.FormattedDate;
 import com.github.sewerina.meter_readings.R;
 import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
-import com.github.sewerina.meter_readings.notification.NotificationWorker;
-import com.github.sewerina.meter_readings.notification.RemindNotification;
+import com.github.sewerina.meter_readings.ui.backup_copying.BackupCopyingActivity;
 import com.github.sewerina.meter_readings.ui.chart.ChartActivity;
 import com.github.sewerina.meter_readings.ui.homes.HomesActivity;
 import com.github.sewerina.meter_readings.ui.settings.SettingsActivity;
@@ -38,7 +32,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -133,26 +126,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         mViewModel.load();
 
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        boolean hasNotification = preferences.getBoolean("notification", true);
-
-        //        new RemindNotification(this).appearNotification();
-
-
-//        if (hasNotification) {
-//            PeriodicWorkRequest notificationWorkRequest = new PeriodicWorkRequest
-//                    .Builder(NotificationWorker.class, 1, TimeUnit.HOURS)
-//                    .addTag("notification")
-//                    .build();
-//            WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-//                    "notification",
-//                    ExistingPeriodicWorkPolicy.REPLACE,
-//                    notificationWorkRequest);
-//            Log.d(TAG, "onResume: " );
-//        } else {
-//            WorkManager.getInstance(this).cancelAllWorkByTag("notification");
-//        }
-
     }
 
     @Override
@@ -175,16 +148,21 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
-            return true;
-        }
-
         if (id == R.id.action_chart) {
             if (mViewModel.getState().getValue() != null) {
                 startActivity(ChartActivity.newIntent(this, mViewModel.getState().getValue().currentHomeEntity));
                 return true;
             }
+        }
+
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+
+        if (id == R.id.action_backupCopying) {
+            startActivity(new Intent(this, BackupCopyingActivity.class));
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
