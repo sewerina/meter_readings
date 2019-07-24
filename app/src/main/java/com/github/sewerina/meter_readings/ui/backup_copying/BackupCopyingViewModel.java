@@ -1,14 +1,23 @@
 package com.github.sewerina.meter_readings.ui.backup_copying;
 
+import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.github.sewerina.meter_readings.ReadingApp;
 import com.github.sewerina.meter_readings.database.AppDao;
 import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
+import com.github.sewerina.meter_readings.ui.SingleLiveEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,7 +30,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableEmitter;
@@ -32,6 +41,7 @@ import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -42,9 +52,29 @@ public class BackupCopyingViewModel extends ViewModel {
     private final FirebaseFirestore mCloudFirestoreDb;
     private final CompositeDisposable mDisposables = new CompositeDisposable();
 
+    private MutableLiveData<Boolean> mIsRefreshing = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mIsAvailable = new MutableLiveData<>();
+
+    private SingleLiveEvent<String> mMessage = new SingleLiveEvent<>();
+
     public BackupCopyingViewModel() {
         mDao = ReadingApp.mReadingDao;
         mCloudFirestoreDb = FirebaseFirestore.getInstance();
+        mIsRefreshing.postValue(false);
+        mIsAvailable.postValue(true);
+        mMessage.postValue("");
+    }
+
+    public LiveData<Boolean> getIsRefreshing() {
+        return mIsRefreshing;
+    }
+
+    public LiveData<Boolean> getIsAvailable() {
+        return mIsAvailable;
+    }
+
+    public LiveData<String> getMessage() {
+        return mMessage;
     }
 
     @Override
@@ -74,6 +104,32 @@ public class BackupCopyingViewModel extends ViewModel {
                     @Override
                     public CompletableSource apply(List<HomeEntity> homeEntities) throws Exception {
                         return backupAllHomes(homeEntities);
+                    }
+                })
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        mIsRefreshing.postValue(true);
+                        mIsAvailable.postValue(false);
+                    }
+                })
+                .doFinally(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        mIsRefreshing.postValue(false);
+                        mIsAvailable.postValue(true);
+                    }
+                })
+                .doOnComplete(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        mMessage.postValue("Резервное копирование выполнилось успешно!");
+                    }
+                })
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        mMessage.postValue("Не удалось выполнить резервное копирование!");
                     }
                 })
                 .subscribe();
@@ -215,13 +271,34 @@ public class BackupCopyingViewModel extends ViewModel {
                         return mDao.insertInTableReadingRx(readingEntities).subscribeOn(Schedulers.io());
                     }
                 })
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        mIsRefreshing.postValue(true);
+                        mIsAvailable.postValue(false);
+                    }
+                })
+                .doFinally(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        mIsRefreshing.postValue(false);
+                        mIsAvailable.postValue(true);
+                    }
+                })
+                .doOnComplete(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        mMessage.postValue("Обновление данных произошло успешно!");
+                    }
+                })
                 .doOnError(new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
+                        mMessage.postValue("Не удалось обновить данные!");
                         Log.d(TAG, "doOnError: " + throwable);
                     }
                 })
-                .subscribeOn(Schedulers.io())
                 .subscribe();
         mDisposables.add(subscribe);
     }
@@ -291,5 +368,7 @@ public class BackupCopyingViewModel extends ViewModel {
             }
         });
     }
+
+
 
 }
