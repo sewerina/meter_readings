@@ -15,6 +15,24 @@ import io.reactivex.Single;
 @Dao
 public interface AppDao {
 
+    @Query("delete from reading")
+    Completable clearTableReadingRx();
+
+    @Query("delete from home")
+    Completable clearTableHomeRx();
+
+    @Insert()
+    Completable insertInTableReadingRx(List<ReadingEntity> readingEntities);
+
+    @Insert()
+    Completable insertInTableHomeRx(List<HomeEntity> homeEntities);
+
+    @Query("select * from reading")
+    List<ReadingEntity> getAllReadings();
+
+    @Query("select * from reading")
+    Single<List<ReadingEntity>> getAllReadingsRx();
+
     @Query("select * from reading where homeId =:homeId order by date desc")
     Single<List<ReadingEntity>> getReadingsForHomeRx(int homeId);
 

@@ -13,7 +13,7 @@ import java.util.Date;
 @Entity(tableName = "reading",
         foreignKeys = @ForeignKey(entity = HomeEntity.class,
                 parentColumns = "id",
-                childColumns = "homeId"), indices = {@Index("homeId")})
+                childColumns = "homeId", onDelete = ForeignKey.CASCADE), indices = {@Index("homeId")})
 public class ReadingEntity implements Serializable {
     @ColumnInfo(name = "homeId")
     public int homeId;

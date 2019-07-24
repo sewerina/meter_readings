@@ -11,6 +11,7 @@ import com.github.sewerina.meter_readings.database.AppDao;
 import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -105,6 +106,9 @@ public class MainViewModel extends ViewModel {
     }
 
     private Single<List<ReadingEntity>> loadReadingsRx(final HomeEntity homeEntity) {
+        if (homeEntity == null) {
+            return Single.just((List<ReadingEntity>)new ArrayList<ReadingEntity>());
+        }
         return mDao.getReadingsForHomeRx(homeEntity.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
