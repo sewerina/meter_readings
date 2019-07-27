@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -29,6 +31,7 @@ import com.github.sewerina.meter_readings.database.ReadingEntity;
 import com.github.sewerina.meter_readings.ui.readings_main.ReadingPreferences;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ChartActivity extends AppCompatActivity {
@@ -49,6 +52,9 @@ public class ChartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chart);
 
         mChart = findViewById(R.id.chart);
+        mChart.setNoDataText("Для этого дома нет данных для отображения");
+        mChart.setNoDataTextColor(Color.BLUE);
+        mChart.setNoDataTextTypeface(Typeface.SERIF);
 
         if (getIntent() != null) {
             mCurrentHomeEntity = (HomeEntity) getIntent().getSerializableExtra(EXTRA_CURRENT_HOME_ENTITY);
@@ -81,16 +87,30 @@ public class ChartActivity extends AppCompatActivity {
     }
 
     private void showChart(List<ReadingEntity> readings) {
+        List<Date> dates = new ArrayList<>();
+        for (ReadingEntity reading : readings) {
+            dates.add(reading.date);
+        }
+
         XAxis xAxis = mChart.getXAxis();
-//        xAxis.setCenterAxisLabels(true);
+        xAxis.setAxisMinimum(0);
+        xAxis.setAxisMaximum(readings.size());
+        xAxis.setGranularity(1f);
+        xAxis.setCenterAxisLabels(true);
         xAxis.setEnabled(true);
 //        xAxis.setDrawLabels(true);
 //        xAxis.setDrawAxisLine(true);
 //        xAxis.setDrawGridLines(true);
-        xAxis.setTextSize(10f);
+        xAxis.setTextSize(12f);
+        xAxis.setValueFormatter(new XValueFormatter(dates));
 
         YAxis leftYAxis = mChart.getAxisLeft();
         YAxis rightYAxis = mChart.getAxisRight();
+        leftYAxis.setAxisMinimum(0);
+        rightYAxis.setAxisMinimum(0);
+//        leftYAxis.mAxisMinimum = 0;
+//        rightYAxis.mAxisMinimum = 0;
+//        leftYAxis.setDrawZeroLine(true);
         leftYAxis.setEnabled(true);
         rightYAxis.setEnabled(true);
 //        leftYAxis.setDrawLabels(true);
@@ -113,8 +133,14 @@ public class ChartActivity extends AppCompatActivity {
         mChart.setBackgroundColor(getResources().getColor(R.color.colorBackground));
         Description description = new Description();
         description.setText("Данные по месяцам");
-        description.setTextAlign(Paint.Align.RIGHT);
-        description.setTextSize(12f);
+        description.setTextSize(14f);
+//        description.setTextAlign(Paint.Align.RIGHT);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int displayWidth = metrics.widthPixels;
+        int displayHeight = metrics.heightPixels;
+        description.setPosition((float) displayWidth * 2/3, 90);
         mChart.setDescription(description);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -156,7 +182,7 @@ public class ChartActivity extends AppCompatActivity {
                 ReadingEntity reading = readings.get(i);
                 entriesGroupColdWater.add(new BarEntry(i, reading.coldWater));
             }
-            BarDataSet setColdWater = new BarDataSet(entriesGroupColdWater, "Cold water");
+            BarDataSet setColdWater = new BarDataSet(entriesGroupColdWater, "Холодная вода");
             setColdWater.setColor(Color.BLUE);
             dataSets.add(setColdWater);
             n++;
@@ -167,7 +193,7 @@ public class ChartActivity extends AppCompatActivity {
                 ReadingEntity reading = readings.get(i);
                 entriesGroupHotWater.add(new BarEntry(i, reading.hotWater));
             }
-            BarDataSet setHotWater = new BarDataSet(entriesGroupHotWater, "Hot water");
+            BarDataSet setHotWater = new BarDataSet(entriesGroupHotWater, "Горячая вода");
             setHotWater.setColor(Color.RED);
             dataSets.add(setHotWater);
             n++;
@@ -178,7 +204,7 @@ public class ChartActivity extends AppCompatActivity {
                 ReadingEntity reading = readings.get(i);
                 entriesGroupDrainWater.add(new BarEntry(i, reading.drainWater));
             }
-            BarDataSet setDrainWater = new BarDataSet(entriesGroupDrainWater, "Drain water");
+            BarDataSet setDrainWater = new BarDataSet(entriesGroupDrainWater, "Канализация");
             setDrainWater.setColor(Color.DKGRAY);
             dataSets.add(setDrainWater);
             n++;
@@ -189,7 +215,7 @@ public class ChartActivity extends AppCompatActivity {
                 ReadingEntity reading = readings.get(i);
                 entriesGroupElectricity.add(new BarEntry(i, reading.electricity));
             }
-            BarDataSet setElectricity = new BarDataSet(entriesGroupElectricity, "Electricity");
+            BarDataSet setElectricity = new BarDataSet(entriesGroupElectricity, "Электричество");
             setElectricity.setColor(Color.YELLOW);
             dataSets.add(setElectricity);
             n++;
@@ -200,7 +226,7 @@ public class ChartActivity extends AppCompatActivity {
                 ReadingEntity reading = readings.get(i);
                 entriesGroupGas.add(new BarEntry(i, reading.gas));
             }
-            BarDataSet setGas = new BarDataSet(entriesGroupGas, "Gas");
+            BarDataSet setGas = new BarDataSet(entriesGroupGas, "Газ");
             setGas.setColor(Color.CYAN);
             dataSets.add(setGas);
             n++;
@@ -256,7 +282,7 @@ public class ChartActivity extends AppCompatActivity {
 //        }
 
         BarData data = new BarData(dataSets);
-//        data.setBarWidth(barWidth);
+        data.setValueTextSize(12);
         mChart.setData(data);
         if (n > 1) {
             groupSpace = 0.1f;
@@ -264,8 +290,8 @@ public class ChartActivity extends AppCompatActivity {
             barWidth = b * 0.9f;
             barSpace = b - barWidth;
             data.setBarWidth(barWidth);
-            mChart.groupBars(-0.55f, groupSpace, barSpace); // perform the "explicit"
-//            mChart.notifyDataSetChanged();
+            mChart.groupBars(0f, groupSpace, barSpace); // perform the "explicit"
+            mChart.notifyDataSetChanged();
         } else {
             barWidth = 0.25f;
             data.setBarWidth(barWidth);
