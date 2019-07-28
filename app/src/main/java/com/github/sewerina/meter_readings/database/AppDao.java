@@ -42,8 +42,11 @@ public interface AppDao {
     @Query("select * from home")
     LiveData<List<HomeEntity>> getHomesLiveData();
 
+//    @Insert
+//    Completable insertReadingRx(ReadingEntity entity);
+
     @Insert
-    Completable insertReadingRx(ReadingEntity entity);
+    Single<Long> insertReadingRx(ReadingEntity entity);
 
     @Update
     Completable updateReadingRx(ReadingEntity entity);
@@ -51,11 +54,17 @@ public interface AppDao {
     @Delete
     Completable deleteReadingRx(ReadingEntity entity);
 
+//    @Insert
+//    Completable insertHomeRx(HomeEntity entity);
+
     @Insert
-    Completable insertHomeRx(HomeEntity entity);
+    Single<Long> insertHomeRx(HomeEntity entity);
 
     @Update
     Completable updateHomeRx(HomeEntity entity);
+
+//    @Update
+//    Single<Long> updateHomeRx(HomeEntity entity);
 
     @Delete
     Completable deleteHomeRx(HomeEntity entity);

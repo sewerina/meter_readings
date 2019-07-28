@@ -2,6 +2,7 @@ package com.github.sewerina.meter_readings.ui.readings_main;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,10 +11,19 @@ import com.github.sewerina.meter_readings.ReadingApp;
 import com.github.sewerina.meter_readings.database.AppDao;
 import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableOnSubscribe;
+import io.reactivex.CompletableSource;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -28,9 +38,12 @@ public class MainViewModel extends ViewModel {
     private final CompositeDisposable mDisposables = new CompositeDisposable();
     private HomeEntity mPreviousCurrentHome;
     private AppDao mDao;
+    private final CollectionReference mCollectionReference;
 
     public MainViewModel() {
         mDao = ReadingApp.mReadingDao;
+        FirebaseFirestore cloudFirestoreDb = FirebaseFirestore.getInstance();
+        mCollectionReference = cloudFirestoreDb.collection("readings");
         Log.d("MainViewModel", "MainViewModel was created");
     }
 
@@ -71,16 +84,45 @@ public class MainViewModel extends ViewModel {
         mDisposables.add(subscribe);
     }
 
-    public void addReading(final ReadingEntity entity) {
+    public void addReading(final ReadingEntity readingEntity) {
         if (mState.getValue() != null) {
             HomeEntity currentHomeEntity = mState.getValue().currentHomeEntity;
-            entity.homeId = currentHomeEntity.id;
-            Disposable subscribe = mDao.insertReadingRx(entity)
+            readingEntity.homeId = currentHomeEntity.id;
+            Disposable subscribe = mDao.insertReadingRx(readingEntity)
                     .subscribeOn(Schedulers.io())
+                    .flatMapCompletable(new Function<Long, CompletableSource>() {
+                        @Override
+                        public CompletableSource apply(Long readingId) throws Exception {
+                            readingEntity.id = readingId.intValue();
+                            return addReadingInCloudFirestore(readingEntity);
+                        }
+                    })
                     .andThen(loadReadingsRx(currentHomeEntity))
                     .subscribe();
             mDisposables.add(subscribe);
         }
+    }
+
+    private Completable addReadingInCloudFirestore(final ReadingEntity readingEntity) {
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(final CompletableEmitter emitter) throws Exception {
+                mCollectionReference
+                        .add(readingEntity)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                emitter.onComplete();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                emitter.onError(new Exception());
+                            }
+                        });
+            }
+        });
     }
 
     public void deleteReading(final ReadingEntity entity) {
