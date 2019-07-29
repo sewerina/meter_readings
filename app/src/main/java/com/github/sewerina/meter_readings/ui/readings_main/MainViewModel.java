@@ -11,11 +11,15 @@ import com.github.sewerina.meter_readings.ReadingApp;
 import com.github.sewerina.meter_readings.database.AppDao;
 import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,26 +129,76 @@ public class MainViewModel extends ViewModel {
         });
     }
 
-    public void deleteReading(final ReadingEntity entity) {
+    public void deleteReading(final ReadingEntity readingEntity) {
         if (mState.getValue() != null) {
             HomeEntity currentHomeEntity = mState.getValue().currentHomeEntity;
-            Disposable subscribe = mDao.deleteReadingRx(entity)
+            Disposable subscribe = mDao.deleteReadingRx(readingEntity)
                     .subscribeOn(Schedulers.io())
+                    .andThen(deleteReadingFromCloudFirestore(readingEntity))
                     .andThen(loadReadingsRx(currentHomeEntity))
                     .subscribe();
             mDisposables.add(subscribe);
         }
     }
 
-    public void updateReading(final ReadingEntity entity) {
+    private Completable deleteReadingFromCloudFirestore(final ReadingEntity readingEntity) {
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(final CompletableEmitter emitter) throws Exception {
+                mCollectionReference
+                        .whereEqualTo("id", readingEntity.id)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                               if (task.isSuccessful() && task.getResult() != null) {
+                                   for (QueryDocumentSnapshot document : task.getResult()) {
+                                       document.getReference().delete();
+                                   }
+                                   emitter.onComplete();
+                               } else {
+                                   emitter.onError(new Exception());
+                               }
+                            }
+                        });
+            }
+        });
+    }
+
+    public void updateReading(final ReadingEntity readingEntity) {
         if (mState.getValue() != null) {
             HomeEntity currentHomeEntity = mState.getValue().currentHomeEntity;
-            Disposable subscribe = mDao.updateReadingRx(entity)
+            Disposable subscribe = mDao.updateReadingRx(readingEntity)
                     .subscribeOn(Schedulers.io())
+                    .andThen(updateReadingInCloudFirestore(readingEntity))
                     .andThen(loadReadingsRx(currentHomeEntity))
                     .subscribe();
             mDisposables.add(subscribe);
         }
+    }
+
+    private Completable updateReadingInCloudFirestore(final ReadingEntity readingEntity) {
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(final CompletableEmitter emitter) throws Exception {
+                mCollectionReference
+                        .whereEqualTo("id", readingEntity.id)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful() && task.getResult() != null) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        document.getReference().set(readingEntity);
+                                    }
+                                    emitter.onComplete();
+                                } else {
+                                    emitter.onError(new Exception());
+                                }
+                            }
+                        });
+            }
+        });
     }
 
     private Single<List<ReadingEntity>> loadReadingsRx(final HomeEntity homeEntity) {

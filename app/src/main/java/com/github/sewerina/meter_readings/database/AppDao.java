@@ -63,9 +63,6 @@ public interface AppDao {
     @Update
     Completable updateHomeRx(HomeEntity entity);
 
-//    @Update
-//    Single<Long> updateHomeRx(HomeEntity entity);
-
     @Delete
     Completable deleteHomeRx(HomeEntity entity);
 
