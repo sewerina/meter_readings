@@ -13,13 +13,13 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.sewerina.meter_readings.R;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Date;
@@ -42,7 +42,7 @@ public class NewReadingDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         mViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_new_reading, null);
@@ -108,26 +108,27 @@ public class NewReadingDialog extends DialogFragment {
             }
         });
 
-        builder.setView(view)
+        builder.setTitle(R.string.title_createReading)
+                .setView(view)
                 .setPositiveButtonIcon(getActivity().getDrawable(R.drawable.ic_positive_btn))
                 .setPositiveButton("", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ReadingEntity entity = new ReadingEntity();
                         entity.date = new Date();
-                        if (!coldWaterEt.getText().toString().isEmpty()) {
+                        if (coldWaterEt.getText() != null && !coldWaterEt.getText().toString().isEmpty()) {
                             entity.coldWater = Integer.parseInt(coldWaterEt.getText().toString());
                         }
-                        if (!hotWaterEt.getText().toString().isEmpty()) {
+                        if (hotWaterEt.getText() != null && !hotWaterEt.getText().toString().isEmpty()) {
                             entity.hotWater = Integer.parseInt(hotWaterEt.getText().toString());
                         }
-                        if (!drainWaterEt.getText().toString().isEmpty()) {
+                        if (drainWaterEt.getText() != null && !drainWaterEt.getText().toString().isEmpty()) {
                             entity.drainWater = Integer.parseInt(drainWaterEt.getText().toString());
                         }
-                        if (!electricityEt.getText().toString().isEmpty()) {
+                        if (electricityEt.getText() != null && !electricityEt.getText().toString().isEmpty()) {
                             entity.electricity = Integer.parseInt(electricityEt.getText().toString());
                         }
-                        if (!gasEt.getText().toString().isEmpty()) {
+                        if (gasEt.getText() != null && !gasEt.getText().toString().isEmpty()) {
                             entity.gas = Integer.parseInt(gasEt.getText().toString());
                         }
 

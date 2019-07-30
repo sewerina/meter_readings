@@ -98,15 +98,15 @@ public class HomesActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     new MaterialAlertDialogBuilder(v.getContext())
-                            .setTitle("Удаление информации о доме")
-                            .setMessage("Удаление информации о доме также приведет к удалению всех показаний для данного дома. Хотите удалить информацию о данном доме и всего его показания?")
-                            .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+                            .setTitle(R.string.title_deleteHome)
+                            .setMessage(R.string.delete_home_message)
+                            .setPositiveButton(R.string.btn_delete, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     mViewModel.deleteHome(mHomeEntity);
                                 }
                             })
-                            .setNegativeButton("Отмена", null)
+                            .setNegativeButton(R.string.btn_cancel, null)
                             .show();
                 }
             });

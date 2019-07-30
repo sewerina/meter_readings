@@ -7,13 +7,6 @@
     android:orientation="vertical"
     android:paddingTop="8dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="8dp"
-        android:text="Измените Ваши данные"
-        android:textStyle="bold" />
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,7 +22,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Дата снятия"
+            android:hint="@string/hint_date"
             app:hintEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -60,7 +53,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Холодная вода"
+            android:hint="@string/hint_coldWater"
             app:hintEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -90,7 +83,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Горячая вода"
+            android:hint="@string/hint_hotWater"
             app:hintEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -120,7 +113,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Канализация"
+            android:hint="@string/hint_drainWater"
             app:hintEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -150,7 +143,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Электричество"
+            android:hint="@string/hint_electricity"
             app:hintEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -180,7 +173,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Газ"
+            android:hint="@string/hint_gas"
             app:hintEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText

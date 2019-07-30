@@ -11,10 +11,10 @@
     <string name="title_activity_chart">Диаграмма</string>
     <string name="title_activity_backupCopying">Резервное копирование</string>
 
-    <string name="title_spinner">"Ваш дом (выберите адрес): "</string>
+    <string name="title_spinner">Выберите из списка ниже дом, показания которого интересуют Вас: </string>
 
-    <string name="matBtn_copy">Создать резервную копию</string>
-    <string name="matBtn_update">Восстановить из резервной копии</string>
+    <string name="matBtn_backup">Создать резервную копию</string>
+    <string name="matBtn_restore">Восстановить из резервной копии</string>
 
     <string name="settings_reading">Показания каких ресурсов хотите сохранять?!</string>
     <string name="coldWater">Холодная вода</string>
@@ -39,5 +39,47 @@
 
     <string name="channel_name">reading notification channel</string>
     <string name="channel_description">reading notification channel</string>
+
+    <string name="successful_backup">Резервное копирование выполнилось успешно!</string>
+    <string name="failed_backup">Не удалось выполнить резервное копирование!</string>
+    <string name="successful_restoration">Обновление данных произошло успешно!</string>
+    <string name="unsuccessful_restoration">Не удалось обновить данные!</string>
+
+    <string name="chart_description">Данные по месяцам</string>
+    <string name="chart_noDataText">Для этого дома нет данных для отображения!</string>
+    <string name="label_coldWater">Холодная вода</string>
+    <string name="label_hotWater">Горячая вода</string>
+    <string name="label_drainWater">Канализация</string>
+    <string name="label_electricity">Электричество</string>
+    <string name="label_gas">Газ</string>
+
+    <string name="hint_date">Дата снятия</string>
+    <string name="hint_coldWater">Холодная вода</string>
+    <string name="hint_hotWater">Горячая вода</string>
+    <string name="hint_drainWater">Канализация</string>
+    <string name="hint_electricity">Электричество</string>
+    <string name="hint_gas">Газ</string>
+
+    <string name="title_createReading">Введите Ваши показания</string>
+    <string name="title_editReading">Измените Ваши данные</string>
+
+    <string name="txt_choice">Выберите желаемое действие</string>
+    <string name="txt_edit">Изменить</string>
+    <string name="txt_delete">Удалить</string>
+
+    <string name="hint_home">Адрес Вашего дома</string>
+
+    <string name="title_createHome">Создание информации о новом доме</string>
+    <string name="toast_createHome">Для создания необходимо указать адрес!</string>
+
+    <string name="title_editHome">Изменение информации о доме</string>
+    <string name="toast_editHome">Для обновления необходимо указать адрес!</string>
+
+    <string name="title_deleteHome">Удаление информации о доме</string>
+    <string name="delete_home_message">Удаление информации о доме также приведет к удалению всех показаний для данного дома. Хотите удалить информацию о данном доме и всего его показания?</string>
+
+    <string name="btn_save">Сохранить</string>
+    <string name="btn_cancel">Отмена</string>
+    <string name="btn_delete">Удалить</string>
 
 </resources>

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="16dp"
         android:paddingTop="16dp"
-        android:text="Выберите желаемое действие"
+        android:text="@string/txt_choice"
         android:textColor="@color/colorPrimary" />
 
     <com.google.android.material.button.MaterialButton
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
         android:padding="16dp"
-        android:text="Изменить"
+        android:text="@string/txt_edit"
         android:textAllCaps="false"
         app:icon="@drawable/ic_edit"
         app:iconGravity="start"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
         android:padding="16dp"
-        android:text="Удалить"
+        android:text="@string/txt_delete"
         android:textAllCaps="false"
         app:icon="@drawable/ic_delete"
         app:iconGravity="start"

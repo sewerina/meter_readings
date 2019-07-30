@@ -51,20 +51,20 @@ public class EditHomeDialog extends DialogFragment {
             addressEt.setText(mHomeEntity.address);
         }
 
-        builder.setTitle("Изменение информации о доме")
+        builder.setTitle(R.string.title_editHome)
                 .setView(view)
-                .setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.btn_save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (addressEt.getText() != null && !addressEt.getText().toString().isEmpty()) {
                             mHomeEntity.address = addressEt.getText().toString();
                             mViewModel.updateHome(mHomeEntity);
                         } else {
-                            Toast.makeText(addressEt.getContext(), "Для обновления необходимо указать адрес", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(addressEt.getContext(), R.string.toast_editHome, Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
-                .setNegativeButton("Отмена", null);
+                .setNegativeButton(R.string.btn_cancel, null);
 
         return builder.create();
     }

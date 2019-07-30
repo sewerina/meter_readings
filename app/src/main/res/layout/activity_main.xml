@@ -16,7 +16,7 @@
             android:id="@+id/tv_spinner_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Выберите из списка ниже дом, показания которого интересуют Вас: "
+            android:text="@string/title_spinner"
             android:textSize="16sp" />
 
         <Spinner

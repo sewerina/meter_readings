@@ -52,7 +52,7 @@ public class ChartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chart);
 
         mChart = findViewById(R.id.chart);
-        mChart.setNoDataText("Для этого дома нет данных для отображения");
+        mChart.setNoDataText(getResources().getString(R.string.chart_noDataText));
         mChart.setNoDataTextColor(Color.BLUE);
         mChart.setNoDataTextTypeface(Typeface.SERIF);
 
@@ -132,7 +132,7 @@ public class ChartActivity extends AppCompatActivity {
 
         mChart.setBackgroundColor(getResources().getColor(R.color.colorBackground));
         Description description = new Description();
-        description.setText("Данные по месяцам");
+        description.setText(getResources().getString(R.string.chart_description));
         description.setTextSize(14f);
 //        description.setTextAlign(Paint.Align.RIGHT);
 
@@ -150,30 +150,6 @@ public class ChartActivity extends AppCompatActivity {
         boolean isElectricity = preferences.getBoolean(ReadingPreferences.KEY_PREF_ELECTRICITY, true);
         boolean isGas = preferences.getBoolean(ReadingPreferences.KEY_PREF_GAS, true);
 
-//        List<BarEntry> entriesGroupColdWater = new ArrayList<>();
-//        List<BarEntry> entriesGroupHotWater = new ArrayList<>();
-//        List<BarEntry> entriesGroupDrainWater = new ArrayList<>();
-//        List<BarEntry> entriesGroupElectricity = new ArrayList<>();
-//        List<BarEntry> entriesGroupGas = new ArrayList<>();
-//        for (int i = 0; i < readings.size(); i++) {
-//            ReadingEntity reading = readings.get(i);
-//            entriesGroupColdWater.add(new BarEntry(i, reading.coldWater));
-//            entriesGroupHotWater.add(new BarEntry(i, reading.hotWater));
-//            entriesGroupDrainWater.add(new BarEntry(i, reading.drainWater));
-//            entriesGroupElectricity.add(new BarEntry(i, reading.electricity));
-//            entriesGroupGas.add(new BarEntry(i, reading.gas));
-//        }
-//        BarDataSet setColdWater = new BarDataSet(entriesGroupColdWater, "Cold water");
-//        setColdWater.setColor(Color.BLUE);
-//        BarDataSet setHotWater = new BarDataSet(entriesGroupHotWater, "Hot water");
-//        setHotWater.setColor(Color.RED);
-//        BarDataSet setDrainWater = new BarDataSet(entriesGroupDrainWater, "Drain water");
-//        setDrainWater.setColor(Color.DKGRAY);
-//        BarDataSet setElectricity = new BarDataSet(entriesGroupElectricity, "Electricity");
-//        setElectricity.setColor(Color.YELLOW);
-//        BarDataSet setGas = new BarDataSet(entriesGroupGas, "Gas");
-//        setGas.setColor(Color.CYAN);
-
         int n = 0;
         List<IBarDataSet> dataSets = new ArrayList<>();
         if (isColdWater) {
@@ -182,7 +158,7 @@ public class ChartActivity extends AppCompatActivity {
                 ReadingEntity reading = readings.get(i);
                 entriesGroupColdWater.add(new BarEntry(i, reading.coldWater));
             }
-            BarDataSet setColdWater = new BarDataSet(entriesGroupColdWater, "Холодная вода");
+            BarDataSet setColdWater = new BarDataSet(entriesGroupColdWater, getResources().getString(R.string.label_coldWater));
             setColdWater.setColor(Color.BLUE);
             dataSets.add(setColdWater);
             n++;
@@ -193,7 +169,7 @@ public class ChartActivity extends AppCompatActivity {
                 ReadingEntity reading = readings.get(i);
                 entriesGroupHotWater.add(new BarEntry(i, reading.hotWater));
             }
-            BarDataSet setHotWater = new BarDataSet(entriesGroupHotWater, "Горячая вода");
+            BarDataSet setHotWater = new BarDataSet(entriesGroupHotWater, getResources().getString(R.string.label_hotWater));
             setHotWater.setColor(Color.RED);
             dataSets.add(setHotWater);
             n++;
@@ -204,7 +180,7 @@ public class ChartActivity extends AppCompatActivity {
                 ReadingEntity reading = readings.get(i);
                 entriesGroupDrainWater.add(new BarEntry(i, reading.drainWater));
             }
-            BarDataSet setDrainWater = new BarDataSet(entriesGroupDrainWater, "Канализация");
+            BarDataSet setDrainWater = new BarDataSet(entriesGroupDrainWater, getResources().getString(R.string.label_drainWater));
             setDrainWater.setColor(Color.DKGRAY);
             dataSets.add(setDrainWater);
             n++;
@@ -215,7 +191,7 @@ public class ChartActivity extends AppCompatActivity {
                 ReadingEntity reading = readings.get(i);
                 entriesGroupElectricity.add(new BarEntry(i, reading.electricity));
             }
-            BarDataSet setElectricity = new BarDataSet(entriesGroupElectricity, "Электричество");
+            BarDataSet setElectricity = new BarDataSet(entriesGroupElectricity, getResources().getString(R.string.label_electricity));
             setElectricity.setColor(Color.YELLOW);
             dataSets.add(setElectricity);
             n++;
@@ -226,7 +202,7 @@ public class ChartActivity extends AppCompatActivity {
                 ReadingEntity reading = readings.get(i);
                 entriesGroupGas.add(new BarEntry(i, reading.gas));
             }
-            BarDataSet setGas = new BarDataSet(entriesGroupGas, "Газ");
+            BarDataSet setGas = new BarDataSet(entriesGroupGas, getResources().getString(R.string.label_gas));
             setGas.setColor(Color.CYAN);
             dataSets.add(setGas);
             n++;
@@ -236,50 +212,6 @@ public class ChartActivity extends AppCompatActivity {
         float groupSpace = 0;
         float barSpace = 0;
         float barWidth = 0;
-
-//        if (n == 1) {
-//            barWidth = 0.25f;
-//        }
-//
-//        if (n == 2) {
-//            groupSpace = 0.08f;
-//            barSpace = 0.02f; // x2 dataset
-//            barWidth = 0.44f; // x2 dataset
-//// (0.02 + 0.44) * 2 + 0.08 = 1.00 -> interval per "group"
-//
-//            float fromX = readings.get(0).date.getTime();
-//            mChart.groupBars(0, groupSpace, barSpace); // perform the "explicit" grou
-//        }
-//
-//        if (n == 3) {
-//            groupSpace = 0.07f;
-//            barSpace = 0.02f; // x3 dataset
-//            barWidth = 0.29f; // x3 dataset
-//// (0.02 + 0.29) * 3 + 0.07 = 1.00 -> interval per "group"
-//
-//            float fromX = readings.get(0).date.getTime();
-//            mChart.groupBars(0, groupSpace, barSpace); // perform the "explicit" grouping
-//        }
-//
-//        if (n == 4) {
-//            groupSpace = 0.08f;
-//            barSpace = 0.02f; // x4 dataset
-//            barWidth = 0.21f; // x4 dataset
-//// (0.02 + 0.21) * 4 + 0.08 = 1.00 -> interval per "group"
-//
-//            float fromX = readings.get(0).date.getTime();
-//            mChart.groupBars(0, groupSpace, barSpace); // perform the "explicit" grouping
-//        }
-//
-//        if (n == 5) {
-//            groupSpace = 0.05f;
-//            barSpace = 0.02f; // x5 dataset
-//            barWidth = 0.17f; // x5 dataset
-//// (0.02 + 0.17) * 5 + 0.05 = 1.00 -> interval per "group"
-//
-//            float fromX = readings.get(0).date.getTime();
-//            mChart.groupBars(0, groupSpace, barSpace); // perform the "explicit" grouping
-//        }
 
         BarData data = new BarData(dataSets);
         data.setValueTextSize(12);

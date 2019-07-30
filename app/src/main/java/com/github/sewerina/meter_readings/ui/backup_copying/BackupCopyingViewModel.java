@@ -1,18 +1,15 @@
 package com.github.sewerina.meter_readings.ui.backup_copying;
 
-import android.os.Handler;
+import android.app.Application;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.github.sewerina.meter_readings.R;
 import com.github.sewerina.meter_readings.ReadingApp;
 import com.github.sewerina.meter_readings.database.AppDao;
 import com.github.sewerina.meter_readings.database.HomeEntity;
@@ -30,7 +27,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableEmitter;
@@ -46,7 +42,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-public class BackupCopyingViewModel extends ViewModel {
+public class BackupCopyingViewModel extends AndroidViewModel {
     private static final String TAG = "BackupCopyingViewModel";
     private final AppDao mDao;
     private final FirebaseFirestore mCloudFirestoreDb;
@@ -57,13 +53,22 @@ public class BackupCopyingViewModel extends ViewModel {
 
     private SingleLiveEvent<String> mMessage = new SingleLiveEvent<>();
 
-    public BackupCopyingViewModel() {
+    public BackupCopyingViewModel(@NonNull Application application) {
+        super(application);
         mDao = ReadingApp.mReadingDao;
         mCloudFirestoreDb = FirebaseFirestore.getInstance();
         mIsRefreshing.postValue(false);
         mIsAvailable.postValue(true);
         mMessage.postValue("");
     }
+
+//    public BackupCopyingViewModel() {
+//        mDao = ReadingApp.mReadingDao;
+//        mCloudFirestoreDb = FirebaseFirestore.getInstance();
+//        mIsRefreshing.postValue(false);
+//        mIsAvailable.postValue(true);
+//        mMessage.postValue("");
+//    }
 
     public LiveData<Boolean> getIsRefreshing() {
         return mIsRefreshing;
@@ -123,13 +128,13 @@ public class BackupCopyingViewModel extends ViewModel {
                 .doOnComplete(new Action() {
                     @Override
                     public void run() throws Exception {
-                        mMessage.postValue("Резервное копирование выполнилось успешно!");
+                        mMessage.postValue(getApplication().getResources().getString(R.string.successful_backup));
                     }
                 })
                 .doOnError(new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        mMessage.postValue("Не удалось выполнить резервное копирование!");
+                        mMessage.postValue(getApplication().getResources().getString(R.string.failed_backup));
                     }
                 })
                 .subscribe();
@@ -289,13 +294,13 @@ public class BackupCopyingViewModel extends ViewModel {
                 .doOnComplete(new Action() {
                     @Override
                     public void run() throws Exception {
-                        mMessage.postValue("Обновление данных произошло успешно!");
+                        mMessage.postValue(getApplication().getResources().getString(R.string.successful_restoration));
                     }
                 })
                 .doOnError(new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        mMessage.postValue("Не удалось обновить данные!");
+                        mMessage.postValue(getApplication().getResources().getString(R.string.unsuccessful_restoration));
                         Log.d(TAG, "doOnError: " + throwable);
                     }
                 })

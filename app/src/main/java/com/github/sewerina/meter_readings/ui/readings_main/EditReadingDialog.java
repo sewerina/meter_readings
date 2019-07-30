@@ -12,7 +12,6 @@ import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
@@ -20,6 +19,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.github.sewerina.meter_readings.FormattedDate;
 import com.github.sewerina.meter_readings.R;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
@@ -59,7 +59,7 @@ public class EditReadingDialog extends DialogFragment {
 
         mViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_edit_reading, null);
@@ -89,7 +89,8 @@ public class EditReadingDialog extends DialogFragment {
             gasEt.setText(String.valueOf(mReadingEntity.gas));
         }
 
-        builder.setView(view)
+        builder.setTitle(R.string.title_editReading)
+                .setView(view)
                 .setPositiveButtonIcon(getActivity().getDrawable(R.drawable.ic_positive_btn))
                 .setPositiveButton("", new DialogInterface.OnClickListener() {
                     @Override

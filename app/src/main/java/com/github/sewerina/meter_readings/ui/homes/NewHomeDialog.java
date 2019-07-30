@@ -39,9 +39,9 @@ public class NewHomeDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_home, null);
         final TextInputEditText addressEt = view.findViewById(R.id.et_homeAddress);
 
-        builder.setTitle("Создание информации о новом доме")
+        builder.setTitle(R.string.title_createHome)
                 .setView(view)
-                .setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.btn_save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (addressEt.getText() != null && !addressEt.getText().toString().isEmpty()) {
@@ -49,11 +49,11 @@ public class NewHomeDialog extends DialogFragment {
                             homeEntity.address = addressEt.getText().toString();
                             mViewModel.addHome(homeEntity);
                         } else {
-                            Toast.makeText(addressEt.getContext(), "Для создания необходимо указать адрес", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(addressEt.getContext(), R.string.toast_createHome, Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
-                .setNegativeButton("Отмена", null);
+                .setNegativeButton(R.string.btn_cancel, null);
 
         return builder.create();
     }
