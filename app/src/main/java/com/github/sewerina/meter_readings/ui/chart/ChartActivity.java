@@ -26,6 +26,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.sewerina.meter_readings.R;
+import com.github.sewerina.meter_readings.ReadingApp;
 import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
 import com.github.sewerina.meter_readings.ui.readings_main.ReadingPreferences;
@@ -63,6 +64,8 @@ public class ChartActivity extends AppCompatActivity {
         setTitle(mCurrentHomeEntity.address);
 
         mViewModel = ViewModelProviders.of(this).get(ChartViewModel.class);
+        ReadingApp.sMainComponent.inject(mViewModel);
+
         mViewModel.getReadings().observe(this, new Observer<List<ReadingEntity>>() {
             @Override
             public void onChanged(List<ReadingEntity> readingEntities) {

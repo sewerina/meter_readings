@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.sewerina.meter_readings.R;
+import com.github.sewerina.meter_readings.ReadingApp;
 import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -40,6 +41,8 @@ public class HomesActivity extends AppCompatActivity {
         final HomeAdapter homeAdapter = new HomeAdapter();
 
         mViewModel = ViewModelProviders.of(this).get(HomesViewModel.class);
+        ReadingApp.sMainComponent.inject(mViewModel);
+
         mViewModel.getHomes().observe(this, new Observer<List<HomeEntity>>() {
             @Override
             public void onChanged(List<HomeEntity> homeEntities) {

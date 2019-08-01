@@ -19,6 +19,10 @@ import com.github.sewerina.meter_readings.database.AppDao;
 import com.github.sewerina.meter_readings.database.AppDatabase;
 import com.github.sewerina.meter_readings.notification.NotificationWorker;
 
+import com.github.sewerina.meter_readings.ui.AppContextModule;
+import com.github.sewerina.meter_readings.ui.DaggerMainComponent;
+import com.github.sewerina.meter_readings.ui.MainComponent;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -26,12 +30,16 @@ import java.util.concurrent.TimeUnit;
 public class ReadingApp extends Application {
 
     private static final String TAG = "ReadingApp";
-    public static AppDao mReadingDao;
+    public static AppDao sReadingDao;
     private SharedPreferences.OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener;
+
+    public static MainComponent sMainComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        sMainComponent = DaggerMainComponent.builder().appContextModule(new AppContextModule(this)).build();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         mOnSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -88,6 +96,6 @@ public class ReadingApp extends Application {
                 })
                 .build();
 
-        mReadingDao = db.readingDao();
+        sReadingDao = db.readingDao();
     }
 }

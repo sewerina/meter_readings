@@ -53,7 +53,11 @@ dependencies {
     // Firebase
     implementation 'com.google.firebase:firebase-core:17.0.1'
     //Cloud Firestore
-    implementation 'com.google.firebase:firebase-firestore:20.1.0'
+    implementation 'com.google.firebase:firebase-firestore:20.2.0'
+
+    // Dagger2
+    implementation 'com.google.dagger:dagger:2.24'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.24'
 
 }
 

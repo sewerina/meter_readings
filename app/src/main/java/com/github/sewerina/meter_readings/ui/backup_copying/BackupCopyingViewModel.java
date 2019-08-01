@@ -7,10 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.github.sewerina.meter_readings.R;
-import com.github.sewerina.meter_readings.ReadingApp;
 import com.github.sewerina.meter_readings.database.AppDao;
 import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
@@ -21,12 +19,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableEmitter;
@@ -44,10 +44,18 @@ import io.reactivex.schedulers.Schedulers;
 
 public class BackupCopyingViewModel extends AndroidViewModel {
     private static final String TAG = "BackupCopyingViewModel";
-    private final AppDao mDao;
-    private final FirebaseFirestore mCloudFirestoreDb;
     private final CompositeDisposable mDisposables = new CompositeDisposable();
 
+    //    private final FirebaseFirestore mCloudFirestoreDb;
+    //    private final AppDao mDao;
+    @Inject
+    AppDao mDao;
+    @Inject
+    @Named("readings")
+    CollectionReference mReferenceReadings;
+    @Inject
+    @Named("homes")
+    CollectionReference mReferenceHomes;
     private MutableLiveData<Boolean> mIsRefreshing = new MutableLiveData<>();
     private MutableLiveData<Boolean> mIsAvailable = new MutableLiveData<>();
 
@@ -55,15 +63,15 @@ public class BackupCopyingViewModel extends AndroidViewModel {
 
     public BackupCopyingViewModel(@NonNull Application application) {
         super(application);
-        mDao = ReadingApp.mReadingDao;
-        mCloudFirestoreDb = FirebaseFirestore.getInstance();
+//        mDao = ReadingApp.sReadingDao;
+//        mCloudFirestoreDb = FirebaseFirestore.getInstance();
         mIsRefreshing.postValue(false);
         mIsAvailable.postValue(true);
         mMessage.postValue("");
     }
 
 //    public BackupCopyingViewModel() {
-//        mDao = ReadingApp.mReadingDao;
+//        mDao = ReadingApp.sReadingDao;
 //        mCloudFirestoreDb = FirebaseFirestore.getInstance();
 //        mIsRefreshing.postValue(false);
 //        mIsAvailable.postValue(true);
@@ -145,7 +153,8 @@ public class BackupCopyingViewModel extends AndroidViewModel {
         return Completable.create(new CompletableOnSubscribe() {
             @Override
             public void subscribe(final CompletableEmitter emitter) throws Exception {
-                mCloudFirestoreDb.collection("homes")
+//                mCloudFirestoreDb.collection("homes")
+                mReferenceHomes
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
@@ -176,7 +185,8 @@ public class BackupCopyingViewModel extends AndroidViewModel {
         return Completable.create(new CompletableOnSubscribe() {
             @Override
             public void subscribe(final CompletableEmitter emitter) throws Exception {
-                mCloudFirestoreDb.collection("readings")
+//                mCloudFirestoreDb.collection("readings")
+                mReferenceReadings
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
@@ -207,9 +217,9 @@ public class BackupCopyingViewModel extends AndroidViewModel {
         return Completable.create(new CompletableOnSubscribe() {
             @Override
             public void subscribe(CompletableEmitter emitter) throws Exception {
-                CollectionReference collectionReference = mCloudFirestoreDb.collection("readings");
+//                CollectionReference collectionReference = mCloudFirestoreDb.collection("readings");
                 for (ReadingEntity reading : readingEntities) {
-                    collectionReference
+                    mReferenceReadings
                             .add(reading)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
@@ -233,9 +243,9 @@ public class BackupCopyingViewModel extends AndroidViewModel {
         return Completable.create(new CompletableOnSubscribe() {
             @Override
             public void subscribe(CompletableEmitter emitter) throws Exception {
-                CollectionReference collectionReference = mCloudFirestoreDb.collection("homes");
+//                CollectionReference collectionReference = mCloudFirestoreDb.collection("homes");
                 for (HomeEntity home : homeEntities) {
-                    collectionReference
+                    mReferenceHomes
                             .add(home)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
@@ -312,7 +322,8 @@ public class BackupCopyingViewModel extends AndroidViewModel {
         return Single.create(new SingleOnSubscribe<List<HomeEntity>>() {
             @Override
             public void subscribe(final SingleEmitter<List<HomeEntity>> emitter) throws Exception {
-                mCloudFirestoreDb.collection("homes")
+//                mCloudFirestoreDb.collection("homes")
+                mReferenceHomes
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
@@ -345,7 +356,8 @@ public class BackupCopyingViewModel extends AndroidViewModel {
         return Single.create(new SingleOnSubscribe<List<ReadingEntity>>() {
             @Override
             public void subscribe(final SingleEmitter<List<ReadingEntity>> emitter) throws Exception {
-                mCloudFirestoreDb.collection("readings")
+//                mCloudFirestoreDb.collection("readings")
+                mReferenceReadings
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
@@ -373,7 +385,6 @@ public class BackupCopyingViewModel extends AndroidViewModel {
             }
         });
     }
-
 
 
 }

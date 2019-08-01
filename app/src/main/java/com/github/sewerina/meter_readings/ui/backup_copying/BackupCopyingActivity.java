@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.github.sewerina.meter_readings.R;
+import com.github.sewerina.meter_readings.ReadingApp;
 import com.google.android.material.button.MaterialButton;
 
 public class BackupCopyingActivity extends AppCompatActivity {
@@ -30,6 +31,7 @@ public class BackupCopyingActivity extends AppCompatActivity {
         mRestoreDbMatBtn = findViewById(R.id.matBtn_restore);
 
         mViewModel = ViewModelProviders.of(this).get(BackupCopyingViewModel.class);
+        ReadingApp.sMainComponent.inject(mViewModel);
 
         mViewModel.getIsRefreshing().observe(this, new Observer<Boolean>() {
             @Override
@@ -49,7 +51,9 @@ public class BackupCopyingActivity extends AppCompatActivity {
         mViewModel.getMessage().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String message) {
-                Toast.makeText(BackupCopyingActivity.this, message, Toast.LENGTH_SHORT).show();
+                if (!message.isEmpty()) {
+                    Toast.makeText(BackupCopyingActivity.this, message, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.github.sewerina.meter_readings.ReadingApp;
 import com.github.sewerina.meter_readings.database.AppDao;
 import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
@@ -17,12 +16,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableEmitter;
@@ -40,16 +41,25 @@ public class MainViewModel extends ViewModel {
     private final MutableLiveData<List<ReadingEntity>> mReadingEntities = new MutableLiveData<>();
     private final MutableLiveData<State> mState = new MutableLiveData<>();
     private final CompositeDisposable mDisposables = new CompositeDisposable();
+
+    //    private AppDao mDao;
+    @Inject
+    AppDao mDao;
+
+    //    private final CollectionReference mCollectionReference;
+    @Inject
+    @Named("readings")
+    CollectionReference mCollectionReference;
+
     private HomeEntity mPreviousCurrentHome;
-    private AppDao mDao;
-    private final CollectionReference mCollectionReference;
 
     public MainViewModel() {
-        mDao = ReadingApp.mReadingDao;
-        FirebaseFirestore cloudFirestoreDb = FirebaseFirestore.getInstance();
-        mCollectionReference = cloudFirestoreDb.collection("readings");
+//        mDao = ReadingApp.sReadingDao;
+//        FirebaseFirestore cloudFirestoreDb = FirebaseFirestore.getInstance();
+//        mCollectionReference = cloudFirestoreDb.collection("readings");
         Log.d("MainViewModel", "MainViewModel was created");
     }
+
 
     @Override
     protected void onCleared() {
@@ -151,14 +161,14 @@ public class MainViewModel extends ViewModel {
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                               if (task.isSuccessful() && task.getResult() != null) {
-                                   for (QueryDocumentSnapshot document : task.getResult()) {
-                                       document.getReference().delete();
-                                   }
-                                   emitter.onComplete();
-                               } else {
-                                   emitter.onError(new Exception());
-                               }
+                                if (task.isSuccessful() && task.getResult() != null) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        document.getReference().delete();
+                                    }
+                                    emitter.onComplete();
+                                } else {
+                                    emitter.onError(new Exception());
+                                }
                             }
                         });
             }
@@ -203,7 +213,7 @@ public class MainViewModel extends ViewModel {
 
     private Single<List<ReadingEntity>> loadReadingsRx(final HomeEntity homeEntity) {
         if (homeEntity == null) {
-            return Single.just((List<ReadingEntity>)new ArrayList<ReadingEntity>());
+            return Single.just((List<ReadingEntity>) new ArrayList<ReadingEntity>());
         }
         return mDao.getReadingsForHomeRx(homeEntity.id)
                 .subscribeOn(Schedulers.io())

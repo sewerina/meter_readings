@@ -21,6 +21,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import io.reactivex.Completable;
 import io.reactivex.CompletableEmitter;
 import io.reactivex.CompletableOnSubscribe;
@@ -32,14 +35,20 @@ import io.reactivex.schedulers.Schedulers;
 
 public class HomesViewModel extends ViewModel {
     private static final String TAG = "HomesViewModel";
-    private final CollectionReference mCollectionReference;
     private final CompositeDisposable mDisposables = new CompositeDisposable();
-    private AppDao mDao;
+    //    private final CollectionReference mCollectionReference;
+    @Inject
+    @Named("homes")
+    CollectionReference mCollectionReference;
+
+//    private AppDao mDao;
+    @Inject
+    AppDao mDao;
 
     public HomesViewModel() {
-        mDao = ReadingApp.mReadingDao;
-        FirebaseFirestore cloudFirestoreDb = FirebaseFirestore.getInstance();
-        mCollectionReference = cloudFirestoreDb.collection("homes");
+//        mDao = ReadingApp.sReadingDao;
+//        FirebaseFirestore cloudFirestoreDb = FirebaseFirestore.getInstance();
+//        mCollectionReference = cloudFirestoreDb.collection("homes");
     }
 
     @Override

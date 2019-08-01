@@ -11,6 +11,8 @@ import com.github.sewerina.meter_readings.database.ReadingEntity;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -19,11 +21,13 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ChartViewModel extends ViewModel {
     private final MutableLiveData<List<ReadingEntity>> mReadingEntities = new MutableLiveData<>();
-    private AppDao mDao;
+//    private AppDao mDao;
+    @Inject
+    AppDao mDao;
     private final CompositeDisposable mDisposables = new CompositeDisposable();
 
     public ChartViewModel() {
-        mDao = ReadingApp.mReadingDao;
+//        mDao = ReadingApp.sReadingDao;
     }
 
     @Override

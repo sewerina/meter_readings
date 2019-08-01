@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.sewerina.meter_readings.FormattedDate;
 import com.github.sewerina.meter_readings.R;
+import com.github.sewerina.meter_readings.ReadingApp;
 import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
 import com.github.sewerina.meter_readings.ui.backup_copying.BackupCopyingActivity;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        ReadingApp.sMainComponent.inject(mViewModel);
 
         if (savedInstanceState != null) {
             HomeEntity homeEntity = (HomeEntity) savedInstanceState.getSerializable(CURRENT_HOME_ENTITY);
