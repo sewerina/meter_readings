@@ -12,6 +12,7 @@ import com.github.sewerina.meter_readings.R;
 import com.github.sewerina.meter_readings.database.AppDao;
 import com.github.sewerina.meter_readings.database.HomeEntity;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
+import com.github.sewerina.meter_readings.ui.MessageService;
 import com.github.sewerina.meter_readings.ui.SingleLiveEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -56,10 +57,14 @@ public class BackupCopyingViewModel extends AndroidViewModel {
     @Inject
     @Named("homes")
     CollectionReference mReferenceHomes;
+
+    @Inject
+    MessageService mMessageService;
+
     private MutableLiveData<Boolean> mIsRefreshing = new MutableLiveData<>();
     private MutableLiveData<Boolean> mIsAvailable = new MutableLiveData<>();
 
-    private SingleLiveEvent<String> mMessage = new SingleLiveEvent<>();
+//    private SingleLiveEvent<String> mMessage = new SingleLiveEvent<>();
 
     public BackupCopyingViewModel(@NonNull Application application) {
         super(application);
@@ -67,7 +72,7 @@ public class BackupCopyingViewModel extends AndroidViewModel {
 //        mCloudFirestoreDb = FirebaseFirestore.getInstance();
         mIsRefreshing.postValue(false);
         mIsAvailable.postValue(true);
-        mMessage.postValue("");
+//        mMessage.postValue("");
     }
 
 //    public BackupCopyingViewModel() {
@@ -86,9 +91,9 @@ public class BackupCopyingViewModel extends AndroidViewModel {
         return mIsAvailable;
     }
 
-    public LiveData<String> getMessage() {
-        return mMessage;
-    }
+//    public LiveData<String> getMessage() {
+//        return mMessage;
+//    }
 
     @Override
     protected void onCleared() {
@@ -136,13 +141,17 @@ public class BackupCopyingViewModel extends AndroidViewModel {
                 .doOnComplete(new Action() {
                     @Override
                     public void run() throws Exception {
-                        mMessage.postValue(getApplication().getResources().getString(R.string.successful_backup));
+//                        mMessage.postValue(getApplication().getResources().getString(R.string.successful_backup));
+//                        mMessage.postValue(R.string.successful_backup);
+                        mMessageService.showMessage(R.string.successful_backup);
                     }
                 })
                 .doOnError(new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        mMessage.postValue(getApplication().getResources().getString(R.string.failed_backup));
+//                        mMessage.postValue(getApplication().getResources().getString(R.string.failed_backup));
+//                        mMessage.postValue(R.string.failed_backup);
+                        mMessageService.showMessage(R.string.failed_backup);
                     }
                 })
                 .subscribe();
@@ -304,13 +313,17 @@ public class BackupCopyingViewModel extends AndroidViewModel {
                 .doOnComplete(new Action() {
                     @Override
                     public void run() throws Exception {
-                        mMessage.postValue(getApplication().getResources().getString(R.string.successful_restoration));
+//                        mMessage.postValue(getApplication().getResources().getString(R.string.successful_restoration));
+//                        mMessage.postValue(R.string.successful_restoration);
+                        mMessageService.showMessage(R.string.successful_restoration);
                     }
                 })
                 .doOnError(new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        mMessage.postValue(getApplication().getResources().getString(R.string.unsuccessful_restoration));
+//                        mMessage.postValue(getApplication().getResources().getString(R.string.unsuccessful_restoration));
+//                        mMessage.postValue(R.string.unsuccessful_restoration);
+                        mMessageService.showMessage(R.string.unsuccessful_restoration);
                         Log.d(TAG, "doOnError: " + throwable);
                     }
                 })

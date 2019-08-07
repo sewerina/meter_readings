@@ -48,14 +48,14 @@ public class BackupCopyingActivity extends AppCompatActivity {
             }
         });
 
-        mViewModel.getMessage().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String message) {
-                if (!message.isEmpty()) {
-                    Toast.makeText(BackupCopyingActivity.this, message, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        mViewModel.getMessage().observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(String message) {
+//                if (!message.isEmpty()) {
+//                    Toast.makeText(BackupCopyingActivity.this, message, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

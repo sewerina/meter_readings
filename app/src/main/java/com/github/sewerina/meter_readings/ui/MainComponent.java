@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 
-@Component(modules = {DaoModule.class, FirestoreModule.class})
+@Component(modules = {DaoModule.class, FirestoreModule.class, MessageServiceModule.class})
 @Singleton
 public interface MainComponent {
     void inject(MainViewModel viewModel);
