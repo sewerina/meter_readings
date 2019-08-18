@@ -15,7 +15,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:hint="Время"
+        android:hint="@string/preference_hint_time"
         app:hintEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText

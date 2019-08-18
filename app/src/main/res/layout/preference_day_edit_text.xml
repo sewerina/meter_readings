@@ -15,8 +15,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:hint="День месяца"
-        app:helperText="День месяца - число от 1 до 31"
+        android:hint="@string/preference_hint_day"
+        app:helperText="@string/preference_helper_day"
         app:helperTextEnabled="true"
         app:hintEnabled="true">
 
