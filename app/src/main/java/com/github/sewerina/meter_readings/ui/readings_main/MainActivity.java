@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_reports) {
-            // todo: start report activity
+            startActivity(new Intent(this, ReportActivity.class));
             return true;
         }
 
