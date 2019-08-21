@@ -85,6 +85,7 @@
     <string name="btn_save">Сохранить</string>
     <string name="btn_cancel">Отмена</string>
     <string name="btn_delete">Удалить</string>
+    <string name="action_reports">Отчеты</string>
 
 
 </resources>

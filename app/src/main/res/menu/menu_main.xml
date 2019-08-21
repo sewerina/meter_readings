@@ -25,5 +25,10 @@
         android:title="@string/action_backupCopying"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_reports"
+        android:title="@string/action_reports"
+        app:showAsAction="never" />
+
 
 </menu>

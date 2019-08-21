@@ -35,9 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
     public static final String CURRENT_HOME_ENTITY = "currentHomeEntity";
-
+    private static final String TAG = "MainActivity";
     private Spinner mSpinner;
     private RecyclerView mRecyclerView;
     private FloatingActionButton mAddReadingFab;
@@ -164,6 +163,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_backupCopying) {
             startActivity(new Intent(this, BackupCopyingActivity.class));
+            return true;
+        }
+
+        if (id == R.id.action_reports) {
+            // todo: start report activity
             return true;
         }
 
