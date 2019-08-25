@@ -4,6 +4,7 @@ import com.github.sewerina.meter_readings.ui.backup_copying.BackupCopyingViewMod
 import com.github.sewerina.meter_readings.ui.chart.ChartViewModel;
 import com.github.sewerina.meter_readings.ui.homes.HomesViewModel;
 import com.github.sewerina.meter_readings.ui.readings_main.MainViewModel;
+import com.github.sewerina.meter_readings.ui.report.ReportViewModel;
 
 import javax.inject.Singleton;
 
@@ -16,5 +17,6 @@ public interface MainComponent {
     void inject(HomesViewModel viewModel);
     void inject(BackupCopyingViewModel viewModel);
     void inject(ChartViewModel viewModel);
+    void inject(ReportViewModel viewModel);
 
 }
