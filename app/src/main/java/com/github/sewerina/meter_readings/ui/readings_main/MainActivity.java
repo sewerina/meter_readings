@@ -28,6 +28,7 @@ import com.github.sewerina.meter_readings.database.ReadingEntity;
 import com.github.sewerina.meter_readings.ui.backup_copying.BackupCopyingActivity;
 import com.github.sewerina.meter_readings.ui.chart.ChartActivity;
 import com.github.sewerina.meter_readings.ui.homes.HomesActivity;
+import com.github.sewerina.meter_readings.ui.report.ReportActivity;
 import com.github.sewerina.meter_readings.ui.settings.SettingsActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -167,8 +168,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_reports) {
-            startActivity(new Intent(this, ReportActivity.class));
-            return true;
+            if (mViewModel.getState().getValue() != null) {
+                startActivity(ReportActivity.newIntent(this, mViewModel.getState().getValue().currentHomeEntity));
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);
