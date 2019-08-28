@@ -56,6 +56,11 @@ public class ReportTest {
     }
 
     @Test
+    public void testHomeId() {
+        assertTrue(mReport.getHomeId() >= 0);
+    }
+
+    @Test
     public void testColdWaterValue() {
         assertTrue(mReport.getColdWaterValue() >= 0);
         assertEquals(140 - 115, mReport.getColdWaterValue());

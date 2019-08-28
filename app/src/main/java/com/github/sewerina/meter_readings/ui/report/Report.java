@@ -9,15 +9,14 @@ import java.util.List;
 public class Report {
 
     private int coldWaterValue;
-
     private int hotWaterValue;
-
     private int drainWaterValue;
-
     private int electricityValue;
-
     private int gasValue;
+
     private Date mLastDate;
+
+    private int homeId;
 
     public Report(List<ReadingEntity> readings) {
         getValues(readings);
@@ -26,12 +25,17 @@ public class Report {
     private void getValues(List<ReadingEntity> readings) {
         ReadingEntity firstReading = readings.get(readings.size() - 1);
         ReadingEntity lastReading = readings.get(0);
+        homeId = firstReading.homeId;
         mLastDate = lastReading.date;
         coldWaterValue = lastReading.coldWater - firstReading.coldWater;
         hotWaterValue = lastReading.hotWater - firstReading.hotWater;
         drainWaterValue = lastReading.drainWater - firstReading.drainWater;
         electricityValue = lastReading.electricity - firstReading.electricity;
         gasValue = lastReading.gas - firstReading.gas;
+    }
+
+    public int getHomeId() {
+        return homeId;
     }
 
     public int getColdWaterValue() {
