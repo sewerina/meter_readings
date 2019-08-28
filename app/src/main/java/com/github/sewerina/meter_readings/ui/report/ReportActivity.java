@@ -62,6 +62,10 @@ public class ReportActivity extends AppCompatActivity {
             mCurrentHomeEntity  = (HomeEntity) getIntent().getSerializableExtra(EXTRA_CURRENT_HOME_ENTITY);
         }
 
+        if (mCurrentHomeEntity != null && mCurrentHomeEntity.address != null) {
+            setTitle("Отчеты для " + mCurrentHomeEntity.address);
+        }
+
         mRecyclerView = findViewById(R.id.recyclerReports);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         final ReportAdapter reportAdapter = new ReportAdapter();

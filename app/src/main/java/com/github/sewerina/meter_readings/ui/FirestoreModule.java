@@ -32,4 +32,11 @@ public class FirestoreModule {
         return firebaseFirestore.collection("homes");
     }
 
+    @Provides
+    @Singleton
+    @Named("reports")
+    public CollectionReference referenceReports(FirebaseFirestore firebaseFirestore) {
+        return firebaseFirestore.collection("reports");
+    }
+
 }
