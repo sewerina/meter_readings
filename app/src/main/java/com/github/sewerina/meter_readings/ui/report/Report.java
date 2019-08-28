@@ -3,10 +3,11 @@ package com.github.sewerina.meter_readings.ui.report;
 import com.github.sewerina.meter_readings.FormattedDate;
 import com.github.sewerina.meter_readings.database.ReadingEntity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Report {
+public class Report implements Serializable {
 
     private int coldWaterValue;
     private int hotWaterValue;
@@ -14,7 +15,7 @@ public class Report {
     private int electricityValue;
     private int gasValue;
 
-    private Date mLastDate;
+    private Date date;
 
     private int homeId;
 
@@ -22,11 +23,15 @@ public class Report {
         getValues(readings);
     }
 
+    public Report() {
+    }
+
     private void getValues(List<ReadingEntity> readings) {
         ReadingEntity firstReading = readings.get(readings.size() - 1);
         ReadingEntity lastReading = readings.get(0);
+
         homeId = firstReading.homeId;
-        mLastDate = lastReading.date;
+        date = lastReading.date;
         coldWaterValue = lastReading.coldWater - firstReading.coldWater;
         hotWaterValue = lastReading.hotWater - firstReading.hotWater;
         drainWaterValue = lastReading.drainWater - firstReading.drainWater;
@@ -58,8 +63,13 @@ public class Report {
         return gasValue;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
     public String reportMessage(boolean isColdWater, boolean isHotWater, boolean isDrainWater, boolean isElectricity, boolean isGas, String home) {
-        String lastDate = new FormattedDate(mLastDate).text();
+//        String lastDate = new FormattedDate(mLastDate).text();
+        String stringDate = new FormattedDate(date).text();
 
         String coldWater = " хол.вода = " + getColdWaterValue();
         String hotWater = " гор.вода = " + getHotWaterValue();
@@ -67,7 +77,7 @@ public class Report {
         String electricity = " электричество = " + getElectricityValue();
         String gas = " gas = " + getGasValue();
 
-        String message = "Расходы компонентов для дома " + home + " на дату " + lastDate
+        String message = "Расходы компонентов для дома " + home + " на дату " + stringDate
                 + " составляют:";
 
         if (isColdWater) {

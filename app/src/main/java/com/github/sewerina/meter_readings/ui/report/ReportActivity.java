@@ -88,6 +88,8 @@ public class ReportActivity extends AppCompatActivity {
                 reportAdapter.update(reports);
             }
         });
+
+       mViewModel.loadReports(mCurrentHomeEntity);
     }
 
     private class ReportHolder extends RecyclerView.ViewHolder {

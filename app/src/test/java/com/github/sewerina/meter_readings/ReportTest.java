@@ -61,6 +61,11 @@ public class ReportTest {
     }
 
     @Test
+    public void testDate() {
+        assertNotNull(mReport.getDate());
+    }
+
+    @Test
     public void testColdWaterValue() {
         assertTrue(mReport.getColdWaterValue() >= 0);
         assertEquals(140 - 115, mReport.getColdWaterValue());
