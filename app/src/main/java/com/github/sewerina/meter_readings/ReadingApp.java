@@ -80,7 +80,7 @@ public class ReadingApp extends Application {
 
             }
         };
-        preferences.registerOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
+//        preferences.registerOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
 
         AppDatabase db = Room.databaseBuilder(
                 this,

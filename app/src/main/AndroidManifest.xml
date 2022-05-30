@@ -10,9 +10,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.report.ReportActivity"
+        <activity
+            android:name=".ui.report.ReportActivity"
             android:label="@string/title_activity_report"
-            android:parentActivityName=".ui.readings_main.MainActivity"/>
+            android:parentActivityName=".ui.readings_main.MainActivity" />
         <activity
             android:name=".ui.backup_copying.BackupCopyingActivity"
             android:label="@string/title_activity_backupCopying"
@@ -33,7 +34,9 @@
             android:name=".ui.chart.ChartActivity"
             android:label="@string/title_activity_chart"
             android:parentActivityName=".ui.readings_main.MainActivity" />
-        <activity android:name=".ui.readings_main.MainActivity">
+        <activity
+            android:name=".ui.readings_main.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
