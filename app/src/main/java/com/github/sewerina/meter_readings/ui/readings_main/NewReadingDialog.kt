@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.github.sewerina.meter_readings.R
 import com.github.sewerina.meter_readings.ReadingApp
-import com.github.sewerina.meter_readings.database.ReadingEntity
+import com.github.sewerina.meter_readings.database.NewReadingEntity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import java.util.*
@@ -86,8 +86,8 @@ class NewReadingDialog : DialogFragment() {
                 )
             )
             .setPositiveButton("") { dialog, which ->
-                val entity = ReadingEntity(-1, -1, Date(), 0, 0, 0, 0, 0)
-                //                        entity.date = new Date();
+                val entity = NewReadingEntity(Date())
+
                 if (coldWaterEt.text != null && coldWaterEt.text.toString().isNotEmpty()) {
                     entity.coldWater = coldWaterEt.text.toString().toInt()
                 }

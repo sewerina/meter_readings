@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sewerina.meter_readings.database.AppDao
 import com.github.sewerina.meter_readings.database.HomeEntity
+import com.github.sewerina.meter_readings.database.NewReadingEntity
 import com.github.sewerina.meter_readings.database.ReadingEntity
 import com.google.firebase.firestore.CollectionReference
 import io.reactivex.Completable
@@ -57,15 +58,14 @@ class MainViewModel @Inject constructor(
         mDisposables.add(subscribe)
     }
 
-    fun addReading(readingEntity: ReadingEntity) {
+    fun addReading(readingEntity: NewReadingEntity) {
         if (mState.value != null) {
             val currentHomeEntity = mState.value!!.currentHomeEntity
             readingEntity.homeId = currentHomeEntity!!.id
             val subscribe = mDao.insertReadingRx(readingEntity)
                 .subscribeOn(Schedulers.io())
                 .flatMapCompletable { readingId ->
-                    readingEntity.id = readingId.toInt()
-                    addReadingInCloudFirestore(readingEntity)
+                    addReadingInCloudFirestore(readingEntity.toEntity(readingId.toInt()))
                 }
                 .andThen(loadReadingsRx(currentHomeEntity))
                 .subscribe()

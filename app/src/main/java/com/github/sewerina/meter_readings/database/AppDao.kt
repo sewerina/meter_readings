@@ -34,10 +34,8 @@ interface AppDao {
     @get:Query("select * from home")
     val homesLiveData: LiveData<List<HomeEntity>>
 
-    //    @Insert
-    //    Completable insertReadingRx(ReadingEntity entity);
-    @Insert
-    fun insertReadingRx(entity: ReadingEntity): Single<Long>
+    @Insert(entity = ReadingEntity::class)
+    fun insertReadingRx(entity: NewReadingEntity): Single<Long>
 
     @Update
     fun updateReadingRx(entity: ReadingEntity): Completable
@@ -45,8 +43,6 @@ interface AppDao {
     @Delete
     fun deleteReadingRx(entity: ReadingEntity): Completable
 
-    //    @Insert
-    //    Completable insertHomeRx(HomeEntity entity);
     @Insert(entity = HomeEntity::class)
     fun insertHomeRx(entity: NewHomeEntity): Single<Long>
 

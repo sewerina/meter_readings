@@ -41,9 +41,9 @@ class NewHomeDialog : DialogFragment() {
 
     companion object {
         private const val TAG = "NewHomeDialog"
-        fun showDialog(manager: FragmentManager?) {
+        fun showDialog(manager: FragmentManager) {
             val dialog = NewHomeDialog()
-            dialog.show(manager!!, TAG)
+            dialog.show(manager, TAG)
         }
     }
 }

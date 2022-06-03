@@ -21,7 +21,7 @@ class BottomSheetReadingDialog : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mReadingEntity = arguments?.getSerializable("reading") as ReadingEntity
+        mReadingEntity = requireArguments().getSerializable("reading") as ReadingEntity
     }
 
     override fun onCreateView(

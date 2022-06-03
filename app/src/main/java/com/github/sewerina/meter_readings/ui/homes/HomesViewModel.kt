@@ -14,9 +14,9 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class HomesViewModel @Inject constructor(
+    var mDao: AppDao,
     @Named("homes")
-    var mCollectionReference: CollectionReference,
-    var mDao: AppDao
+    var mCollectionReference: CollectionReference
 ) : ViewModel() {
     private val mDisposables = CompositeDisposable()
 

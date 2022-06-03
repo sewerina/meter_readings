@@ -49,3 +49,38 @@ class ReadingEntity(
     @ColumnInfo(name = "gas")
     var gas: Int
 ) : Serializable
+
+class NewReadingEntity(
+    @JvmField
+    @ColumnInfo(name = "date")
+    @TypeConverters(DateConverter::class)
+    var date: Date,
+
+    @JvmField
+    @ColumnInfo(name = "homeId")
+    var homeId: Int = -1,
+
+    @JvmField
+    @ColumnInfo(name = "coldWater")
+    var coldWater: Int = 0,
+
+    @JvmField
+    @ColumnInfo(name = "hotWater")
+    var hotWater: Int = 0,
+
+    @JvmField
+    @ColumnInfo(name = "drainWater")
+    var drainWater: Int = 0,
+
+    @JvmField
+    @ColumnInfo(name = "electricity")
+    var electricity: Int = 0,
+
+    @JvmField
+    @ColumnInfo(name = "gas")
+    var gas: Int = 0
+) : Serializable {
+    fun toEntity(id: Int): ReadingEntity {
+        return ReadingEntity(homeId, id, date, coldWater, hotWater, drainWater, electricity, gas)
+    }
+}
