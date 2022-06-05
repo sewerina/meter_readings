@@ -1,16 +1,15 @@
 package com.github.sewerina.meter_readings.ui.chart
 
-import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
-import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -18,47 +17,68 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.sewerina.meter_readings.R
 import com.github.sewerina.meter_readings.ReadingApp
-import com.github.sewerina.meter_readings.database.HomeEntity
 import com.github.sewerina.meter_readings.database.ReadingEntity
+import com.github.sewerina.meter_readings.databinding.FragmentChartBinding
 import com.github.sewerina.meter_readings.ui.readings_main.ReadingPreferences
+import com.github.sewerina.meter_readings.ui.selectHome.SelectHomeViewModel
 import java.util.*
 import javax.inject.Inject
 
-class ChartActivity : AppCompatActivity() {
-    @Inject
-    lateinit var mViewModel: ChartViewModel
-    private lateinit var mCurrentHomeEntity: HomeEntity
-    private lateinit var mChart: BarChart
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chart)
-        mChart = findViewById(R.id.chart)
-        mChart.setNoDataText(resources.getString(R.string.chart_noDataText))
-        mChart.setNoDataTextColor(Color.BLUE)
-        mChart.setNoDataTextTypeface(Typeface.SERIF)
-        if (intent != null) {
-            mCurrentHomeEntity =
-                intent.getSerializableExtra(EXTRA_CURRENT_HOME_ENTITY) as HomeEntity
-        }
-        title = mCurrentHomeEntity.address
+class ChartFragment : Fragment() {
+    private var _binding: FragmentChartBinding? = null
 
-        ReadingApp.sMainComponent!!.inject(this)
-        mViewModel.readings.observe(this) { readingEntities ->
-            if (readingEntities != null && readingEntities.isNotEmpty()) {
-                showChart(readingEntities)
-            }
-        }
-        mViewModel.loadInChart(mCurrentHomeEntity)
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
+    @Inject
+    lateinit var mChartVM: ChartViewModel
+
+    @Inject
+    lateinit var mSelectHomeVM: SelectHomeViewModel
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        // Inflate the layout for this fragment
+        _binding = FragmentChartBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        ReadingApp.sMainComponent?.inject(this)
+
+        binding.chart.apply {
+            setNoDataText(getString(R.string.chart_noDataText))
+            setNoDataTextColor(Color.BLUE)
+            setNoDataTextTypeface(Typeface.DEFAULT_BOLD)
         }
+
+        mChartVM.readings.observe(viewLifecycleOwner) { readingEntities ->
+            if (readingEntities != null && readingEntities.isNotEmpty()) {
+                showChart(readingEntities)
+            } else {
+                binding.chart.data = null
+                binding.chart.setBackgroundColor(
+                    resources.getColor(
+                        android.R.color.background_light,
+                        null
+                    )
+                )
+                binding.chart.invalidate() // refresh
+            }
+        }
+
+        mSelectHomeVM.currentHomePosition.observe(viewLifecycleOwner) {
+            mChartVM.loadInChart(mSelectHomeVM.getCurrentHomeEntity())
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun showChart(readings: List<ReadingEntity>) {
@@ -66,7 +86,7 @@ class ChartActivity : AppCompatActivity() {
         for (reading in readings) {
             dates.add(reading.date)
         }
-        val xAxis = mChart.xAxis
+        val xAxis = binding.chart.xAxis
         xAxis.axisMinimum = 0f
         xAxis.axisMaximum = readings.size.toFloat()
         xAxis.granularity = 1f
@@ -77,8 +97,8 @@ class ChartActivity : AppCompatActivity() {
 //        xAxis.setDrawGridLines(true);
         xAxis.textSize = 12f
         xAxis.valueFormatter = XValueFormatter(dates)
-        val leftYAxis = mChart.axisLeft
-        val rightYAxis = mChart.axisRight
+        val leftYAxis = binding.chart.axisLeft
+        val rightYAxis = binding.chart.axisRight
         leftYAxis.axisMinimum = 0f
         rightYAxis.axisMinimum = 0f
         //        leftYAxis.mAxisMinimum = 0;
@@ -94,25 +114,25 @@ class ChartActivity : AppCompatActivity() {
 //        rightYAxis.setDrawGridLines(true);
         leftYAxis.textSize = 12f
         rightYAxis.textSize = 12f
-        val legend = mChart.legend
+        val legend = binding.chart.legend
         legend.formSize = 10f
         legend.textSize = 12f
         legend.setDrawInside(false)
         legend.isWordWrapEnabled = true
         legend.xEntrySpace = 10f
         legend.yEntrySpace = 10f
-        mChart.setBackgroundColor(resources.getColor(R.color.colorBackground, null))
+        binding.chart.setBackgroundColor(resources.getColor(R.color.colorBackground, null))
         val description = Description()
         description.text = resources.getString(R.string.chart_description)
         description.textSize = 14f
         //        description.setTextAlign(Paint.Align.RIGHT);
         val metrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(metrics)
+        activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
         val displayWidth = metrics.widthPixels
         val displayHeight = metrics.heightPixels
         description.setPosition(displayWidth.toFloat() * 2 / 3, 90f)
-        mChart.description = description
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        binding.chart.description = description
+        val preferences = PreferenceManager.getDefaultSharedPreferences(binding.chart.context)
         val isColdWater = preferences.getBoolean(ReadingPreferences.KEY_PREF_COLD_WATER, true)
         val isHotWater = preferences.getBoolean(ReadingPreferences.KEY_PREF_HOT_WATER, true)
         val isDrainWater = preferences.getBoolean(ReadingPreferences.KEY_PREF_DRAIN_WATER, true)
@@ -185,30 +205,19 @@ class ChartActivity : AppCompatActivity() {
         var barWidth = 0f
         val data = BarData(dataSets)
         data.setValueTextSize(12f)
-        mChart.data = data
+        binding.chart.data = data
         if (n > 1) {
             groupSpace = 0.1f
             val b = (1.00f - groupSpace) / n
             barWidth = b * 0.9f
             barSpace = b - barWidth
             data.barWidth = barWidth
-            mChart.groupBars(0f, groupSpace, barSpace) // perform the "explicit"
-            mChart.notifyDataSetChanged()
+            binding.chart.groupBars(0f, groupSpace, barSpace) // perform the "explicit"
+            binding.chart.notifyDataSetChanged()
         } else {
             barWidth = 0.25f
             data.barWidth = barWidth
         }
-        mChart.invalidate() // refresh
-    }
-
-    companion object {
-        private const val EXTRA_CURRENT_HOME_ENTITY = "currentHomeEntity"
-
-        @JvmStatic
-        fun newIntent(context: Context, homeEntity: HomeEntity): Intent {
-            val intent = Intent(context, ChartActivity::class.java)
-            intent.putExtra(EXTRA_CURRENT_HOME_ENTITY, homeEntity)
-            return intent
-        }
+        binding.chart.invalidate() // refresh
     }
 }

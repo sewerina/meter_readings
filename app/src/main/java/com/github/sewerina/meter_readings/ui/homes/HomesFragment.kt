@@ -2,56 +2,63 @@ package com.github.sewerina.meter_readings.ui.homes
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.sewerina.meter_readings.R
 import com.github.sewerina.meter_readings.ReadingApp
 import com.github.sewerina.meter_readings.database.HomeEntity
+import com.github.sewerina.meter_readings.databinding.FragmentHomesBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import javax.inject.Inject
 
-class HomesActivity : AppCompatActivity() {
-    private lateinit var mRecyclerView: RecyclerView
-    private lateinit var mAddHomeFab: FloatingActionButton
+class HomesFragment : Fragment() {
+    private var _binding: FragmentHomesBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     @Inject
     lateinit var mViewModel: HomesViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_homes)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        // Inflate the layout for this fragment
+        _binding = FragmentHomesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        ReadingApp.sMainComponent!!.inject(this)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        ReadingApp.sMainComponent?.inject(this)
 
         val homeAdapter = HomeAdapter()
-        mViewModel.homes.observe(this) { homeEntities -> homeAdapter.update(homeEntities) }
-
-        mRecyclerView = findViewById<RecyclerView?>(R.id.recyclerHomes).apply {
-            layoutManager = LinearLayoutManager(this@HomesActivity)
+        binding.recyclerHomes.apply {
+            layoutManager = LinearLayoutManager(view.context)
             adapter = homeAdapter
         }
 
-        mAddHomeFab = findViewById(R.id.fab_addHome)
-        mAddHomeFab.setOnClickListener(View.OnClickListener {
-            NewHomeDialog.showDialog(supportFragmentManager)
-        })
+        binding.fabAddHome.setOnClickListener {
+            NewHomeDialog.showDialog(parentFragmentManager)
+        }
+
+        mViewModel.homes.observe(viewLifecycleOwner) { homeEntities ->
+            homeAdapter.update(
+                homeEntities
+            )
+        }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private inner class HomeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -67,7 +74,7 @@ class HomesActivity : AppCompatActivity() {
         init {
             mEditHomeIBtn.setOnClickListener {
                 EditHomeDialog.showDialog(
-                    supportFragmentManager,
+                    parentFragmentManager,
                     mHomeEntity
                 )
             }
@@ -113,9 +120,5 @@ class HomesActivity : AppCompatActivity() {
             mHomes.add(entity)
             notifyItemInserted(mHomes.size - 1)
         }
-    }
-
-    companion object {
-        private const val TAG = "HomesActivity"
     }
 }

@@ -9,13 +9,17 @@ import androidx.fragment.app.FragmentManager
 import com.github.sewerina.meter_readings.R
 import com.github.sewerina.meter_readings.ReadingApp
 import com.github.sewerina.meter_readings.database.ReadingEntity
+import com.github.sewerina.meter_readings.ui.selectHome.SelectHomeViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import javax.inject.Inject
 
 class BottomSheetReadingDialog : BottomSheetDialogFragment() {
     @Inject
-    lateinit var mViewModel: MainViewModel
+    lateinit var mReadingsVM: ReadingsViewModel
+
+    @Inject
+    lateinit var mSelectHomeVM: SelectHomeViewModel
 
     private lateinit var mReadingEntity: ReadingEntity
 
@@ -41,7 +45,7 @@ class BottomSheetReadingDialog : BottomSheetDialogFragment() {
 
         val deleteBtn: MaterialButton = view.findViewById(R.id.btn_delete)
         deleteBtn.setOnClickListener {
-            mViewModel.deleteReading(mReadingEntity)
+            mReadingsVM.deleteReading(mSelectHomeVM.getCurrentHomeEntity(), mReadingEntity)
             dismiss()
         }
 

@@ -1,17 +1,7 @@
 <resources>
     <string name="app_name">Показания счетчиков</string>
 
-    <string name="action_chart">Диаграмма</string>
-    <string name="action_settings">Настройки</string>
-    <string name="action_homes">Ваши дома (квартиры)</string>
-    <string name="action_backupCopying">Резервное копирование</string>
-
-    <string name="title_activity_settings">Настройки</string>
-    <string name="title_activity_homes">Ваши дома (квартиры)</string>
-    <string name="title_activity_chart">Диаграмма</string>
-    <string name="title_activity_backupCopying">Резервное копирование</string>
-
-    <string name="title_spinner">Выберите из списка ниже дом, показания которого интересуют Вас: </string>
+    <string name="title_spinner">Выберите из списка ниже дом, показания которого интересуют Вас:</string>
 
     <string name="matBtn_backup">Создать резервную копию</string>
     <string name="matBtn_restore">Восстановить из резервной копии</string>
@@ -85,8 +75,15 @@
     <string name="btn_save">Сохранить</string>
     <string name="btn_cancel">Отмена</string>
     <string name="btn_delete">Удалить</string>
-    <string name="action_reports">Отчеты</string>
-    <string name="title_activity_report">Отчеты</string>
 
+    <string name="title_activity_shell">ShellActivity</string>
+
+    <string name="title_readings">Показания</string>
+    <string name="title_chart">Диаграмма</string>
+    <string name="title_settings">Настройки</string>
+    <string name="title_homes">Дома</string>
+    <string name="title_userPreferences">Настройки пользователя</string>
+    <string name="title_reports">Отчеты</string>
+    <string name="title_backupCopying">Резервное копирование</string>
 
 </resources>

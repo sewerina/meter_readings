@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="8dp"
+    android:orientation="vertical"
+    tools:context=".ui.settings.SettingsFragment">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btb_userPrefs"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Настройки пользователя"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        app:icon="@drawable/ic_arrow_forward_24dp"
+        app:iconGravity="end" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_reports"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Отчеты"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        app:icon="@drawable/ic_arrow_forward_24dp"
+        app:iconGravity="end" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_backup"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Резервное копирование"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        app:icon="@drawable/ic_arrow_forward_24dp"
+        app:iconGravity="end" />
+</LinearLayout>

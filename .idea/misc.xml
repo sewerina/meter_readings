@@ -3,12 +3,33 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/activity_backup_copying.xml" value="0.221875" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/drawable-anydpi/ic_add_reading.xml" value="0.2605" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.316" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.316" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/drawable/ic_settings_24dp.xml" value="0.316" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/activity_backup_copying.xml" value="0.33" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/activity_chart.xml" value="0.26721014492753625" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/activity_homes.xml" value="0.24456521739130435" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/activity_main.xml" value="0.3625" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/activity_report.xml" value="0.1" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/activity_shell.xml" value="0.3625" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/dialog_edit_delete_reading.xml" value="0.5" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/dialog_edit_reading.xml" value="0.3625" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/dialog_new_reading.xml" value="0.3625" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/fragment_backup_copying.xml" value="0.33016304347826086" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/fragment_chart.xml" value="0.5" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/fragment_dashboard.xml" value="0.3625" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/fragment_home.xml" value="0.3625" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/fragment_homes.xml" value="0.3625" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/fragment_notifications.xml" value="0.3625" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/fragment_readings.xml" value="0.5532591414944356" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/fragment_reports.xml" value="0.3625" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/fragment_select_home.xml" value="0.35144927536231885" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/home_list_item.xml" value="0.30027173913043476" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/preference_day_edit_text.xml" value="0.3625" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/settings_activity.xml" value="0.3625" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3625" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/menu/menu_main.xml" value="0.33" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/xml/root_preferences.xml" value="0.3625" />
       </map>
     </option>

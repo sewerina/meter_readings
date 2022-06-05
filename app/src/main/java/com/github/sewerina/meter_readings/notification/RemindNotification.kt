@@ -11,7 +11,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.github.sewerina.meter_readings.R
-import com.github.sewerina.meter_readings.ui.readings_main.MainActivity
+import com.github.sewerina.meter_readings.ShellActivity
 
 class RemindNotification(private val mContext: Context) {
     fun appearNotification() {
@@ -56,7 +56,7 @@ class RemindNotification(private val mContext: Context) {
     }
 
     private fun contentIntent(context: Context): PendingIntent {
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, ShellActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PendingIntent.getActivity(context, 0, intent, FLAG_IMMUTABLE)

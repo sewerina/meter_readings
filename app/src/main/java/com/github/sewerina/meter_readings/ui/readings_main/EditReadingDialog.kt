@@ -12,6 +12,7 @@ import com.github.sewerina.meter_readings.FormattedDate
 import com.github.sewerina.meter_readings.R
 import com.github.sewerina.meter_readings.ReadingApp
 import com.github.sewerina.meter_readings.database.ReadingEntity
+import com.github.sewerina.meter_readings.ui.selectHome.SelectHomeViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import java.util.*
@@ -19,7 +20,10 @@ import javax.inject.Inject
 
 class EditReadingDialog : DialogFragment() {
     @Inject
-    lateinit var mViewModel: MainViewModel
+    lateinit var mReadingsVM: ReadingsViewModel
+
+    @Inject
+    lateinit var mSelectHomeVM: SelectHomeViewModel
 
     private val mCalendar = Calendar.getInstance()
     private val mDatePickerListener = OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
@@ -87,7 +91,7 @@ class EditReadingDialog : DialogFragment() {
                 if (gasEt.text != null && gasEt.text.toString().isNotEmpty()) {
                     readingEntity.gas = gasEt.text.toString().toInt()
                 }
-                mViewModel.updateReading(readingEntity)
+                mReadingsVM.updateReading(mSelectHomeVM.getCurrentHomeEntity(), readingEntity)
             }
         return builder.create()
     }

@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager
 import com.github.sewerina.meter_readings.R
 import com.github.sewerina.meter_readings.ReadingApp
 import com.github.sewerina.meter_readings.database.NewReadingEntity
+import com.github.sewerina.meter_readings.ui.selectHome.SelectHomeViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import java.util.*
@@ -18,7 +19,10 @@ import javax.inject.Inject
 
 class NewReadingDialog : DialogFragment() {
     @Inject
-    lateinit var mViewModel: MainViewModel
+    lateinit var mReadingsVM: ReadingsViewModel
+
+    @Inject
+    lateinit var mSelectHomeVM: SelectHomeViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         ReadingApp.sMainComponent!!.inject(this)
@@ -103,7 +107,7 @@ class NewReadingDialog : DialogFragment() {
                 if (gasEt.text != null && gasEt.text.toString().isNotEmpty()) {
                     entity.gas = gasEt.text.toString().toInt()
                 }
-                mViewModel.addReading(entity)
+                mReadingsVM.addReading(mSelectHomeVM.getCurrentHomeEntity(), entity)
             }
         return builder.create()
     }

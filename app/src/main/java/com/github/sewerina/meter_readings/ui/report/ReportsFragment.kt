@@ -1,56 +1,66 @@
 package com.github.sewerina.meter_readings.ui.report
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.sewerina.meter_readings.R
 import com.github.sewerina.meter_readings.ReadingApp
-import com.github.sewerina.meter_readings.database.HomeEntity
+import com.github.sewerina.meter_readings.databinding.FragmentReportsBinding
 import com.github.sewerina.meter_readings.ui.readings_main.ReadingPreferences
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.github.sewerina.meter_readings.ui.selectHome.SelectHomeViewModel
 import javax.inject.Inject
 
-class ReportActivity : AppCompatActivity() {
-    private lateinit var mRecyclerView: RecyclerView
-    private lateinit var mAddReportFab: FloatingActionButton
-    private lateinit var mCurrentHomeEntity: HomeEntity
+class ReportsFragment : Fragment() {
+    private var _binding: FragmentReportsBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     @Inject
-    lateinit var mViewModel: ReportViewModel
+    lateinit var mReportsVM: ReportViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_report)
+    @Inject
+    lateinit var mSelectHomeVM: SelectHomeViewModel
 
-        ReadingApp.sMainComponent!!.inject(this)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        // Inflate the layout for this fragment
+        _binding = FragmentReportsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        if (intent != null) {
-            mCurrentHomeEntity =
-                intent.getSerializableExtra(EXTRA_CURRENT_HOME_ENTITY) as HomeEntity
-        }
-
-        title = "Отчеты для " + mCurrentHomeEntity.address
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        ReadingApp.sMainComponent?.inject(this)
 
         val reportAdapter = ReportAdapter()
-        mRecyclerView = findViewById<RecyclerView?>(R.id.recyclerReports).apply {
-            layoutManager = LinearLayoutManager(this@ReportActivity)
+        binding.recyclerReports.apply {
+            layoutManager = LinearLayoutManager(view.context)
             adapter = reportAdapter
         }
 
-        mAddReportFab = findViewById(R.id.fab_addReport)
-        mAddReportFab.setOnClickListener(View.OnClickListener {
-            mViewModel.addReport(mCurrentHomeEntity)
-        })
+        binding.fabAddReport.setOnClickListener {
+            mReportsVM.addReport(mSelectHomeVM.getCurrentHomeEntity())
+        }
 
-        mViewModel.reports.observe(this) { reports -> reportAdapter.update(reports) }
-        mViewModel.loadReports(mCurrentHomeEntity)
+        mReportsVM.reports.observe(viewLifecycleOwner) { reports -> reportAdapter.update(reports) }
+
+        mSelectHomeVM.currentHomePosition.observe(viewLifecycleOwner) {
+            mReportsVM.loadReports(mSelectHomeVM.getCurrentHomeEntity())
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private inner class ReportHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -74,7 +84,7 @@ class ReportActivity : AppCompatActivity() {
                 isDrainWater,
                 isElectricity,
                 isGas,
-                mCurrentHomeEntity.address
+                mSelectHomeVM.getCurrentHomeEntity().address
             )
             mMessageTv.text = message
         }
@@ -105,17 +115,6 @@ class ReportActivity : AppCompatActivity() {
         fun add(report: Report) {
             mReports.add(report)
             notifyItemInserted(mReports.size - 1)
-        }
-    }
-
-    companion object {
-        private const val EXTRA_CURRENT_HOME_ENTITY = "currentHomeEntity"
-
-        @JvmStatic
-        fun newIntent(context: Context, homeEntity: HomeEntity): Intent {
-            val intent = Intent(context, ReportActivity::class.java)
-            intent.putExtra(EXTRA_CURRENT_HOME_ENTITY, homeEntity)
-            return intent
         }
     }
 }

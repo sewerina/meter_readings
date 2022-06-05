@@ -5,8 +5,9 @@ import com.github.sewerina.meter_readings.ui.MessageService
 import com.github.sewerina.meter_readings.ui.backup_copying.BackupCopyingViewModel
 import com.github.sewerina.meter_readings.ui.chart.ChartViewModel
 import com.github.sewerina.meter_readings.ui.homes.HomesViewModel
-import com.github.sewerina.meter_readings.ui.readings_main.MainViewModel
+import com.github.sewerina.meter_readings.ui.readings_main.ReadingsViewModel
 import com.github.sewerina.meter_readings.ui.report.ReportViewModel
+import com.github.sewerina.meter_readings.ui.selectHome.SelectHomeViewModel
 import com.google.firebase.firestore.CollectionReference
 import dagger.Module
 import dagger.Provides
@@ -20,8 +21,8 @@ class ViewModelModule {
     fun providesMainViewModel(
         dao: AppDao,
         @Named("readings") reference: CollectionReference
-    ): MainViewModel {
-        return MainViewModel(dao, reference)
+    ): ReadingsViewModel {
+        return ReadingsViewModel(dao, reference)
     }
 
     @Provides
@@ -57,5 +58,11 @@ class ViewModelModule {
         @Named("reports") reference: CollectionReference
     ): ReportViewModel {
         return ReportViewModel(dao, reference)
+    }
+
+    @Provides
+    @Singleton
+    fun providesSelectHomeViewModel(dao: AppDao): SelectHomeViewModel {
+        return SelectHomeViewModel(dao)
     }
 }
