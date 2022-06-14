@@ -8,25 +8,22 @@ import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 import com.github.sewerina.meter_readings.R
-import com.github.sewerina.meter_readings.ReadingApp
 import com.github.sewerina.meter_readings.database.NewReadingEntity
 import com.github.sewerina.meter_readings.ui.selectHome.SelectHomeViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class NewReadingDialog : DialogFragment() {
-    @Inject
-    lateinit var mReadingsVM: ReadingsViewModel
+    private val mReadingsVM: ReadingsViewModel by activityViewModels()
 
-    @Inject
-    lateinit var mSelectHomeVM: SelectHomeViewModel
+    private val mSelectHomeVM: SelectHomeViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        ReadingApp.sMainComponent!!.inject(this)
-
         val builder = MaterialAlertDialogBuilder(requireActivity())
         val inflater = requireActivity().layoutInflater
         val view = inflater.inflate(R.layout.dialog_new_reading, null)

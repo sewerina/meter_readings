@@ -8,22 +8,21 @@ import android.os.Bundle
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 import com.github.sewerina.meter_readings.FormattedDate
 import com.github.sewerina.meter_readings.R
-import com.github.sewerina.meter_readings.ReadingApp
 import com.github.sewerina.meter_readings.database.ReadingEntity
 import com.github.sewerina.meter_readings.ui.selectHome.SelectHomeViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class EditReadingDialog : DialogFragment() {
-    @Inject
-    lateinit var mReadingsVM: ReadingsViewModel
+    private val mReadingsVM: ReadingsViewModel by activityViewModels()
 
-    @Inject
-    lateinit var mSelectHomeVM: SelectHomeViewModel
+    private val mSelectHomeVM: SelectHomeViewModel by activityViewModels()
 
     private val mCalendar = Calendar.getInstance()
     private val mDatePickerListener = OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
@@ -36,8 +35,6 @@ class EditReadingDialog : DialogFragment() {
     private var mIsDateChanged = false
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        ReadingApp.sMainComponent!!.inject(this)
-
         val readingEntity = requireArguments().getSerializable("reading") as ReadingEntity
 
         val builder = MaterialAlertDialogBuilder(requireActivity())

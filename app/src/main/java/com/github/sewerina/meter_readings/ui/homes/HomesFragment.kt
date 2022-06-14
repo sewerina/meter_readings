@@ -7,15 +7,16 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.sewerina.meter_readings.R
-import com.github.sewerina.meter_readings.ReadingApp
 import com.github.sewerina.meter_readings.database.HomeEntity
 import com.github.sewerina.meter_readings.databinding.FragmentHomesBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomesFragment : Fragment() {
     private var _binding: FragmentHomesBinding? = null
 
@@ -23,8 +24,7 @@ class HomesFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    @Inject
-    lateinit var mViewModel: HomesViewModel
+    private val mViewModel: HomesViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +37,6 @@ class HomesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ReadingApp.sMainComponent?.inject(this)
 
         val homeAdapter = HomeAdapter()
         binding.recyclerHomes.apply {

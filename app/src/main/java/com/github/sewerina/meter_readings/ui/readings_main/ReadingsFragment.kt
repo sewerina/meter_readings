@@ -6,17 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.sewerina.meter_readings.FormattedDate
 import com.github.sewerina.meter_readings.R
-import com.github.sewerina.meter_readings.ReadingApp
 import com.github.sewerina.meter_readings.database.ReadingEntity
 import com.github.sewerina.meter_readings.databinding.FragmentReadingsBinding
 import com.github.sewerina.meter_readings.ui.selectHome.SelectHomeViewModel
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ReadingsFragment : Fragment() {
     private var _binding: FragmentReadingsBinding? = null
 
@@ -24,11 +25,9 @@ class ReadingsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    @Inject
-    lateinit var mReadingsVM: ReadingsViewModel
+    private val mReadingsVM: ReadingsViewModel by activityViewModels()
 
-    @Inject
-    lateinit var mSelectHomeVM: SelectHomeViewModel
+    private val mSelectHomeVM: SelectHomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +40,6 @@ class ReadingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ReadingApp.sMainComponent?.inject(this)
 
         binding.btnGoToHomes.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_readings_to_navigation_homes)

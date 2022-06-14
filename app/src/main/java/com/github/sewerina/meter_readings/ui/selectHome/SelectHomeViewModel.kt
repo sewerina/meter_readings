@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sewerina.meter_readings.database.AppDao
 import com.github.sewerina.meter_readings.database.HomeEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class SelectHomeViewModel @Inject constructor(
     var mDao: AppDao
 ) : ViewModel() {

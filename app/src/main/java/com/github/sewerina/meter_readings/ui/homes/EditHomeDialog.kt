@@ -5,23 +5,21 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 import com.github.sewerina.meter_readings.R
-import com.github.sewerina.meter_readings.ReadingApp
 import com.github.sewerina.meter_readings.database.HomeEntity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EditHomeDialog : DialogFragment() {
     private lateinit var mHomeEntity: HomeEntity
 
-    @Inject
-    lateinit var mViewModel: HomesViewModel
+    private val mViewModel: HomesViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         mHomeEntity = requireArguments().getSerializable("home") as HomeEntity
-
-        ReadingApp.sMainComponent!!.inject(this)
 
         val builder = MaterialAlertDialogBuilder(requireActivity())
         val inflater = requireActivity().layoutInflater

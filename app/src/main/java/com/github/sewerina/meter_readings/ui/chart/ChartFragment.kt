@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceManager
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.BarData
@@ -16,14 +18,14 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.sewerina.meter_readings.R
-import com.github.sewerina.meter_readings.ReadingApp
 import com.github.sewerina.meter_readings.database.ReadingEntity
 import com.github.sewerina.meter_readings.databinding.FragmentChartBinding
 import com.github.sewerina.meter_readings.ui.readings_main.ReadingPreferences
 import com.github.sewerina.meter_readings.ui.selectHome.SelectHomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class ChartFragment : Fragment() {
     private var _binding: FragmentChartBinding? = null
 
@@ -31,11 +33,9 @@ class ChartFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    @Inject
-    lateinit var mChartVM: ChartViewModel
+    private val mChartVM: ChartViewModel by viewModels()
 
-    @Inject
-    lateinit var mSelectHomeVM: SelectHomeViewModel
+    private val mSelectHomeVM: SelectHomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +48,6 @@ class ChartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ReadingApp.sMainComponent?.inject(this)
 
         binding.chart.apply {
             setNoDataText(getString(R.string.chart_noDataText))

@@ -7,18 +7,14 @@ import androidx.preference.PreferenceManager
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
-import com.github.sewerina.meter_readings.di.AppContextModule
-import com.github.sewerina.meter_readings.di.DaggerMainComponent
-import com.github.sewerina.meter_readings.di.MainComponent
 import com.github.sewerina.meter_readings.notification.NotificationWorker
+import dagger.hilt.android.HiltAndroidApp
 import java.util.concurrent.TimeUnit
 
+@HiltAndroidApp
 class ReadingApp : Application() {
     override fun onCreate() {
         super.onCreate()
-
-        sMainComponent =
-            DaggerMainComponent.builder().appContextModule(AppContextModule(this)).build()
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         val onSharedPreferenceChangeListener =
@@ -61,6 +57,5 @@ class ReadingApp : Application() {
 
     companion object {
         private const val TAG = "ReadingApp"
-        var sMainComponent: MainComponent? = null
     }
 }

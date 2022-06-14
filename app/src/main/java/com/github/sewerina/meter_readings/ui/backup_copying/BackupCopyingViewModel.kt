@@ -11,11 +11,13 @@ import com.github.sewerina.meter_readings.database.HomeEntity
 import com.github.sewerina.meter_readings.database.ReadingEntity
 import com.github.sewerina.meter_readings.ui.MessageService
 import com.google.firebase.firestore.CollectionReference
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Named
 
+@HiltViewModel
 class BackupCopyingViewModel @Inject constructor(
     var mDao: AppDao,
 

@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.github.sewerina.meter_readings.ReadingApp
+import androidx.fragment.app.viewModels
 import com.github.sewerina.meter_readings.databinding.FragmentBackupCopyingBinding
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BackupCopyingFragment : Fragment() {
     private var _binding: FragmentBackupCopyingBinding? = null
 
@@ -16,8 +17,7 @@ class BackupCopyingFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    @Inject
-    lateinit var mViewModel: BackupCopyingViewModel
+    private val mViewModel: BackupCopyingViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +30,6 @@ class BackupCopyingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ReadingApp.sMainComponent?.inject(this)
 
         mViewModel.isRefreshing.observe(viewLifecycleOwner) { value ->
             binding.swipeRefreshLayout.isRefreshing = value

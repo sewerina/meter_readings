@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import com.github.sewerina.meter_readings.ReadingApp
+import androidx.fragment.app.activityViewModels
 import com.github.sewerina.meter_readings.databinding.FragmentSelectHomeBinding
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SelectHomeFragment : Fragment() {
     private var _binding: FragmentSelectHomeBinding? = null
 
@@ -18,8 +19,7 @@ class SelectHomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    @Inject
-    lateinit var mViewModel: SelectHomeViewModel
+    private val mViewModel: SelectHomeViewModel by activityViewModels()
 
     private val mOnItemSelectedListener: AdapterView.OnItemSelectedListener =
         object : AdapterView.OnItemSelectedListener {
@@ -46,7 +46,6 @@ class SelectHomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ReadingApp.sMainComponent?.inject(this)
 
         val spinnerAdapter: ArrayAdapter<String> =
             ArrayAdapter(view.context, android.R.layout.simple_spinner_item, ArrayList())

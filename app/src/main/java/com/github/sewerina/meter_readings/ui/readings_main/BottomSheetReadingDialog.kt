@@ -6,20 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 import com.github.sewerina.meter_readings.R
-import com.github.sewerina.meter_readings.ReadingApp
 import com.github.sewerina.meter_readings.database.ReadingEntity
 import com.github.sewerina.meter_readings.ui.selectHome.SelectHomeViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BottomSheetReadingDialog : BottomSheetDialogFragment() {
-    @Inject
-    lateinit var mReadingsVM: ReadingsViewModel
+    private val mReadingsVM: ReadingsViewModel by activityViewModels()
 
-    @Inject
-    lateinit var mSelectHomeVM: SelectHomeViewModel
+    private val mSelectHomeVM: SelectHomeViewModel by activityViewModels()
 
     private lateinit var mReadingEntity: ReadingEntity
 
@@ -34,8 +33,6 @@ class BottomSheetReadingDialog : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.dialog_edit_delete_reading, container, false)
-
-        ReadingApp.sMainComponent!!.inject(this)
 
         val editBtn: MaterialButton = view.findViewById(R.id.btn_edit)
         editBtn.setOnClickListener {

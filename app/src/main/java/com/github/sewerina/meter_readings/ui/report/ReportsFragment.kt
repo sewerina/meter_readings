@@ -6,15 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.sewerina.meter_readings.ReadingApp
 import com.github.sewerina.meter_readings.databinding.FragmentReportsBinding
 import com.github.sewerina.meter_readings.ui.readings_main.ReadingPreferences
 import com.github.sewerina.meter_readings.ui.selectHome.SelectHomeViewModel
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ReportsFragment : Fragment() {
     private var _binding: FragmentReportsBinding? = null
 
@@ -22,11 +25,9 @@ class ReportsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    @Inject
-    lateinit var mReportsVM: ReportViewModel
+    private val mReportsVM: ReportViewModel by viewModels()
 
-    @Inject
-    lateinit var mSelectHomeVM: SelectHomeViewModel
+    private val mSelectHomeVM: SelectHomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,11 +40,11 @@ class ReportsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ReadingApp.sMainComponent?.inject(this)
 
         val reportAdapter = ReportAdapter()
         binding.recyclerReports.apply {
             layoutManager = LinearLayoutManager(view.context)
+            addItemDecoration(DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL))
             adapter = reportAdapter
         }
 
