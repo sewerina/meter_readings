@@ -1,63 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_readings">
+    app:startDestination="@id/nav_readings">
 
-    <fragment
-        android:id="@+id/navigation_readings"
-        android:name="com.github.sewerina.meter_readings.ui.readings_main.ReadingsFragment"
-        android:label="@string/title_readings"
-        tools:layout="@layout/fragment_readings">
-        <action
-            android:id="@+id/action_navigation_readings_to_navigation_homes"
-            app:destination="@id/navigation_homes" />
-    </fragment>
+    <include app:graph="@navigation/nav_readings" />
 
-    <fragment
-        android:id="@+id/navigation_chart"
-        android:name="com.github.sewerina.meter_readings.ui.chart.ChartFragment"
-        android:label="@string/title_chart"
-        tools:layout="@layout/fragment_chart" />
+    <include app:graph="@navigation/nav_chart" />
 
-    <fragment
-        android:id="@+id/navigation_settings"
-        android:name="com.github.sewerina.meter_readings.ui.settings.SettingsFragment"
-        android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings">
-        <action
-            android:id="@+id/action_navigation_settings_to_navigation_userPreferences"
-            app:destination="@id/navigation_userPreferences" />
-        <action
-            android:id="@+id/action_navigation_settings_to_navigation_reports"
-            app:destination="@id/navigation_reports" />
-        <action
-            android:id="@+id/action_navigation_settings_to_navigation_backupCopying"
-            app:destination="@id/navigation_backupCopying" />
-    </fragment>
+    <include app:graph="@navigation/nav_settings" />
 
-    <fragment
-        android:id="@+id/navigation_homes"
-        android:name="com.github.sewerina.meter_readings.ui.homes.HomesFragment"
-        android:label="@string/title_homes"
-        tools:layout="@layout/fragment_homes" />
-
-    <fragment
-        android:id="@+id/navigation_userPreferences"
-        android:name="com.github.sewerina.meter_readings.ui.settings.UserPreferencesFragment"
-        android:label="@string/title_userPreferences"
-        tools:layout="@xml/root_preferences" />
-
-    <fragment
-        android:id="@+id/navigation_reports"
-        android:name="com.github.sewerina.meter_readings.ui.report.ReportsFragment"
-        android:label="@string/title_reports"
-        tools:layout="@layout/fragment_reports" />
-
-    <fragment
-        android:id="@+id/navigation_backupCopying"
-        android:name="com.github.sewerina.meter_readings.ui.backup_copying.BackupCopyingFragment"
-        android:label="@string/title_backupCopying"
-        tools:layout="@layout/fragment_backup_copying" />
 </navigation>

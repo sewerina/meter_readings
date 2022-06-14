@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_readings"
+    app:startDestination="@id/navigation_readings">
+
+    <fragment
+        android:id="@+id/navigation_readings"
+        android:name="com.github.sewerina.meter_readings.ui.readings_main.ReadingsFragment"
+        android:label="@string/title_readings"
+        tools:layout="@layout/fragment_readings">
+        <action
+            android:id="@+id/action_navigation_readings_to_navigation_homes"
+            app:destination="@id/navigation_homes" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_homes"
+        android:name="com.github.sewerina.meter_readings.ui.homes.HomesFragment"
+        android:label="@string/title_homes"
+        tools:layout="@layout/fragment_homes" />
+
+</navigation>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_settings"
+    app:startDestination="@id/navigation_settings">
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.github.sewerina.meter_readings.ui.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_userPreferences"
+            app:destination="@id/navigation_userPreferences" />
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_reports"
+            app:destination="@id/navigation_reports" />
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_backupCopying"
+            app:destination="@id/navigation_backupCopying" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_userPreferences"
+        android:name="com.github.sewerina.meter_readings.ui.settings.UserPreferencesFragment"
+        android:label="@string/title_userPreferences"
+        tools:layout="@xml/root_preferences" />
+
+    <fragment
+        android:id="@+id/navigation_reports"
+        android:name="com.github.sewerina.meter_readings.ui.report.ReportsFragment"
+        android:label="@string/title_reports"
+        tools:layout="@layout/fragment_reports" />
+
+    <fragment
+        android:id="@+id/navigation_backupCopying"
+        android:name="com.github.sewerina.meter_readings.ui.backup_copying.BackupCopyingFragment"
+        android:label="@string/title_backupCopying"
+        tools:layout="@layout/fragment_backup_copying" />
+
+</navigation>
