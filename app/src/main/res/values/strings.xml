@@ -76,8 +76,6 @@
     <string name="btn_cancel">Отмена</string>
     <string name="btn_delete">Удалить</string>
 
-    <string name="title_activity_shell">ShellActivity</string>
-
     <string name="title_readings">Показания</string>
     <string name="title_chart">Диаграмма</string>
     <string name="title_settings">Настройки</string>

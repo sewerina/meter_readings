@@ -1,5 +1,6 @@
 package com.github.sewerina.meter_readings.ui.backup_copying
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -118,6 +119,7 @@ class BackupCopyingViewModel @Inject constructor(
 
                 mMessageService.showMessage(R.string.successful_restoration)
             } catch (e: Exception) {
+                Log.e(TAG, "restoreDb: ", e)
                 mMessageService.showMessage(R.string.unsuccessful_restoration)
             }
 

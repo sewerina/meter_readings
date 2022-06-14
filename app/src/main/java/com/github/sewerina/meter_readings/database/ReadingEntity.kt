@@ -17,37 +17,37 @@ import java.util.*
 class ReadingEntity(
     @JvmField
     @ColumnInfo(name = "homeId")
-    var homeId: Int,
+    var homeId: Int = -1,
 
     @JvmField
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id: Int,
+    var id: Int = -1,
 
     @JvmField
     @ColumnInfo(name = "date")
     @TypeConverters(DateConverter::class)
-    var date: Date,
+    var date: Date = Date(0),
 
     @JvmField
     @ColumnInfo(name = "coldWater")
-    var coldWater: Int,
+    var coldWater: Int = 0,
 
     @JvmField
     @ColumnInfo(name = "hotWater")
-    var hotWater: Int,
+    var hotWater: Int = 0,
 
     @JvmField
     @ColumnInfo(name = "drainWater")
-    var drainWater: Int,
+    var drainWater: Int = 0,
 
     @JvmField
     @ColumnInfo(name = "electricity")
-    var electricity: Int,
+    var electricity: Int = 0,
 
     @JvmField
     @ColumnInfo(name = "gas")
-    var gas: Int
+    var gas: Int = 0
 ) : Serializable
 
 class NewReadingEntity(

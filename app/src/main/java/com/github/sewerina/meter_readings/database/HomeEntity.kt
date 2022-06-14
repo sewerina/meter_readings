@@ -10,10 +10,10 @@ class HomeEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     @JvmField
-    var id : Int,
+    var id : Int = -1,
     @ColumnInfo(name = "address")
     @JvmField
-    var address: String
+    var address: String = ""
 ): Serializable
 
 class NewHomeEntity(
