@@ -13,12 +13,29 @@
         <action
             android:id="@+id/action_navigation_readings_to_navigation_homes"
             app:destination="@id/navigation_homes" />
+        <action
+            android:id="@+id/action_navigation_readings_to_navigation_bottomSheetReading"
+            app:destination="@id/navigation_bottomSheetReading" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_homes"
         android:name="com.github.sewerina.meter_readings.ui.homes.HomesFragment"
         android:label="@string/title_homes"
-        tools:layout="@layout/fragment_homes" />
+        tools:layout="@layout/fragment_homes">
+        <action
+            android:id="@+id/action_navigation_homes_to_navigation_editHome"
+            app:destination="@id/navigation_editHome" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/navigation_editHome"
+        android:name="com.github.sewerina.meter_readings.ui.homes.EditHomeDialog"
+        tools:layout="@layout/dialog_home" />
+
+    <dialog
+        android:id="@+id/navigation_bottomSheetReading"
+        android:name="com.github.sewerina.meter_readings.ui.readings_main.BottomSheetReadingDialog"
+        tools:layout="@layout/dialog_edit_delete_reading" />
 
 </navigation>

@@ -15,6 +15,7 @@
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/activity_shell.xml" value="0.3625" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/dialog_edit_delete_reading.xml" value="0.5" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/dialog_edit_reading.xml" value="0.3625" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/dialog_home.xml" value="0.3625" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/dialog_new_reading.xml" value="0.3625" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/fragment_backup_copying.xml" value="0.33016304347826086" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/fragment_chart.xml" value="0.5" />
@@ -28,6 +29,7 @@
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/fragment_settings.xml" value="0.31521739130434784" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/home_list_item.xml" value="0.30027173913043476" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/preference_day_edit_text.xml" value="0.3625" />
+        <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/reading_list_item.xml" value="0.3625" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/layout/settings_activity.xml" value="0.3625" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3625" />
         <entry key="..\:/MyProjects/meter_readings/app/src/main/res/menu/menu_main.xml" value="0.33" />

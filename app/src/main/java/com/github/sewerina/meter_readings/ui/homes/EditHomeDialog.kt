@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import com.github.sewerina.meter_readings.R
 import com.github.sewerina.meter_readings.database.HomeEntity
@@ -19,7 +18,7 @@ class EditHomeDialog : DialogFragment() {
     private val mViewModel: HomesViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        mHomeEntity = requireArguments().getSerializable("home") as HomeEntity
+        mHomeEntity = requireArguments().getSerializable(ARG_HOME_ENTITY) as HomeEntity
 
         val builder = MaterialAlertDialogBuilder(requireActivity())
         val inflater = requireActivity().layoutInflater
@@ -43,13 +42,6 @@ class EditHomeDialog : DialogFragment() {
     }
 
     companion object {
-        private const val TAG = "EditHomeDialog"
-        fun showDialog(manager: FragmentManager?, entity: HomeEntity?) {
-            val dialog = EditHomeDialog()
-            val args = Bundle()
-            args.putSerializable("home", entity)
-            dialog.arguments = args
-            dialog.show(manager!!, TAG)
-        }
+        const val ARG_HOME_ENTITY = "home"
     }
 }

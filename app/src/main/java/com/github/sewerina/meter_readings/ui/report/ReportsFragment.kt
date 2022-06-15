@@ -4,16 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.github.sewerina.meter_readings.databinding.FragmentReportsBinding
-import com.github.sewerina.meter_readings.ui.readings_main.ReadingPreferences
 import com.github.sewerina.meter_readings.ui.selectHome.SelectHomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,7 +37,7 @@ class ReportsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val reportAdapter = ReportAdapter()
+        val reportAdapter = ReportAdapter(mSelectHomeVM)
         binding.recyclerReports.apply {
             layoutManager = LinearLayoutManager(view.context)
             addItemDecoration(DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL))
@@ -62,60 +58,5 @@ class ReportsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private inner class ReportHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val mMessageTv: TextView = itemView as TextView
-        private lateinit var mReport: Report
-        fun bind(report: Report) {
-            mReport = report
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(itemView.context)
-            val isColdWater =
-                sharedPreferences.getBoolean(ReadingPreferences.KEY_PREF_COLD_WATER, true)
-            val isHotWater =
-                sharedPreferences.getBoolean(ReadingPreferences.KEY_PREF_HOT_WATER, true)
-            val isDrainWater =
-                sharedPreferences.getBoolean(ReadingPreferences.KEY_PREF_DRAIN_WATER, true)
-            val isElectricity =
-                sharedPreferences.getBoolean(ReadingPreferences.KEY_PREF_ELECTRICITY, true)
-            val isGas = sharedPreferences.getBoolean(ReadingPreferences.KEY_PREF_GAS, true)
-            val message = mReport.reportMessage(
-                isColdWater,
-                isHotWater,
-                isDrainWater,
-                isElectricity,
-                isGas,
-                mSelectHomeVM.getCurrentHomeEntity().address
-            )
-            mMessageTv.text = message
-        }
-
-    }
-
-    private inner class ReportAdapter : RecyclerView.Adapter<ReportHolder>() {
-        private val mReports: MutableList<Report> = ArrayList()
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportHolder {
-            val textView = TextView(parent.context)
-            return ReportHolder(textView)
-        }
-
-        override fun onBindViewHolder(holder: ReportHolder, position: Int) {
-            holder.bind(mReports[position])
-        }
-
-        override fun getItemCount(): Int {
-            return mReports.size
-        }
-
-        fun update(reports: List<Report>) {
-            mReports.clear()
-            mReports.addAll(reports)
-            notifyDataSetChanged()
-        }
-
-        fun add(report: Report) {
-            mReports.add(report)
-            notifyItemInserted(mReports.size - 1)
-        }
     }
 }

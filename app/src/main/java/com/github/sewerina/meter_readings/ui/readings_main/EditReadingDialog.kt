@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import com.github.sewerina.meter_readings.FormattedDate
 import com.github.sewerina.meter_readings.R
 import com.github.sewerina.meter_readings.database.ReadingEntity
+import com.github.sewerina.meter_readings.ui.readings_main.BottomSheetReadingDialog.Companion.ARG_READING_ENTITY
 import com.github.sewerina.meter_readings.ui.selectHome.SelectHomeViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
@@ -35,7 +36,7 @@ class EditReadingDialog : DialogFragment() {
     private var mIsDateChanged = false
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val readingEntity = requireArguments().getSerializable("reading") as ReadingEntity
+        val readingEntity = requireArguments().getSerializable(ARG_READING_ENTITY) as ReadingEntity
 
         val builder = MaterialAlertDialogBuilder(requireActivity())
         val inflater = requireActivity().layoutInflater
@@ -124,7 +125,7 @@ class EditReadingDialog : DialogFragment() {
         fun showDialog(manager: FragmentManager, entity: ReadingEntity) {
             val dialog = EditReadingDialog()
             val args = Bundle()
-            args.putSerializable("reading", entity)
+            args.putSerializable(ARG_READING_ENTITY, entity)
             dialog.arguments = args
             dialog.show(manager, TAG)
         }

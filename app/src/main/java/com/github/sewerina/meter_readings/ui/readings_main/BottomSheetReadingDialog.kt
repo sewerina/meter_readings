@@ -1,11 +1,9 @@
 package com.github.sewerina.meter_readings.ui.readings_main
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import com.github.sewerina.meter_readings.R
 import com.github.sewerina.meter_readings.database.ReadingEntity
@@ -24,7 +22,7 @@ class BottomSheetReadingDialog : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mReadingEntity = requireArguments().getSerializable("reading") as ReadingEntity
+        mReadingEntity = requireArguments().getSerializable(ARG_READING_ENTITY) as ReadingEntity
     }
 
     override fun onCreateView(
@@ -49,22 +47,7 @@ class BottomSheetReadingDialog : BottomSheetDialogFragment() {
         return view
     }
 
-    override fun onCancel(dialog: DialogInterface) {
-        super.onCancel(dialog)
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-    }
-
     companion object {
-        private const val TAG = "BottomSheetReadingDialog"
-        fun showDialog(manager: FragmentManager, entity: ReadingEntity) {
-            val dialog = BottomSheetReadingDialog()
-            val args = Bundle()
-            args.putSerializable("reading", entity)
-            dialog.arguments = args
-            dialog.show(manager, TAG)
-        }
+        const val ARG_READING_ENTITY = "reading"
     }
 }
