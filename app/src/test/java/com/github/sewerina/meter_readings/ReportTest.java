@@ -22,6 +22,7 @@ public class ReportTest {
     @Before
     public void init() {
         ReadingEntity readingLast = new ReadingEntity();
+        readingLast.homeId = 1;
         // For date setting = 01.09.2019 in reading
         Calendar calendar = Calendar.getInstance();
         calendar.set(2019, 8, 1);
@@ -35,6 +36,7 @@ public class ReportTest {
         mReadings.add(readingLast);
 
         ReadingEntity readingFirst = new ReadingEntity();
+        readingFirst.homeId = 1;
         readingFirst.coldWater = 115;
         readingFirst.hotWater = 25;
         readingFirst.drainWater = readingFirst.coldWater + readingFirst.hotWater;
@@ -108,7 +110,7 @@ public class ReportTest {
     @Test
     public void testReportMessageWhenAllComponentsTrue() {
         String expectation = "Расходы компонентов для дома Москва на дату 01.09.2019 составляют:"
-                + " хол.вода = 25 гор.вода = 10 канализация = 35 электричество = 40 gas = 25";
+                + "\n- хол.вода = 25\n- гор.вода = 10\n- канализация = 35\n- электричество = 40\n- газ = 25";
         String reality = mReport
                 .reportMessage(true, true, true, true, true, mHomeAddress);
         assertNotNull(reality);
@@ -119,7 +121,7 @@ public class ReportTest {
     @Test
     public void testReportMessageWhenDrainWaterAndGasFalse(){
         String expectation = "Расходы компонентов для дома Москва на дату 01.09.2019 составляют:"
-                + " хол.вода = 25 гор.вода = 10 электричество = 40";
+                + "\n- хол.вода = 25\n- гор.вода = 10\n- электричество = 40";
         String reality = mReport
                 .reportMessage(true, true, false, true, false, mHomeAddress);
         assertNotNull(reality);

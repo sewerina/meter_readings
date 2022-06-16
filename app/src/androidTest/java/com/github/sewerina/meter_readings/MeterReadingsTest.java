@@ -1,18 +1,21 @@
 package com.github.sewerina.meter_readings;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.uiautomator.By;
-import androidx.test.uiautomator.BySelector;
-import androidx.test.uiautomator.UiCollection;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
 import androidx.test.uiautomator.UiObject2;
@@ -24,12 +27,6 @@ import androidx.test.uiautomator.Until;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class MeterReadingsTest {
@@ -43,12 +40,6 @@ public class MeterReadingsTest {
         mDevice = UiDevice.getInstance(getInstrumentation());
         // Start from the home screen
         mDevice.pressHome();
-
-//        UiObject allAppsButton = mDevice
-//                .findObject(new UiSelector().description("Apps"));
-//        allAppsButton.clickAndWaitForNewWindow();
-//        UiObject appTab = new UiObject(new UiSelector().text("ReadingApp"));
-//        appTab.click();
 
         // Wait for launcher
         final String launcherPackage = getLauncherPackageName();
@@ -86,18 +77,16 @@ public class MeterReadingsTest {
     @Test
     public void testMainActivity() throws UiObjectNotFoundException, InterruptedException {
         // Title
-        mDevice.findObject(By.text("Показания счетчиков")).isEnabled();
+        mDevice.findObject(By.text("Показания")).isEnabled();
 
         // Spinner
         mDevice.findObject(By.textContains("из списка ниже")).isEnabled();
 
-        UiObject2 spinnerHome = mDevice.findObject(By.res(BASIC_PACKAGE, "spinner_home"));
+        UiObject2 spinnerHome = mDevice.findObject(By.res(BASIC_PACKAGE, "spinnerHomes"));
         if (spinnerHome.isEnabled() && spinnerHome.isClickable() && spinnerHome.isScrollable()) {
             spinnerHome.click();
-            spinnerHome.clickAndWait(Until.newWindow(), 500);
+            spinnerHome.clickAndWait(Until.newWindow(), 1500);
         }
-
-
 
         // Fab
         mDevice.wait(Until.findObject(By.res(BASIC_PACKAGE, "fab_addReading")), 500);
@@ -126,30 +115,23 @@ public class MeterReadingsTest {
 
         UiObject2 okBtn = mDevice.findObject(By.clazz(Button.class));
         if (okBtn.isEnabled() && okBtn.isClickable()) {
-            okBtn.clickAndWait(Until.newWindow(), 500);
+            okBtn.clickAndWait(Until.newWindow(), 1500);
         }
 
         // Recycler
-        UiScrollable collection = new UiScrollable( new UiSelector().className(RecyclerView.class));
-        int childCount = collection.getChildCount(new UiSelector().className(FrameLayout.class));
+        UiScrollable collection = new UiScrollable(new UiSelector().className(RecyclerView.class));
+        int childCountAfterAdd = collection.getChildCount(new UiSelector().className(FrameLayout.class));
 
-
-        assertTrue(childCount > 0);
+        assertTrue(childCountAfterAdd > 0);
 
         UiObject child = collection.getChildByInstance(new UiSelector().className(FrameLayout.class), 0);
         child.clickAndWaitForNewWindow();
 
-        UiObject2 object = mDevice.findObject(By.res("com.github.sewerina.meter_readings:id/btn_delete"));
-        object.clickAndWait(Until.newWindow(), 500);
+        UiObject2 object = mDevice.findObject(By.res(BASIC_PACKAGE, "btn_delete"));
+        object.clickAndWait(Until.newWindow(), 1500);
 
-//        UiObject btn_delete = mDevice.findObject(new UiSelector().resourceId("com.github.sewerina.meter_readings:id/btn_delete"));
-//        assertTrue(btn_delete.exists());
-//        btn_delete.clickAndWaitForNewWindow();
-
-        collection = new UiScrollable( new UiSelector().className(RecyclerView.class));
-        childCount = collection.getChildCount(new UiSelector().className(FrameLayout.class));
-        assertTrue(childCount == 0);
-
+        collection = new UiScrollable(new UiSelector().className(RecyclerView.class));
+        int childCountAfterDelete = collection.getChildCount(new UiSelector().className(FrameLayout.class));
+        assertTrue(childCountAfterAdd > childCountAfterDelete);
     }
-
 }
