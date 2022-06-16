@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SelectHomeViewModel @Inject constructor(
-    var mDao: AppDao
+    mDao: AppDao
 ) : ViewModel() {
     val homeEntities: LiveData<List<HomeEntity>> = mDao.homesLiveData
 

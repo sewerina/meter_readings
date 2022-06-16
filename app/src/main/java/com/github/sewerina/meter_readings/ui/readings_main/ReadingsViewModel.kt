@@ -17,10 +17,10 @@ import javax.inject.Named
 
 @HiltViewModel
 class ReadingsViewModel @Inject constructor(
-    var mDao: AppDao,
+    private val mDao: AppDao,
 
     @Named("readings")
-    var mCollectionReference: CollectionReference
+    private val mCollectionReference: CollectionReference
 ) : ViewModel() {
     private val mReadingEntities = MutableLiveData<List<ReadingEntity>>()
     val readings: LiveData<List<ReadingEntity>>

@@ -39,6 +39,8 @@
     <string name="successful_restoration">Обновление данных произошло успешно!</string>
     <string name="unsuccessful_restoration">Не удалось обновить данные!</string>
 
+    <string name="unable_generate_report">Невозможно сформировать отчет, так как нет показаний!</string>
+
     <string name="chart_description">Данные по месяцам</string>
     <string name="tv_noDataText">Для этого дома нет данных для отображения!</string>
     <string name="label_coldWater">Холодная вода</string>

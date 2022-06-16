@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.sewerina.meter_readings.R
 import com.github.sewerina.meter_readings.database.AppDao
 import com.github.sewerina.meter_readings.database.HomeEntity
+import com.github.sewerina.meter_readings.ui.MessageService
 import com.google.firebase.firestore.CollectionReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,10 +17,12 @@ import javax.inject.Named
 
 @HiltViewModel
 class ReportViewModel @Inject constructor(
-    var mDao: AppDao,
+    private val mDao: AppDao,
 
     @Named("reports")
-    var mReportCollectionReference: CollectionReference
+    private val mReportCollectionReference: CollectionReference,
+
+    private val mMessageService: MessageService
 ) : ViewModel() {
     private val mReports = MutableLiveData<MutableList<Report>>()
     val reports: LiveData<MutableList<Report>>
@@ -27,6 +31,11 @@ class ReportViewModel @Inject constructor(
     fun addReport(currentHomeEntity: HomeEntity) {
         viewModelScope.launch {
             val readingEntities = mDao.getReadingsForHome(currentHomeEntity.id)
+            if (readingEntities.isEmpty()) {
+                mMessageService.showMessage(R.string.unable_generate_report)
+                return@launch
+            }
+
             val report = Report(readingEntities)
             val reportList = mReports.value ?: ArrayList()
             reportList.add(report)

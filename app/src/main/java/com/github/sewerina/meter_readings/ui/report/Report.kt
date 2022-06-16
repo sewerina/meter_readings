@@ -16,7 +16,7 @@ class Report : Serializable {
 
     var gasValue = 0
 
-    var date: Date? = null
+    var date: Date? = Date()
 
     var homeId = 0
 
@@ -27,6 +27,9 @@ class Report : Serializable {
     constructor() {}
 
     private fun getValues(readings: List<ReadingEntity>) {
+        if (readings.isEmpty()) {
+            return
+        }
         val firstReading = readings[readings.size - 1]
         val lastReading = readings[0]
         homeId = firstReading.homeId
@@ -48,13 +51,12 @@ class Report : Serializable {
     ): String {
 //        String lastDate = new FormattedDate(mLastDate).text();
         val stringDate = date?.let { FormattedDate(it).text() }
-        val coldWater = " хол.вода = $coldWaterValue"
-        val hotWater = " гор.вода = $hotWaterValue"
-        val drainWater = " канализация = $drainWaterValue"
-        val electricity = " электричество = $electricityValue"
-        val gas = " gas = $gasValue"
-        var message = ("Расходы компонентов для дома " + home + " на дату " + stringDate
-                + " составляют:")
+        val coldWater = "\n- хол.вода = $coldWaterValue"
+        val hotWater = "\n- гор.вода = $hotWaterValue"
+        val drainWater = "\n- канализация = $drainWaterValue"
+        val electricity = "\n- электричество = $electricityValue"
+        val gas = "\n- газ = $gasValue"
+        var message = "Расходы компонентов для дома $home на дату $stringDate составляют:"
         if (isColdWater) {
             message += coldWater
         }

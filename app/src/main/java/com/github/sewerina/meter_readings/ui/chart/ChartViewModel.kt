@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChartViewModel @Inject constructor(
-    var mDao: AppDao
+    private val mDao: AppDao
 ) : ViewModel() {
     private val mReadingEntities = MutableLiveData<List<ReadingEntity>>()
     val readings: LiveData<List<ReadingEntity>>

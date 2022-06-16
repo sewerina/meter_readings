@@ -15,9 +15,9 @@ import javax.inject.Named
 
 @HiltViewModel
 class HomesViewModel @Inject constructor(
-    var mDao: AppDao,
+    private val mDao: AppDao,
     @Named("homes")
-    var mCollectionReference: CollectionReference
+    private val mCollectionReference: CollectionReference
 ) : ViewModel() {
     val homes: LiveData<List<HomeEntity>> = mDao.homesLiveData
 

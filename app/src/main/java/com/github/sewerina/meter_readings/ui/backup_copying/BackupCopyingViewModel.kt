@@ -19,15 +19,15 @@ import javax.inject.Named
 
 @HiltViewModel
 class BackupCopyingViewModel @Inject constructor(
-    var mDao: AppDao,
+    private val mDao: AppDao,
 
     @Named("readings")
-    var mReferenceReadings: CollectionReference,
+    private val mReferenceReadings: CollectionReference,
 
     @Named("homes")
-    var mReferenceHomes: CollectionReference,
+    private val mReferenceHomes: CollectionReference,
 
-    var mMessageService: MessageService
+    private val mMessageService: MessageService
 ) : ViewModel() {
     private val mIsRefreshing = MutableLiveData(false)
     private val mIsAvailable = MutableLiveData(true)
