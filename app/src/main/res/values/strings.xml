@@ -40,7 +40,7 @@
     <string name="unsuccessful_restoration">Не удалось обновить данные!</string>
 
     <string name="chart_description">Данные по месяцам</string>
-    <string name="chart_noDataText">Для этого дома нет данных для отображения!</string>
+    <string name="tv_noDataText">Для этого дома нет данных для отображения!</string>
     <string name="label_coldWater">Холодная вода</string>
     <string name="label_hotWater">Горячая вода</string>
     <string name="label_drainWater">Канализация</string>

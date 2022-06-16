@@ -53,6 +53,13 @@ class ReadingsFragment : Fragment() {
 
         mReadingsVM.readings.observe(viewLifecycleOwner) { readingEntities ->
             readingAdapter.update(readingEntities)
+            if (readingEntities.isEmpty()) {
+                binding.recyclerReadings.visibility = View.GONE
+                binding.tvEmptyReadingList.visibility = View.VISIBLE
+            } else {
+                binding.recyclerReadings.visibility = View.VISIBLE
+                binding.tvEmptyReadingList.visibility = View.GONE
+            }
         }
 
         mSelectHomeVM.currentHomePosition.observe(viewLifecycleOwner) {

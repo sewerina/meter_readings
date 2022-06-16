@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -50,8 +51,8 @@ class ChartFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.chart.apply {
-            setNoDataText(getString(R.string.chart_noDataText))
-            setNoDataTextColor(Color.BLUE)
+            setNoDataText(getString(R.string.tv_noDataText))
+            setNoDataTextColor(getColor(view.context, android.R.color.holo_blue_light))
             setNoDataTextTypeface(Typeface.DEFAULT_BOLD)
         }
 

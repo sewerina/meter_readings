@@ -48,7 +48,16 @@ class ReportsFragment : Fragment() {
             mReportsVM.addReport(mSelectHomeVM.getCurrentHomeEntity())
         }
 
-        mReportsVM.reports.observe(viewLifecycleOwner) { reports -> reportAdapter.update(reports) }
+        mReportsVM.reports.observe(viewLifecycleOwner) { reports ->
+            reportAdapter.update(reports)
+            if (reports.isEmpty()) {
+                binding.recyclerReports.visibility = View.GONE
+                binding.tvEmptyReportList.visibility = View.VISIBLE
+            } else {
+                binding.recyclerReports.visibility = View.VISIBLE
+                binding.tvEmptyReportList.visibility = View.GONE
+            }
+        }
 
         mSelectHomeVM.currentHomePosition.observe(viewLifecycleOwner) {
             mReportsVM.loadReports(mSelectHomeVM.getCurrentHomeEntity())
