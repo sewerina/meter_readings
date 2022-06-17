@@ -29,7 +29,7 @@ class EditHomeDialog : DialogFragment() {
         builder.setTitle(R.string.title_editHome)
             .setView(view)
             .setPositiveButton(R.string.btn_save) { dialog, which ->
-                if (addressEt.text != null && !addressEt.text.toString().isEmpty()) {
+                if (addressEt.text != null && addressEt.text.toString().isNotEmpty()) {
                     mHomeEntity.address = addressEt.text.toString()
                     mViewModel.updateHome(mHomeEntity)
                 } else {

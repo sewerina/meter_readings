@@ -35,7 +35,7 @@ public class MeterReadingsTest {
     private UiDevice mDevice;
 
     @Before
-    public void startMainActivityFromHomeScreen() {
+    public void startShellActivityFromHomeScreen() {
         // Initialize UiDevice instance
         mDevice = UiDevice.getInstance(getInstrumentation());
         // Start from the home screen
@@ -75,7 +75,7 @@ public class MeterReadingsTest {
     }
 
     @Test
-    public void testMainActivity() throws UiObjectNotFoundException, InterruptedException {
+    public void testShellActivity() throws UiObjectNotFoundException {
         // Title
         mDevice.findObject(By.text("Показания")).isEnabled();
 
