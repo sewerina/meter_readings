@@ -37,9 +37,10 @@
 
 
 # Используемые технологии
+- Navigation component
 - ViewModel & LiveData
-- Room
-- WorkManager
 - Kotlin Coroutines
 - Hilt
+- Room
+- WorkManager
 - UIAutomator
